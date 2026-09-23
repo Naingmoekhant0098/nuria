@@ -842,15 +842,17 @@ formData.append(`items[${index}][medical_product_id]`, item.medical_product_id.t
         >
             <DrawerContent
                 className="
+                !bg-black
+                !opacity-100
                 h-full
                 w-full
                 sm:max-w-2xl
+                rounded-none
                 border-l
                 border-neutral-800
-                border-t-0
-                rounded-none
-                bg-black
                 text-white
+                z-50
+            
             "
             >
                 <div className="flex h-full flex-col">

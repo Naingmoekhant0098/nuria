@@ -412,9 +412,9 @@ export default function Index() {
                                     Status
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-right text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                {/* <TableHead className="whitespace-nowrap text-right text-xs font-semibold tracking-wider text-gray-400 uppercase">
                                     Actions
-                                </TableHead>
+                                </TableHead> */}
 
                             </TableRow>
 

@@ -313,17 +313,6 @@ export default function Index() {
                 {/* Statistics */}
 
                 <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-500">
-                        <span className="font-medium text-gray-300">
-                            {schedules?.length ?? 0}
-                        </span>{' '}
-                        doctors ·{' '}
-                        <span className="font-medium text-gray-300">
-                            {totalSchedules}
-                        </span>{' '}
-                        schedules
-                    </div>
-
                     {search && (
                         <button
                             type="button"
@@ -364,7 +353,7 @@ export default function Index() {
                         return (
                             <div
                                 key={doctor?.id ?? `doctor-${doctorIndex}`}
-                                className="self-start overflow-hidden text-[12px]"
+                                className="self-start overflow-hidden border rounded-2xl  text-[12px]"
                             >
                                 <div className="flex flex-col gap-4 border-b border-neutral-800 bg-neutral-950 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                                     <div className="flex items-center gap-4">
@@ -394,25 +383,22 @@ export default function Index() {
                                     </div>
                                 </div>
 
-                                {/* Schedule Table */}
+                              
 
-                                <div className="p-6">
-                                    <div className="overflow-hidden rounded-xl border border-neutral-800">
-                                        <table
-                                            className="w-full"
-                                            data-card-grid="true"
-                                        >
-                                            <thead className="bg-neutral-950">
+                                <div className="px-0 py-2">
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-sm">
+                                            <thead>
                                                 <tr className="border-b border-neutral-800">
-                                                    <th className="px-4 py-3 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase">
+                                                    <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
                                                         Day
                                                     </th>
 
-                                                    <th className="px-4 py-3 text-left text-xs font-semibold tracking-wider text-gray-500 uppercase">
+                                                    <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
                                                         Working Hours
                                                     </th>
 
-                                                    <th className="px-4 py-3 text-right text-xs font-semibold tracking-wider text-gray-500 uppercase">
+                                                    <th className="px-4 py-3 text-right text-xs font-medium tracking-wide text-gray-500 uppercase">
                                                         Actions
                                                     </th>
                                                 </tr>
@@ -423,91 +409,65 @@ export default function Index() {
                                                     (schedule) => (
                                                         <tr
                                                             key={schedule.id}
-                                                            className="border-b border-neutral-800 transition-colors last:border-0 hover:bg-neutral-800/40"
-                                                            data-card-icon="calendar"
+                                                            className="border-b border-neutral-800/70 transition-colors last:border-0 hover:bg-neutral-900/60"
                                                         >
                                                             {/* Day */}
-
-                                                            <td
-                                                                className="px-4 py-4"
-                                                                data-label="Day"
-                                                            >
-                                                                <div
-                                                                    data-slot="table-cell-content"
-                                                                    className="min-w-0"
-                                                                >
-                                                                    <span className="inline-flex rounded-lg border border-indigo-500/20 bg-indigo-500/10 px-3 py-1.5 font-medium text-indigo-400">
-                                                                        {
-                                                                            schedule.day_of_week
-                                                                        }
-                                                                    </span>
-                                                                </div>
+                                                            <td className="px-4 py-4">
+                                                                <span className="font-medium text-gray-300">
+                                                                    {
+                                                                        schedule.day_of_week
+                                                                    }
+                                                                </span>
                                                             </td>
 
-                                                            {/* Time */}
+                                                            {/* Working Hours */}
+                                                            <td className="px-4 py-4">
+                                                                <div className="font-medium text-gray-300">
+                                                                    {getScheduleTime(
+                                                                        schedule,
+                                                                    )}
+                                                                </div>
 
-                                                            <td
-                                                                className="px-4 py-4"
-                                                                data-label="Working Hours"
-                                                            >
-                                                                <div
-                                                                    data-slot="table-cell-content"
-                                                                    className="min-w-0"
-                                                                >
-                                                                    <div className="font-medium text-gray-300">
-                                                                        {getScheduleTime(
-                                                                            schedule,
-                                                                        )}
-                                                                    </div>
-
-                                                                    <div className="mt-1 text-xs text-gray-600">
-                                                                        {
-                                                                            schedule.start_time
-                                                                        }{' '}
-                                                                        —{' '}
-                                                                        {
-                                                                            schedule.end_time
-                                                                        }
-                                                                    </div>
+                                                                <div className="mt-1 text-xs text-gray-600">
+                                                                    {
+                                                                        schedule.start_time
+                                                                    }{' '}
+                                                                    —{' '}
+                                                                    {
+                                                                        schedule.end_time
+                                                                    }
                                                                 </div>
                                                             </td>
 
                                                             {/* Actions */}
-
-                                                            <td
-                                                                className="px-4 py-4"
-                                                                data-label="Actions"
-                                                            >
-                                                                <div
-                                                                    data-slot="table-cell-content"
-                                                                    className="flex min-w-0 justify-end gap-2"
-                                                                >
+                                                            <td className="px-4 py-4">
+                                                                <div className="flex justify-end gap-2">
                                                                     <Button
                                                                         type="button"
                                                                         size="sm"
-                                                                        variant="outline"
+                                                                        variant="ghost"
                                                                         onClick={() =>
                                                                             handleEdit(
                                                                                 schedule,
                                                                             )
                                                                         }
-                                                                        className="border-neutral-700 bg-transparent text-gray-300 hover:bg-neutral-800"
+                                                                        className="h-8 w-8 p-0 text-gray-400 hover:bg-neutral-800 hover:text-white"
                                                                     >
-                                                                        <Pencil className="h-3.5 w-3.5" />
+                                                                        <Pencil className="h-4 w-4" />
                                                                     </Button>
 
                                                                     <Button
                                                                         type="button"
                                                                         size="sm"
-                                                                        variant="destructive"
+                                                                        variant="ghost"
                                                                         onClick={() =>
                                                                             handleDelete(
                                                                                 schedule,
                                                                             )
                                                                         }
-                                                                        className="border border-red-900 bg-red-600/20 text-red-400 hover:bg-red-600/30"
+                                                                        className="h-8 w-8 p-0 text-red-400 hover:bg-red-950/40 hover:text-red-300"
                                                                     >
-                                                                        <Trash2 className="h-3.5 w-3.5" />
+                                                                        <Trash2 className="h-4 w-4" />
                                                                     </Button>
                                                                 </div>
                                                             </td>

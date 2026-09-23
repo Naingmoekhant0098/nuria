@@ -55,9 +55,9 @@ export default function PaymentMethodsIndex() {
                                 <TableHead className="text-xs font-semibold tracking-wider text-gray-400 uppercase">
                                     Status
                                 </TableHead>
-                                <TableHead className="text-right text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                {/* <TableHead className="text-right text-xs font-semibold tracking-wider text-gray-400 uppercase">
                                     Action
-                                </TableHead>
+                                </TableHead> */}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -80,7 +80,7 @@ export default function PaymentMethodsIndex() {
                                             {method.status}
                                         </span>
                                     </TableCell>
-                                    <TableCell className="text-right">
+                                    <TableCell className="">
                                         <Button
                                             size="sm"
                                             variant="outline"

@@ -256,7 +256,7 @@ export default function CreateMedicalRecordDrawer({
                     border-neutral-800
                     border-t-0
                     rounded-none
-                    bg-black
+                    !bg-black
                     text-white
                 "
             >

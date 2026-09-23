@@ -1,30 +1,7 @@
-import {
-    CalendarDays,
-    Clock3,
-    CreditCard,
-    FileText,
-    Hospital,
-    Mail,
-    MapPin,
-    MoreHorizontal,
-    Package,
-    Phone,
-    ShieldCheck,
-    ShoppingBag,
-    Stethoscope,
-    UserRound,
-    Wallet,
-} from 'lucide-react';
 import * as React from 'react';
 
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-
-const TableCardIconContext = React.createContext<{
-    icon: string;
-    enabled: boolean;
-    inBody: boolean;
-}>({ icon: 'details', enabled: true, inBody: false });
 
 function Table({
     className,
@@ -57,7 +34,6 @@ function Table({
     const [dateColumnIndex, setDateColumnIndex] = React.useState<number | null>(
         null,
     );
-    const icon = getCardIcon(getTableHeadingText(props.children));
     const search = searchValue ?? uncontrolledSearch;
 
     function updateSearch(value: string) {
@@ -226,109 +202,8 @@ function Table({
     const lastResult = Math.min(currentPage * pageSize, resultCount);
 
     return (
-        <TableCardIconContext.Provider value={{ icon, enabled: cardGrid, inBody: false }}>
         <div className="space-y-3">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-                {(filterOptions.length > 0 || dateColumnIndex !== null) ? (
-                    <div className="flex flex-wrap items-end gap-2">
-                    {filterOptions.map(({ index, label, options }) => (
-                        <label
-                            key={label}
-                            className="flex min-w-36 flex-col gap-1 text-xs font-medium text-muted-foreground"
-                        >
-                            <span>Filter by {label}</span>
-                            <select
-                                value={selectedFilters[index] ?? ''}
-                                onChange={(event) => {
-                                    setCurrentPage(1);
-                                    setSelectedFilters((current) => ({
-                                        ...current,
-                                        [index]: event.target.value,
-                                    }));
-                                }}
-                                aria-label={`Filter by ${label}`}
-                                className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                            >
-                                <option value="">All {label.toLowerCase()}</option>
-                                {options.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                    ))}
-                    {dateColumnIndex !== null && (
-                        <>
-                            <label className="flex flex-col gap-1 text-xs font-medium text-muted-foreground">
-                                <span>From date</span>
-                                <input
-                                    type="date"
-                                    value={startDate}
-                                    max={endDate || undefined}
-                                    onChange={(event) => {
-                                        setStartDate(event.target.value);
-                                        setCurrentPage(1);
-                                    }}
-                                    aria-label="Filter from date"
-                                    className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                                />
-                            </label>
-                            <label className="flex flex-col gap-1 text-xs font-medium text-muted-foreground">
-                                <span>To date</span>
-                                <input
-                                    type="date"
-                                    value={endDate}
-                                    min={startDate || undefined}
-                                    onChange={(event) => {
-                                        setEndDate(event.target.value);
-                                        setCurrentPage(1);
-                                    }}
-                                    aria-label="Filter to date"
-                                    className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                                />
-                            </label>
-                        </>
-                    )}
-                    {hasActiveFilters && (
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setSelectedFilters({});
-                                setStartDate('');
-                                setEndDate('');
-                                updateSearch('');
-                            }}
-                            className="h-9 px-2 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-                        >
-                            Clear filters
-                        </button>
-                    )}
-                    </div>
-                ) : <div />}
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center lg:justify-end">
-                    <label className="w-full sm:w-56">
-                        <span className="sr-only">Search table results</span>
-                        <Input
-                            value={search}
-                            onChange={(event) => updateSearch(event.target.value)}
-                            placeholder="Search results..."
-                            aria-label="Search table results"
-                            className="h-9"
-                        />
-                    </label>
-                    {search && (
-                        <button
-                            type="button"
-                            onClick={() => updateSearch('')}
-                            className="h-9 px-2 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-                        >
-                            Clear search
-                        </button>
-                    )}
-                    {toolbarActions}
-                </div>
-            </div>
+             
             <div
                 data-slot="table-container"
                 className={cn(
@@ -393,123 +268,7 @@ function Table({
                 </div>
             )}
         </div>
-        </TableCardIconContext.Provider>
     );
-}
-
-function getCardIcon(label: string): string {
-    const normalizedLabel = label.toLowerCase();
-
-    if (/appointment|reservation/.test(normalizedLabel)) {
-        return 'calendar';
-    }
-
-    if (/patient/.test(normalizedLabel)) {
-        return 'person';
-    }
-
-    if (/doctor|specialization/.test(normalizedLabel)) {
-        return 'medical';
-    }
-
-    if (/clinic|branch/.test(normalizedLabel)) {
-        return 'building';
-    }
-
-    if (/service/.test(normalizedLabel)) {
-        return 'service';
-    }
-
-    if (/drug|product|item|medicine/.test(normalizedLabel)) {
-        return 'product';
-    }
-
-    if (/quantity|stock/.test(normalizedLabel)) {
-        return 'stock';
-    }
-
-    if (/sale|receipt|invoice/.test(normalizedLabel)) {
-        return 'receipt';
-    }
-
-    if (/payment|method/.test(normalizedLabel)) {
-        return 'payment';
-    }
-
-    if (/date|day|schedule/.test(normalizedLabel)) {
-        return 'calendar';
-    }
-
-    if (/time|hour/.test(normalizedLabel)) {
-        return 'time';
-    }
-
-    if (/phone|contact/.test(normalizedLabel)) {
-        return 'phone';
-    }
-
-    if (/email/.test(normalizedLabel)) {
-        return 'email';
-    }
-
-    if (/address|location/.test(normalizedLabel)) {
-        return 'location';
-    }
-
-    if (/name|person/.test(normalizedLabel)) {
-        return 'person';
-    }
-
-    if (/amount|price|total|revenue/.test(normalizedLabel)) {
-        return 'money';
-    }
-
-    if (/status/.test(normalizedLabel)) {
-        return 'status';
-    }
-
-    if (/action/.test(normalizedLabel)) {
-        return 'actions';
-    }
-
-    return 'details';
-}
-
-function getTableHeadingText(children: React.ReactNode): string {
-    const headingTexts: string[] = [];
-
-    React.Children.forEach(children, (child) => {
-        if (!React.isValidElement(child)) {
-            return;
-        }
-
-        const nestedChildren = (child.props as { children?: React.ReactNode })
-            .children;
-
-        if (child.type === TableHeader) {
-            React.Children.forEach(nestedChildren, (headerRow) => {
-                if (!React.isValidElement(headerRow)) {
-                    return;
-                }
-
-                React.Children.forEach(
-                    (headerRow.props as { children?: React.ReactNode }).children,
-                    (heading) => {
-                        if (React.isValidElement(heading)) {
-                            headingTexts.push(
-                                React.Children.toArray(
-                                    (heading.props as { children?: React.ReactNode })
-                                        .children,
-                                ).join(' '),
-                            );
-                        }
-                    },
-                );
-            });
-        }
-    });
-
-    return headingTexts.join(' ');
 }
 
 function parseTableDate(value: string): string {
@@ -526,55 +285,23 @@ function parseTableDate(value: string): string {
         : parsedDate.toISOString().slice(0, 10);
 }
 
-function CardIcon({ name }: { name: string }) {
-    const Icon = {
-        calendar: CalendarDays,
-        person: UserRound,
-        medical: Stethoscope,
-        building: Hospital,
-        service: ShoppingBag,
-        product: Package,
-        stock: Package,
-        receipt: FileText,
-        payment: CreditCard,
-        time: Clock3,
-        phone: Phone,
-        email: Mail,
-        location: MapPin,
-        money: Wallet,
-        status: ShieldCheck,
-        actions: MoreHorizontal,
-        details: FileText,
-    }[name] ?? FileText;
-
-    return <Icon aria-hidden="true" className="size-4 text-muted-foreground" />;
-}
-
 function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
-    const { icon, enabled } = React.useContext(TableCardIconContext);
-
     return (
-        <TableCardIconContext.Provider value={{ icon, enabled, inBody: false }}>
         <thead
             data-slot="table-header"
             className={cn('[&_tr]:border-b', className)}
             {...props}
         />
-        </TableCardIconContext.Provider>
     );
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
-    const { icon, enabled } = React.useContext(TableCardIconContext);
-
     return (
-        <TableCardIconContext.Provider value={{ icon, enabled, inBody: true }}>
         <tbody
             data-slot="table-body"
             className={cn('[&_tr:last-child]:border-0', className)}
             {...props}
         />
-        </TableCardIconContext.Provider>
     );
 }
 
@@ -592,33 +319,6 @@ function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
 }
 
 function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
-    const { icon, enabled, inBody } = React.useContext(TableCardIconContext);
-    const children = React.Children.toArray(props.children);
-    const firstCell = children.findIndex(
-        (child) => React.isValidElement(child) && child.type === TableCell,
-    );
-
-    if (enabled && inBody && firstCell >= 0) {
-        const cell = children[firstCell];
-
-        if (React.isValidElement(cell)) {
-            const cellProps = cell.props as { children?: React.ReactNode };
-            children[firstCell] = React.cloneElement(
-                cell as React.ReactElement<{ children?: React.ReactNode }>,
-                {
-                    children: (
-                        <>
-                            <span data-slot="table-card-icon">
-                                <CardIcon name={icon} />
-                            </span>
-                            {cellProps.children}
-                        </>
-                    ),
-                },
-            );
-        }
-    }
-
     return (
         <tr
             data-slot="table-row"
@@ -627,9 +327,7 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
                 className,
             )}
             {...props}
-        >
-            {children}
-        </tr>
+        />
     );
 }
 

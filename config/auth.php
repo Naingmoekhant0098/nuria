@@ -62,7 +62,7 @@ return [
 
         'admin' => [
             'driver' => 'sanctum',
-            'provider' => 'system_admins',
+            'provider' => 'admins',
         ],
     ],
 
@@ -84,7 +84,7 @@ return [
     */
 
     'providers' => [
-        'system_admins' => [
+        'admins' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
         ],

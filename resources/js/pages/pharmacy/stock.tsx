@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-
+ 
 type Batch = {
     id: number;
     batch_number: string;
@@ -16,17 +16,6 @@ type Batch = {
     drug: { name: string };
 };
 
-function formatExpiryDate(value: string): string {
-    const date = new Date(`${value}T00:00:00`);
-
-    return Number.isNaN(date.getTime())
-        ? value
-        : date.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-          });
-}
 type MedicalStock = {
     medical_product_id: number;
     quantity: number;
@@ -41,6 +30,32 @@ export default function StockIndex() {
         medicalStock: MedicalStock[];
     }>().props;
 
+
+    const formatDateTime = (
+        value?: string | null
+    ): string => {
+        if (!value) {
+            return '-';
+        }
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return value;
+        }
+
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+        });
+    };
+
+
+    
     return (
         <main className="min-h-screen bg-black p-6 text-white">
             <div className="mx-auto max-w-7xl space-y-8">
@@ -62,7 +77,7 @@ export default function StockIndex() {
                     rows={batches.map((batch) => [
                         batch.drug.name,
                         batch.batch_number,
-                        formatExpiryDate(batch.expiry_date),
+                        formatDateTime(batch.expiry_date),
                         batch.quantity,
                     ])}
                 />

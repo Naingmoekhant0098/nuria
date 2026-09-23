@@ -428,7 +428,7 @@ function MetricCard({
 }) {
     return (
         <Card>
-            <CardContent className="flex items-start justify-between p-5">
+            <CardContent className="flex items-start justify-between p-5 py-1">
                 <div>
                     <p className="text-sm text-muted-foreground">{label}</p>
                     <p className="mt-2 text-2xl font-semibold tracking-tight">
