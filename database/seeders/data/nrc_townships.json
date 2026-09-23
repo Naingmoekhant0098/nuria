@@ -1,0 +1,3873 @@
+
+[
+    {
+        "id": 7227,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "MaKaNa",
+        "burmese_code": "မကန"
+    },
+    {
+        "id": 7228,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "HsaBaTa",
+        "burmese_code": "‌ဆဘတ"
+    },
+    {
+        "id": 7229,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "WaMaNa",
+        "burmese_code": "ဝမန"
+    },
+    {
+        "id": 7230,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "HsaDaNa",
+        "burmese_code": "ဆဒန"
+    },
+    {
+        "id": 7231,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "AGaya",
+        "burmese_code": "အဂယ"
+    },
+    {
+        "id": 7232,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "TaNaNa",
+        "burmese_code": "တနန"
+    },
+    {
+        "id": 7233,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "RaBaYa",
+        "burmese_code": "ရဗယ"
+    },
+    {
+        "id": 7234,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "KhaHpaNa",
+        "burmese_code": "ခဖန"
+    },
+    {
+        "id": 7235,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "HsaLaNa",
+        "burmese_code": "ဆလန"
+    },
+    {
+        "id": 7236,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "KaPaTa",
+        "burmese_code": "ကပတ"
+    },
+    {
+        "id": 7237,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "PaWaNa",
+        "burmese_code": "ပဝန"
+    },
+    {
+        "id": 7238,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "MaNjaNa",
+        "burmese_code": "မညန"
+    },
+    {
+        "id": 7239,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "HaPaNa",
+        "burmese_code": "ဟပန"
+    },
+    {
+        "id": 7240,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "MaKaTa",
+        "burmese_code": "မကတ"
+    },
+    {
+        "id": 7241,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "KaMaNa",
+        "burmese_code": "ကမန"
+    },
+    {
+        "id": 7242,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "HpaKaNa",
+        "burmese_code": "ဖကန"
+    },
+    {
+        "id": 7243,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "KaMaTa",
+        "burmese_code": "ကမတ"
+    },
+    {
+        "id": 7244,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "BaMaNa",
+        "burmese_code": "ဗမန"
+    },
+    {
+        "id": 7245,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "RaKaNa",
+        "burmese_code": "ရကန"
+    },
+    {
+        "id": 7246,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "MaLaNa",
+        "burmese_code": "မလန"
+    },
+    {
+        "id": 7247,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "MaMaNa",
+        "burmese_code": "မမန"
+    },
+    {
+        "id": 7248,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "LaGaNa",
+        "burmese_code": "လဂန"
+    },
+    {
+        "id": 7249,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "DaHpaYa",
+        "burmese_code": "ဒဖယ"
+    },
+    {
+        "id": 7250,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "MaSaNa",
+        "burmese_code": "မစန"
+    },
+    {
+        "id": 7251,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "PaTaA",
+        "burmese_code": "ပတအ"
+    },
+    {
+        "id": 7252,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "MaKhaBa",
+        "burmese_code": "မခဘ"
+    },
+    {
+        "id": 7253,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "NaMaNa",
+        "burmese_code": "နမန"
+    },
+    {
+        "id": 7254,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "PaNaDa",
+        "burmese_code": "ပနဒ"
+    },
+    {
+        "id": 7255,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "KhaBaDa",
+        "burmese_code": "ခဘဒ"
+    },
+    {
+        "id": 7256,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "KhaLaHpa",
+        "burmese_code": "ခလဖ"
+    },
+    {
+        "id": 7257,
+        "nrc_state_code_id": {
+        "id": 48,
+        "name": "1"
+        },
+        "code": "HsaPaBa",
+        "burmese_code": "ဆပဘ"
+    },
+    {
+        "id": 7258,
+        "nrc_state_code_id": {
+        "id": 49,
+        "name": "2"
+        },
+        "code": "LaKaNa",
+        "burmese_code": "လကန"
+    },
+    {
+        "id": 7259,
+        "nrc_state_code_id": {
+        "id": 49,
+        "name": "2"
+        },
+        "code": "DaMaHsa",
+        "burmese_code": "ဒမဆ"
+    },
+    {
+        "id": 7260,
+        "nrc_state_code_id": {
+        "id": 49,
+        "name": "2"
+        },
+        "code": "HpaRaHsa",
+        "burmese_code": "ဖရဆ"
+    },
+    {
+        "id": 7261,
+        "nrc_state_code_id": {
+        "id": 49,
+        "name": "2"
+        },
+        "code": "RaTaNa",
+        "burmese_code": "ရတန"
+    },
+    {
+        "id": 7262,
+        "nrc_state_code_id": {
+        "id": 49,
+        "name": "2"
+        },
+        "code": "BaLaKha",
+        "burmese_code": "ဘလခ"
+    },
+    {
+        "id": 7263,
+        "nrc_state_code_id": {
+        "id": 49,
+        "name": "2"
+        },
+        "code": "HpaHsaNa",
+        "burmese_code": "ဖဆန"
+    },
+    {
+        "id": 7264,
+        "nrc_state_code_id": {
+        "id": 49,
+        "name": "2"
+        },
+        "code": "MaSaNa",
+        "burmese_code": "မစန"
+    },
+    {
+        "id": 7265,
+        "nrc_state_code_id": {
+        "id": 49,
+        "name": "2"
+        },
+        "code": "RaThaNa",
+        "burmese_code": "ရသန"
+    },
+    {
+        "id": 7266,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "BaANa",
+        "burmese_code": "ဘအန"
+    },
+    {
+        "id": 7267,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "LaBaNa",
+        "burmese_code": "လဘန"
+    },
+    {
+        "id": 7268,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "PaKaNa",
+        "burmese_code": "ပကန"
+    },
+    {
+        "id": 7269,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "RaRaTha",
+        "burmese_code": "ရရသ"
+    },
+    {
+        "id": 7270,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "ThaTaKa",
+        "burmese_code": "သတက"
+    },
+    {
+        "id": 7271,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "ThaTaNa",
+        "burmese_code": "သတန"
+    },
+    {
+        "id": 7272,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "LaThaNa",
+        "burmese_code": "လသန"
+    },
+    {
+        "id": 7273,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "BaGaLa",
+        "burmese_code": "ဘဂလ"
+    },
+    {
+        "id": 7274,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "HpaPaNa",
+        "burmese_code": "ဖပန"
+    },
+    {
+        "id": 7275,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "KaMaMa",
+        "burmese_code": "ကမမ"
+    },
+    {
+        "id": 7276,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "KaKaRa",
+        "burmese_code": "ကကရ"
+    },
+    {
+        "id": 7277,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "KaHsaKa",
+        "burmese_code": "ကဆက"
+    },
+    {
+        "id": 7278,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "KaDaNa",
+        "burmese_code": "ကဒန"
+    },
+    {
+        "id": 7279,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "BaThaHsa",
+        "burmese_code": "ဘသဆ"
+    },
+    {
+        "id": 7280,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "MaWaTa",
+        "burmese_code": "မဝတ"
+    },
+    {
+        "id": 7281,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "SaKaLa",
+        "burmese_code": "စကလ"
+    },
+    {
+        "id": 7282,
+        "nrc_state_code_id": {
+        "id": 50,
+        "name": "3"
+        },
+        "code": "WaLaMa",
+        "burmese_code": "ဝလမ"
+    },
+    {
+        "id": 7283,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "HaKhaNa",
+        "burmese_code": "ဟခန"
+    },
+    {
+        "id": 7284,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "HtaTaLa",
+        "burmese_code": "ထတလ"
+    },
+    {
+        "id": 7286,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "RaKhaDa",
+        "burmese_code": "ရခဒ"
+    },
+    {
+        "id": 7287,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "TaTaNa",
+        "burmese_code": "တတန"
+    },
+    {
+        "id": 7288,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "TaZaNa",
+        "burmese_code": "တဇန"
+    },
+    {
+        "id": 7289,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "KaKhaNa",
+        "burmese_code": "ကခန"
+    },
+    {
+        "id": 7290,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "MaTaNa",
+        "burmese_code": "မတန"
+    },
+    {
+        "id": 7291,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "MaTaPa",
+        "burmese_code": "မတပ"
+    },
+    {
+        "id": 7292,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "RaZaNa",
+        "burmese_code": "ရဇန"
+    },
+    {
+        "id": 7293,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "KaPaLa",
+        "burmese_code": "ကပလ"
+    },
+    {
+        "id": 7294,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "PaLaWa",
+        "burmese_code": "ပလဝ"
+    },
+    {
+        "id": 7295,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "HsaMaNa",
+        "burmese_code": "ဆမန"
+    },
+    {
+        "id": 7296,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "SaKaNa",
+        "burmese_code": "စကန"
+    },
+    {
+        "id": 7297,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "MaMaTa",
+        "burmese_code": "မမတ"
+    },
+    {
+        "id": 7298,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "MaMaNa",
+        "burmese_code": "မမန"
+    },
+    {
+        "id": 7299,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "RaBaNa",
+        "burmese_code": "ရဘန"
+    },
+    {
+        "id": 7300,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "WaLaNa",
+        "burmese_code": "ဝလန"
+    },
+    {
+        "id": 7301,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KhaUNa",
+        "burmese_code": "ခဥန"
+    },
+    {
+        "id": 7302,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KaBaLa",
+        "burmese_code": "ကဘလ"
+    },
+    {
+        "id": 7303,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KaLaNa",
+        "burmese_code": "ကလန"
+    },
+    {
+        "id": 7304,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "RaUNa",
+        "burmese_code": "ရဥန"
+    },
+    {
+        "id": 7305,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "DaPaYa",
+        "burmese_code": "ဒပယ"
+    },
+    {
+        "id": 7306,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "TaHsaNa",
+        "burmese_code": "တဆန"
+    },
+    {
+        "id": 7307,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KaMaNa",
+        "burmese_code": "ကမန"
+    },
+    {
+        "id": 7308,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "MaRaNa",
+        "burmese_code": "မရန"
+    },
+    {
+        "id": 7309,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KhaUTa",
+        "burmese_code": "ခဥတ"
+    },
+    {
+        "id": 7310,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "ARaTa",
+        "burmese_code": "အရတ"
+    },
+    {
+        "id": 7311,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "BaTaLa",
+        "burmese_code": "ဘတလ"
+    },
+    {
+        "id": 7312,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "YaMaPa",
+        "burmese_code": "ယမပ"
+    },
+    {
+        "id": 7313,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "PaLaNa",
+        "burmese_code": "ပလန"
+    },
+    {
+        "id": 7314,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KaNaNa",
+        "burmese_code": "ကနန"
+    },
+    {
+        "id": 7315,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "HsaLaKa",
+        "burmese_code": "ဆလက"
+    },
+    {
+        "id": 7316,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KaThaNa",
+        "burmese_code": "ကသန"
+    },
+    {
+        "id": 7317,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "HtaKhaNa",
+        "burmese_code": "ထခန"
+    },
+    {
+        "id": 7318,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "ATaNa",
+        "burmese_code": "အတန"
+    },
+    {
+        "id": 7319,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "BaMaNa",
+        "burmese_code": "ဗမန"
+    },
+    {
+        "id": 7320,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KaLaTa",
+        "burmese_code": "ကလတ"
+    },
+    {
+        "id": 7321,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "PaLaBa",
+        "burmese_code": "ပလဘ"
+    },
+    {
+        "id": 7322,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "WaThaNa",
+        "burmese_code": "ဝသန"
+    },
+    {
+        "id": 7323,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KaLaHta",
+        "burmese_code": "ကလထ"
+    },
+    {
+        "id": 7324,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KaLaWa",
+        "burmese_code": "ကလဝ"
+    },
+    {
+        "id": 7325,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "MaKaNa",
+        "burmese_code": "မကန"
+    },
+    {
+        "id": 7326,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "TaMaNa",
+        "burmese_code": "တမန"
+    },
+    {
+        "id": 7327,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KhaPaNa",
+        "burmese_code": "ခပန"
+    },
+    {
+        "id": 7328,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "MaThaNa",
+        "burmese_code": "မသန"
+    },
+    {
+        "id": 7329,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "MaLaNa",
+        "burmese_code": "မလန"
+    },
+    {
+        "id": 7330,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "HpaPaNa",
+        "burmese_code": "  ဖပန"
+    },
+    {
+        "id": 7331,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "KhaTaNa",
+        "burmese_code": "ခတန"
+    },
+    {
+        "id": 7332,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "HaMaLa",
+        "burmese_code": "ဟမလ"
+    },
+    {
+        "id": 7333,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "LaRaNa",
+        "burmese_code": "လရန"
+    },
+    {
+        "id": 7334,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "LaHaNa",
+        "burmese_code": "လဟန"
+    },
+    {
+        "id": 7335,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "NaYaNa",
+        "burmese_code": "နယန"
+    },
+    {
+        "id": 7336,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "PaHsaNa",
+        "burmese_code": "ပဆန"
+    },
+    {
+        "id": 7337,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "DaHaNa",
+        "burmese_code": "ဒဟန"
+    },
+    {
+        "id": 7338,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "MaPaLa",
+        "burmese_code": "မပလ"
+    },
+    {
+        "id": 7339,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "HtaPaKha",
+        "burmese_code": "ထပခ"
+    },
+    {
+        "id": 7340,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "HsaMaRa",
+        "burmese_code": "ဆမရ"
+    },
+    {
+        "id": 7341,
+        "nrc_state_code_id": {
+        "id": 52,
+        "name": "5"
+        },
+        "code": "NgaZaNa",
+        "burmese_code": "ငဇန"
+    },
+    {
+        "id": 7342,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "HtaWaNa",
+        "burmese_code": "ထဝန"
+    },
+    {
+        "id": 7343,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "LaLaNa",
+        "burmese_code": "လလန"
+    },
+    {
+        "id": 7344,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "ThaRaKha",
+        "burmese_code": "သရခ"
+    },
+    {
+        "id": 7345,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "RaHpaNa",
+        "burmese_code": "ရဖန"
+    },
+    {
+        "id": 7346,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "MaTaNa",
+        "burmese_code": "မတန"
+    },
+    {
+        "id": 7347,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "KaLaA",
+        "burmese_code": "ကလအ"
+    },
+    {
+        "id": 7348,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "MaARa",
+        "burmese_code": "မအရ"
+    },
+    {
+        "id": 7349,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "MaANa",
+        "burmese_code": "မအန"
+    },
+    {
+        "id": 7350,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "KaSaNa",
+        "burmese_code": "ကစန"
+    },
+    {
+        "id": 7351,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "PaLaNa",
+        "burmese_code": "ပလန"
+    },
+    {
+        "id": 7352,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "TaThaRa",
+        "burmese_code": "တသရ"
+    },
+    {
+        "id": 7353,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "PaLaTa",
+        "burmese_code": "ပလတ"
+    },
+    {
+        "id": 7354,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "KaThaNa",
+        "burmese_code": "ကသန"
+    },
+    {
+        "id": 7355,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "BaPaNa",
+        "burmese_code": "ဘပန"
+    },
+    {
+        "id": 7356,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "KhaMaKa",
+        "burmese_code": "ခမက"
+    },
+    {
+        "id": 7357,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "PaKaMa",
+        "burmese_code": "ပကမ"
+    },
+    {
+        "id": 7358,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "KaRaRa",
+        "burmese_code": "ကရရ"
+    },
+    {
+        "id": 7359,
+        "nrc_state_code_id": {
+        "id": 53,
+        "name": "6"
+        },
+        "code": "MaMaNa",
+        "burmese_code": "မမန"
+    },
+    {
+        "id": 7360,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "TaNgaNa",
+        "burmese_code": "တငန"
+    },
+    {
+        "id": 7361,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "RaTaRa",
+        "burmese_code": "ရတရ"
+    },
+    {
+        "id": 7362,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "HtaTaPa",
+        "burmese_code": "ထတပ"
+    },
+    {
+        "id": 7363,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "ATaNa",
+        "burmese_code": "အတန"
+    },
+    {
+        "id": 7364,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "HpaMaNa",
+        "burmese_code": "ဖမန"
+    },
+    {
+        "id": 7365,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "KaKaNa",
+        "burmese_code": "ကကန"
+    },
+    {
+        "id": 7366,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "PaKhaNa",
+        "burmese_code": "ပခန"
+    },
+    {
+        "id": 7367,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "KaTaKha",
+        "burmese_code": "ကတခ"
+    },
+    {
+        "id": 7368,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "RaKaNa",
+        "burmese_code": "ရကန"
+    },
+    {
+        "id": 7369,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "NjaLaPa",
+        "burmese_code": "ညလပ"
+    },
+    {
+        "id": 7370,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "DaUNa",
+        "burmese_code": "ဒဥန"
+    },
+    {
+        "id": 7371,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "WaMaNa",
+        "burmese_code": "ဝမန"
+    },
+    {
+        "id": 7372,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "ThaNaPa",
+        "burmese_code": "သနပ"
+    },
+    {
+        "id": 7373,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "KaWaNa",
+        "burmese_code": "ကဝန"
+    },
+    {
+        "id": 7374,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "ThaWaTa",
+        "burmese_code": "သဝတ"
+    },
+    {
+        "id": 7375,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "LaPaTa",
+        "burmese_code": "လပတ"
+    },
+    {
+        "id": 7376,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "MaLaNa",
+        "burmese_code": "မလန"
+    },
+    {
+        "id": 7377,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "MaNjaNa",
+        "burmese_code": "မညန"
+    },
+    {
+        "id": 7378,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "AHpaNa",
+        "burmese_code": "အဖန"
+    },
+    {
+        "id": 7379,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "KaPaKa",
+        "burmese_code": "ကပက"
+    },
+    {
+        "id": 7380,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "ZaKaNa",
+        "burmese_code": "ဇကန"
+    },
+    {
+        "id": 7381,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "NaTaLa",
+        "burmese_code": "နတလ"
+    },
+    {
+        "id": 7382,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "PaMaNa",
+        "burmese_code": "ပမန"
+    },
+    {
+        "id": 7383,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "ThaKaNa",
+        "burmese_code": "သကန"
+    },
+    {
+        "id": 7384,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "RaTaNa",
+        "burmese_code": "ရတန"
+    },
+    {
+        "id": 7385,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "PaTaTa",
+        "burmese_code": "ပတတ"
+    },
+    {
+        "id": 7386,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "PaTaNa",
+        "burmese_code": "ပတန"
+    },
+    {
+        "id": 7387,
+        "nrc_state_code_id": {
+        "id": 54,
+        "name": "7"
+        },
+        "code": "PaKhaTa",
+        "burmese_code": "ပခတ"
+    },
+    {
+        "id": 7388,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "MaKaNa",
+        "burmese_code": "မကန"
+    },
+    {
+        "id": 7389,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "RaNaKha",
+        "burmese_code": "ရနခ"
+    },
+    {
+        "id": 7390,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "KhaMaNa",
+        "burmese_code": "ခမန"
+    },
+    {
+        "id": 7391,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "NaMaNa",
+        "burmese_code": "နမန"
+    },
+    {
+        "id": 7392,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "MaThaNa",
+        "burmese_code": "မသန"
+    },
+    {
+        "id": 7393,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "TaTaKa",
+        "burmese_code": "တတက"
+    },
+    {
+        "id": 7394,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "MaBaNa",
+        "burmese_code": "မဘန"
+    },
+    {
+        "id": 7395,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "PaHpaNa",
+        "burmese_code": "ပဖန"
+    },
+    {
+        "id": 7396,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "SaLaNa",
+        "burmese_code": "စလန"
+    },
+    {
+        "id": 7397,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "SaTaRa",
+        "burmese_code": "စတရ"
+    },
+    {
+        "id": 7398,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "NgaHpaNa",
+        "burmese_code": "ငဖန"
+    },
+    {
+        "id": 7399,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "ThaRaNa",
+        "burmese_code": "သရန"
+    },
+    {
+        "id": 7400,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "MaHtaNa",
+        "burmese_code": "မထန"
+    },
+    {
+        "id": 7401,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "ALaNa",
+        "burmese_code": "အလန"
+    },
+    {
+        "id": 7402,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "KaMaNa",
+        "burmese_code": "ကမန"
+    },
+    {
+        "id": 7403,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "MaTaNa",
+        "burmese_code": "မတန"
+    },
+    {
+        "id": 7404,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "HsaPaWa",
+        "burmese_code": "ဆပဝ"
+    },
+    {
+        "id": 7405,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "MaLaNa",
+        "burmese_code": "မလန"
+    },
+    {
+        "id": 7406,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "PaKhaKa",
+        "burmese_code": "ပခက"
+    },
+    {
+        "id": 7407,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "RaSaKa",
+        "burmese_code": "ရစက"
+    },
+    {
+        "id": 7408,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "MaMaNa",
+        "burmese_code": "မမန"
+    },
+    {
+        "id": 7409,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "PaMaNa",
+        "burmese_code": "ပမန"
+    },
+    {
+        "id": 7410,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "HsaHpaNa",
+        "burmese_code": "ဆဖန"
+    },
+    {
+        "id": 7411,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "GaGaNa",
+        "burmese_code": "ဂဂန"
+    },
+    {
+        "id": 7412,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "HsaMaNa",
+        "burmese_code": "ဆမန"
+    },
+    {
+        "id": 7413,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "HtaLaNa",
+        "burmese_code": "ထလန"
+    },
+    {
+        "id": 7414,
+        "nrc_state_code_id": {
+        "id": 55,
+        "name": "8"
+        },
+        "code": "KaHtaNa",
+        "burmese_code": "ကထန"
+    },
+    {
+        "id": 7415,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "UTaTha",
+        "burmese_code": "ဥတသ"
+    },
+    {
+        "id": 7416,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "ZaYaTha",
+        "burmese_code": "ဇယသ"
+    },
+    {
+        "id": 7417,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "PaBaTha",
+        "burmese_code": "ပဗသ"
+    },
+    {
+        "id": 7418,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "TaKaNa",
+        "burmese_code": "တကန"
+    },
+    {
+        "id": 7419,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "DaKhaTha",
+        "burmese_code": "ဒခသ"
+    },
+    {
+        "id": 7420,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "ZaBaTha",
+        "burmese_code": "ဇဘသ"
+    },
+    {
+        "id": 7421,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "PaMaNa",
+        "burmese_code": "ပမန"
+    },
+    {
+        "id": 7422,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "LaWaNa",
+        "burmese_code": "လဝန"
+    },
+    {
+        "id": 7423,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaNaMa",
+        "burmese_code": "မနမ"
+    },
+    {
+        "id": 7424,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "AMaZa",
+        "burmese_code": "အမဇ"
+    },
+    {
+        "id": 7425,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaRaMa",
+        "burmese_code": "မရမ"
+    },
+    {
+        "id": 7426,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "KhaAZa",
+        "burmese_code": "ခအဇ"
+    },
+    {
+        "id": 7427,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaNaTa",
+        "burmese_code": "မနတ"
+    },
+    {
+        "id": 7428,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "KhaMaSa",
+        "burmese_code": "ခမစ"
+    },
+    {
+        "id": 7429,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaRaTa",
+        "burmese_code": "မရတ"
+    },
+    {
+        "id": 7430,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaHaMa",
+        "burmese_code": "မဟမ"
+    },
+    {
+        "id": 7431,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "PaKaKha",
+        "burmese_code": "ပကခ"
+    },
+    {
+        "id": 7432,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "AMaYa",
+        "burmese_code": "အမရ"
+    },
+    {
+        "id": 7433,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "PaThaKa",
+        "burmese_code": "ပသက"
+    },
+    {
+        "id": 7434,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaMaNa",
+        "burmese_code": "မမန"
+    },
+    {
+        "id": 7435,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "PaULa",
+        "burmese_code": "ပဥလ"
+    },
+    {
+        "id": 7436,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaTaRa",
+        "burmese_code": "မတရ"
+    },
+    {
+        "id": 7437,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "SaKaNa",
+        "burmese_code": "စကန"
+    },
+    {
+        "id": 7438,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "ThaPaKa",
+        "burmese_code": "သပက"
+    },
+    {
+        "id": 7439,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaKaNa",
+        "burmese_code": "မကန"
+    },
+    {
+        "id": 7440,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "TaKaTa",
+        "burmese_code": "တကတ"
+    },
+    {
+        "id": 7441,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "KaHsaNa",
+        "burmese_code": "ကဆန"
+    },
+    {
+        "id": 7442,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "SaKaTa",
+        "burmese_code": "စကတ"
+    },
+    {
+        "id": 7443,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaThaNa",
+        "burmese_code": "မသန"
+    },
+    {
+        "id": 7444,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "TaTaU",
+        "burmese_code": "တတဥ"
+    },
+    {
+        "id": 7445,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaKhaNa",
+        "burmese_code": "မခန"
+    },
+    {
+        "id": 7446,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "TaThaNa",
+        "burmese_code": "တသန"
+    },
+    {
+        "id": 7447,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "KaPaTa",
+        "burmese_code": "ကပတ"
+    },
+    {
+        "id": 7448,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "NaHtaKa",
+        "burmese_code": "နထက"
+    },
+    {
+        "id": 7449,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "NjaUNa",
+        "burmese_code": "ညဥန"
+    },
+    {
+        "id": 7450,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "NgaZaNa",
+        "burmese_code": "ငဇန"
+    },
+    {
+        "id": 7451,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "NgaThaRa",
+        "burmese_code": "ငသရ"
+    },
+    {
+        "id": 7452,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaHtaLa",
+        "burmese_code": "မထလ"
+    },
+    {
+        "id": 7453,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "MaLaNa",
+        "burmese_code": "မလန"
+    },
+    {
+        "id": 7454,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "ThaSaNa",
+        "burmese_code": "သစန"
+    },
+    {
+        "id": 7455,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "WaTaNa",
+        "burmese_code": "ဝတန"
+    },
+    {
+        "id": 7456,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "RaMaTha",
+        "burmese_code": "ရမသ"
+    },
+    {
+        "id": 7457,
+        "nrc_state_code_id": {
+        "id": 56,
+        "name": "9"
+        },
+        "code": "PaBaNa",
+        "burmese_code": "ပဘန"
+    },
+    {
+        "id": 7458,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "MaLaMa",
+        "burmese_code": "မလမ"
+    },
+    {
+        "id": 7459,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "KaMaRa",
+        "burmese_code": "ကမရ"
+    },
+    {
+        "id": 7460,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "KhaHsaNa",
+        "burmese_code": "ခဆန"
+    },
+    {
+        "id": 7461,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "ThaHpaRa",
+        "burmese_code": "သဖရ"
+    },
+    {
+        "id": 7462,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "MaDana",
+        "burmese_code": "မဒန"
+    },
+    {
+        "id": 7463,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "RaMaNa",
+        "burmese_code": "ရမန"
+    },
+    {
+        "id": 7464,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "LaMaNa",
+        "burmese_code": "လမန"
+    },
+    {
+        "id": 7465,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "KhaZaNa",
+        "burmese_code": "ခဇန"
+    },
+    {
+        "id": 7466,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "ThaHtaNa",
+        "burmese_code": "သထန"
+    },
+    {
+        "id": 7467,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "PaMaNa",
+        "burmese_code": "ပမန"
+    },
+    {
+        "id": 7468,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "KaHtaNa",
+        "burmese_code": "ကထန"
+    },
+    {
+        "id": 7469,
+        "nrc_state_code_id": {
+        "id": 57,
+        "name": "10"
+        },
+        "code": "BaLaNa",
+        "burmese_code": "ဘလန"
+    },
+    {
+        "id": 7470,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "SaTaNa",
+        "burmese_code": "စတန"
+    },
+    {
+        "id": 7471,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "RaThaTa",
+        "burmese_code": "ရသတ"
+    },
+    {
+        "id": 7472,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "PaNaKa",
+        "burmese_code": "ပဏက"
+    },
+    {
+        "id": 7473,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "PaTaNa",
+        "burmese_code": "ပတန"
+    },
+    {
+        "id": 7474,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "MaUNa",
+        "burmese_code": "မဥန"
+    },
+    {
+        "id": 7475,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "MaPaNa",
+        "burmese_code": "မပန"
+    },
+    {
+        "id": 7476,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "KaTaNa",
+        "burmese_code": "ကတန"
+    },
+    {
+        "id": 7477,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "MaPaTa",
+        "burmese_code": "မပန"
+    },
+    {
+        "id": 7478,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "MaTaNa",
+        "burmese_code": "မတန"
+    },
+    {
+        "id": 7479,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "BaThaTa",
+        "burmese_code": "ဘသတ"
+    },
+    {
+        "id": 7480,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "TaPaWa",
+        "burmese_code": "တပဝ"
+    },
+    {
+        "id": 7481,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "KaHpaNa",
+        "burmese_code": "ကဖန"
+    },
+    {
+        "id": 7482,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "RaBaNa",
+        "burmese_code": "ရဗန"
+    },
+    {
+        "id": 7483,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "MaANa",
+        "burmese_code": "မအန"
+    },
+    {
+        "id": 7484,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "AMaNa",
+        "burmese_code": "အမန"
+    },
+    {
+        "id": 7485,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "ThaTaNa",
+        "burmese_code": "သတန"
+    },
+    {
+        "id": 7486,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "TaKaNa",
+        "burmese_code": "တကန"
+    },
+    {
+        "id": 7487,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "MaATa",
+        "burmese_code": "မအတ"
+    },
+    {
+        "id": 7488,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "GaMaNa",
+        "burmese_code": "ဂမန"
+    },
+    {
+        "id": 7489,
+        "nrc_state_code_id": {
+        "id": 58,
+        "name": "11"
+        },
+        "code": "KaTaLa",
+        "burmese_code": "ကတလ"
+    },
+    {
+        "id": 7490,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "ThaGaKa",
+        "burmese_code": "သဃက"
+    },
+    {
+        "id": 7491,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "RaKaNa",
+        "burmese_code": "ရကန"
+    },
+    {
+        "id": 7492,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "UKaTa",
+        "burmese_code": "ဥကတ"
+    },
+    {
+        "id": 7493,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "UKaMa",
+        "burmese_code": "ဥကမ"
+    },
+    {
+        "id": 7494,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "ThaKaTa",
+        "burmese_code": "သကတ"
+    },
+    {
+        "id": 7495,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "DaPaNa",
+        "burmese_code": "ဒပန"
+    },
+    {
+        "id": 7496,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "TaMaNa",
+        "burmese_code": "တမန"
+    },
+    {
+        "id": 7497,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "PaZaTa",
+        "burmese_code": "ပဇတ"
+    },
+    {
+        "id": 7498,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "BaTaHta",
+        "burmese_code": "ဗတထ"
+    },
+    {
+        "id": 7499,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "MaGaTa",
+        "burmese_code": "မဂတ"
+    },
+    {
+        "id": 7500,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "DaGaMa",
+        "burmese_code": "ဒဂမ"
+    },
+    {
+        "id": 7501,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "DaGaRa",
+        "burmese_code": "ဒဂရ"
+    },
+    {
+        "id": 7502,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "DaGaTa",
+        "burmese_code": "ဒဂတ"
+    },
+    {
+        "id": 7503,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "DaGaHsa",
+        "burmese_code": "ဒဂဆ"
+    },
+    {
+        "id": 7504,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "KaTaTa",
+        "burmese_code": "ကတတ"
+    },
+    {
+        "id": 7505,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "PaBaTa",
+        "burmese_code": "ပဘတ"
+    },
+    {
+        "id": 7506,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "LaMaTa",
+        "burmese_code": "လမတ"
+    },
+    {
+        "id": 7507,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "LaThaNa",
+        "burmese_code": "လသန"
+    },
+    {
+        "id": 7508,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "ALaNa",
+        "burmese_code": "အလန"
+    },
+    {
+        "id": 7509,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "KaMaTa",
+        "burmese_code": "ကမတ"
+    },
+    {
+        "id": 7510,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "SaKhaNa",
+        "burmese_code": "စခန"
+    },
+    {
+        "id": 7511,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "LaMaNa",
+        "burmese_code": "လမန"
+    },
+    {
+        "id": 7512,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "KaMaRa",
+        "burmese_code": "ကမရ"
+    },
+    {
+        "id": 7513,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "MaRaKa",
+        "burmese_code": "မရက"
+    },
+    {
+        "id": 7514,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "DaGaNa",
+        "burmese_code": "ဒဂန"
+    },
+    {
+        "id": 7515,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "BaHaNa",
+        "burmese_code": "ဗဟန"
+    },
+    {
+        "id": 7516,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "HsaKaNa",
+        "burmese_code": "ဆကန"
+    },
+    {
+        "id": 7517,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "ThaLaNa",
+        "burmese_code": "သလန"
+    },
+    {
+        "id": 7518,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "KaTaNa",
+        "burmese_code": "ကတန"
+    },
+    {
+        "id": 7519,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "TaTaTa",
+        "burmese_code": "တတတ"
+    },
+    {
+        "id": 7520,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "ThaKhaNa",
+        "burmese_code": "သခန"
+    },
+    {
+        "id": 7521,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "KhaRaNa",
+        "burmese_code": "ခရန"
+    },
+    {
+        "id": 7522,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "TaTaNa",
+        "burmese_code": "တတန"
+    },
+    {
+        "id": 7523,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "KaMaNa",
+        "burmese_code": "ကမန"
+    },
+    {
+        "id": 7524,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "KaKhaKa",
+        "burmese_code": "ကခက"
+    },
+    {
+        "id": 7525,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "DaLaNa",
+        "burmese_code": "ဒလန"
+    },
+    {
+        "id": 7526,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "HsaKaKha",
+        "burmese_code": "ဆကခ"
+    },
+    {
+        "id": 7527,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "KaKaKa",
+        "burmese_code": "ကကက"
+    },
+    {
+        "id": 7528,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "ASaNa",
+        "burmese_code": "အစန"
+    },
+    {
+        "id": 7529,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "MaGaDa",
+        "burmese_code": "မဂဒ"
+    },
+    {
+        "id": 7530,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "MaBaNa",
+        "burmese_code": "မဘန"
+    },
+    {
+        "id": 7531,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "LaKaNa",
+        "burmese_code": "လကန"
+    },
+    {
+        "id": 7532,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "TaKaNa",
+        "burmese_code": "တကန"
+    },
+    {
+        "id": 7533,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "HtaTaPa",
+        "burmese_code": "ထတပ"
+    },
+    {
+        "id": 7534,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "RaPaTha",
+        "burmese_code": "ရပသ"
+    },
+    {
+        "id": 7535,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "LaThaYa",
+        "burmese_code": "လသယ"
+    },
+    {
+        "id": 7536,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "LaYaNa",
+        "burmese_code": "လယန"
+    },
+    {
+        "id": 7537,
+        "nrc_state_code_id": {
+        "id": 59,
+        "name": "12"
+        },
+        "code": "LaYaRa",
+        "burmese_code": "လယရ"
+    },
+    {
+        "id": 7538,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "TaKaNa",
+        "burmese_code": "တကန"
+    },
+    {
+        "id": 7539,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "HaPaNa",
+        "burmese_code": "ဟပန"
+    },
+    {
+        "id": 7540,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NjaRaNa",
+        "burmese_code": "ညရန"
+    },
+    {
+        "id": 7541,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "HsaHsaNa",
+        "burmese_code": "ဆဆန"
+    },
+    {
+        "id": 7542,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaLaNa",
+        "burmese_code": "ကလန"
+    },
+    {
+        "id": 7543,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaTaYa",
+        "burmese_code": "ပတယ"
+    },
+    {
+        "id": 7544,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "RaNgaNa",
+        "burmese_code": "ရငန"
+    },
+    {
+        "id": 7545,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "RaSaNa",
+        "burmese_code": "ရစန"
+    },
+    {
+        "id": 7546,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaLaNa",
+        "burmese_code": "ပလန"
+    },
+    {
+        "id": 7547,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "HpaKhaNa",
+        "burmese_code": "ဖခန"
+    },
+    {
+        "id": 7548,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaTaLa",
+        "burmese_code": "ကတလ"
+    },
+    {
+        "id": 7549,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NaTaRa",
+        "burmese_code": "နတရ"
+    },
+    {
+        "id": 7550,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "ATaNa",
+        "burmese_code": "အတန"
+    },
+    {
+        "id": 7551,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "LaLaNa",
+        "burmese_code": "လလန"
+    },
+    {
+        "id": 7552,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "LaKhaNa",
+        "burmese_code": "လခန"
+    },
+    {
+        "id": 7553,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NaSaNa",
+        "burmese_code": "နစန"
+    },
+    {
+        "id": 7554,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaHaNa",
+        "burmese_code": "ကဟန"
+    },
+    {
+        "id": 7555,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaThaNa",
+        "burmese_code": "ကသန"
+    },
+    {
+        "id": 7556,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaKaNa",
+        "burmese_code": "မကန"
+    },
+    {
+        "id": 7557,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaRaNa",
+        "burmese_code": "မရန"
+    },
+    {
+        "id": 7558,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaLaTa",
+        "burmese_code": "ပလတ"
+    },
+    {
+        "id": 7559,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaNaTa",
+        "burmese_code": "မနတ"
+    },
+    {
+        "id": 7560,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KhaLaNa",
+        "burmese_code": "ခလန"
+    },
+    {
+        "id": 7561,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaLaDa",
+        "burmese_code": "ကလဒ"
+    },
+    {
+        "id": 7562,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaSaNa",
+        "burmese_code": "မစန"
+    },
+    {
+        "id": 7563,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "LaKhaTa",
+        "burmese_code": "လခတ"
+    },
+    {
+        "id": 7564,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaNaNa",
+        "burmese_code": "မနန"
+    },
+    {
+        "id": 7565,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaMaNa",
+        "burmese_code": "မမန"
+    },
+    {
+        "id": 7566,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaPaNa",
+        "burmese_code": "မပန"
+    },
+    {
+        "id": 7567,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "HaMaNa",
+        "burmese_code": "ဟမန"
+    },
+    {
+        "id": 7568,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaTaTa",
+        "burmese_code": "ကတတ"
+    },
+    {
+        "id": 7569,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "LaRaNa",
+        "burmese_code": "လရန"
+    },
+    {
+        "id": 7570,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "ThaNaNa",
+        "burmese_code": "သနန"
+    },
+    {
+        "id": 7571,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "TaYaNa",
+        "burmese_code": "တယန"
+    },
+    {
+        "id": 7572,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaRaTa",
+        "burmese_code": "မရတ"
+    },
+    {
+        "id": 7573,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaLaTa",
+        "burmese_code": "ကလတ"
+    },
+    {
+        "id": 7574,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaYaNa",
+        "burmese_code": "ပယန"
+    },
+    {
+        "id": 7575,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NaHpaNa",
+        "burmese_code": "နဖန"
+    },
+    {
+        "id": 7576,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaHpaTa",
+        "burmese_code": "မဖတ"
+    },
+    {
+        "id": 7577,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaHsaNa",
+        "burmese_code": "ပဆန"
+    },
+    {
+        "id": 7578,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaKaHta",
+        "burmese_code": "မကထ"
+    },
+    {
+        "id": 7579,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaHsaTa",
+        "burmese_code": "မဆတ"
+    },
+    {
+        "id": 7580,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NaKhaNa",
+        "burmese_code": "နခန"
+    },
+    {
+        "id": 7581,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaKhaNa",
+        "burmese_code": "ကခန"
+    },
+    {
+        "id": 7582,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "TaMaNja",
+        "burmese_code": "တမည"
+    },
+    {
+        "id": 7583,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaHaRa",
+        "burmese_code": "မဟရ"
+    },
+    {
+        "id": 7584,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaKaTa",
+        "burmese_code": "မကတ"
+    },
+    {
+        "id": 7585,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaHsaTa",
+        "burmese_code": "ပဆတ"
+    },
+    {
+        "id": 7586,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaMaNa",
+        "burmese_code": "ကမန"
+    },
+    {
+        "id": 7587,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "ThaPaNa",
+        "burmese_code": "သပန"
+    },
+    {
+        "id": 7588,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NaKhaTa",
+        "burmese_code": "နခတ"
+    },
+    {
+        "id": 7589,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NaMaTa",
+        "burmese_code": "နမတ"
+    },
+    {
+        "id": 7590,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NaHsaNa",
+        "burmese_code": "နဆန"
+    },
+    {
+        "id": 7591,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaTaTa",
+        "burmese_code": "မတတ"
+    },
+    {
+        "id": 7592,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaNgaNa",
+        "burmese_code": "မငန"
+    },
+    {
+        "id": 7593,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaLaTa",
+        "burmese_code": "မလတ"
+    },
+    {
+        "id": 7594,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaMaTa",
+        "burmese_code": "မမတ"
+    },
+    {
+        "id": 7595,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaBaNa",
+        "burmese_code": "မဘန"
+    },
+    {
+        "id": 7596,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "HaPaTa",
+        "burmese_code": "ဟပတ"
+    },
+    {
+        "id": 7597,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaWaNa",
+        "burmese_code": "ပဝန"
+    },
+    {
+        "id": 7598,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaMaHta",
+        "burmese_code": "မမထ"
+    },
+    {
+        "id": 7599,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "NaTaNa",
+        "burmese_code": "နတန"
+    },
+    {
+        "id": 7600,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaLaHta",
+        "burmese_code": "ပလထ"
+    },
+    {
+        "id": 7601,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "LaKaNa",
+        "burmese_code": "လကန"
+    },
+    {
+        "id": 7602,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaKaNa",
+        "burmese_code": "ကကန"
+    },
+    {
+        "id": 7603,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KhaRaHa",
+        "burmese_code": "ခရဟ"
+    },
+    {
+        "id": 7604,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaHtaTa",
+        "burmese_code": "မထတ"
+    },
+    {
+        "id": 7605,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaTaNa",
+        "burmese_code": "ကတန"
+    },
+    {
+        "id": 7606,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaLaNa",
+        "burmese_code": "မလန"
+    },
+    {
+        "id": 7607,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaYaNa",
+        "burmese_code": "မယန"
+    },
+    {
+        "id": 7608,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaPaHta",
+        "burmese_code": "မပထ"
+    },
+    {
+        "id": 7609,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaKhaNa",
+        "burmese_code": "မခန"
+    },
+    {
+        "id": 7610,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaPaTa",
+        "burmese_code": "မပတ"
+    },
+    {
+        "id": 7611,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "TaTaNa",
+        "burmese_code": "တတန"
+    },
+    {
+        "id": 7612,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaHsaNa",
+        "burmese_code": "မဆန"
+    },
+    {
+        "id": 7613,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaKhaTa",
+        "burmese_code": "မခတ"
+    },
+    {
+        "id": 7614,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaTaNa",
+        "burmese_code": "မတန"
+    },
+    {
+        "id": 7615,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "PaPaKa",
+        "burmese_code": "ပပက"
+    },
+    {
+        "id": 7616,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaHtaNa",
+        "burmese_code": "မထန"
+    },
+    {
+        "id": 7617,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaHpaNa",
+        "burmese_code": "မဖန"
+    },
+    {
+        "id": 7618,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaYaTa",
+        "burmese_code": "မယတ"
+    },
+    {
+        "id": 7619,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "MaYaHta",
+        "burmese_code": "မယထ"
+    },
+    {
+        "id": 7620,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "TaKhaLa",
+        "burmese_code": "တခလ"
+    },
+    {
+        "id": 7621,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "TaLaNa",
+        "burmese_code": "တလန"
+    },
+    {
+        "id": 7622,
+        "nrc_state_code_id": {
+        "id": 60,
+        "name": "13"
+        },
+        "code": "KaLaHta",
+        "burmese_code": "ကလထ"
+    },
+    {
+        "id": 7623,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "PaThaNa",
+        "burmese_code": "ပသန"
+    },
+    {
+        "id": 7624,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "RaThaYa",
+        "burmese_code": "ရသယ"
+    },
+    {
+        "id": 7625,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "NgaHsaNa",
+        "burmese_code": "ငဆန"
+    },
+    {
+        "id": 7626,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "PaThaRa",
+        "burmese_code": "ပသရ"
+    },
+    {
+        "id": 7627,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "KaKaHta",
+        "burmese_code": "ကကထ"
+    },
+    {
+        "id": 7628,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "NgaPaTa",
+        "burmese_code": "ငပတ"
+    },
+    {
+        "id": 7629,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "HaKaKa",
+        "burmese_code": "ဟကက"
+    },
+    {
+        "id": 7630,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "NgaRaKa",
+        "burmese_code": "ငရက"
+    },
+    {
+        "id": 7631,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "ThaPaNa",
+        "burmese_code": "သပန"
+    },
+    {
+        "id": 7632,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "KaKaNa",
+        "burmese_code": "ကကန"
+    },
+    {
+        "id": 7633,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "RaKaNa",
+        "burmese_code": "ရကန"
+    },
+    {
+        "id": 7634,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "NgaThaKha",
+        "burmese_code": "ငသခ"
+    },
+    {
+        "id": 7635,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "KaPaNa",
+        "burmese_code": "ကပန"
+    },
+    {
+        "id": 7636,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "HaThaTa",
+        "burmese_code": "ဟသတ"
+    },
+    {
+        "id": 7637,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "ZaLaNa",
+        "burmese_code": "ဇလန"
+    },
+    {
+        "id": 7638,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "LaMaNa",
+        "burmese_code": "လမန"
+    },
+    {
+        "id": 7639,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "AGaPa",
+        "burmese_code": "အဂပ"
+    },
+    {
+        "id": 7640,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "MaANa",
+        "burmese_code": "မအန"
+    },
+    {
+        "id": 7641,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "KaKhaNa",
+        "burmese_code": "ကခန"
+    },
+    {
+        "id": 7642,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "MaAPa",
+        "burmese_code": "မအပ"
+    },
+    {
+        "id": 7643,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "PaTaNa",
+        "burmese_code": "ပတန"
+    },
+    {
+        "id": 7644,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "NjaTaNa",
+        "burmese_code": "ညတန"
+    },
+    {
+        "id": 7645,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "DaNaHpa",
+        "burmese_code": "ဓနဖ"
+    },
+    {
+        "id": 7646,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "HpaPaNa",
+        "burmese_code": "ဖပန"
+    },
+    {
+        "id": 7647,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "AMaTa",
+        "burmese_code": "အမတ"
+    },
+    {
+        "id": 7648,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "BaKaLa",
+        "burmese_code": "ဘကလ"
+    },
+    {
+        "id": 7649,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "KaLaNa",
+        "burmese_code": "ကလန"
+    },
+    {
+        "id": 7650,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "DaDaYa",
+        "burmese_code": "ဒဒရ"
+    },
+    {
+        "id": 7651,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "LaPaTa",
+        "burmese_code": "လပတ"
+    },
+    {
+        "id": 7652,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "PaSaLa",
+        "burmese_code": "ပစလ"
+    },
+    {
+        "id": 7653,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "MaMaKa",
+        "burmese_code": "မမက"
+    },
+    {
+        "id": 7654,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "MaMaNa",
+        "burmese_code": "မမန"
+    },
+    {
+        "id": 7655,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "AMaNa",
+        "burmese_code": "အမန"
+    },
+    {
+        "id": 7656,
+        "nrc_state_code_id": {
+        "id": 61,
+        "name": "14"
+        },
+        "code": "WaKhaMa",
+        "burmese_code": "ဝခမ"
+    },
+    {
+        "id": 7657,
+        "nrc_state_code_id": {
+        "id": 51,
+        "name": "4"
+        },
+        "code": "PhaLaNa",
+        "burmese_code": "ဖလန"
+    }
+]

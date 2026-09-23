@@ -1,0 +1,229 @@
+import { useForm, usePage } from '@inertiajs/react';
+import React, { useEffect } from 'react';
+
+import {
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+} from '@/components/ui/drawer';
+
+import type {
+    Doctor,
+    Specialization,
+    DoctorFormData,
+    NrcState,
+    NrcTownship,
+    NrcType,
+} from './doctor_form';
+import DoctorForm from './doctor_form';
+
+interface PageProps {
+    nrcStates?: NrcState[];
+    nrcTownships?: NrcTownship[];
+    nrcTypes?: NrcType[];
+
+    [key: string]: unknown;
+}
+
+interface EditDoctorDialogProps {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    doctor: Doctor | null;
+    specializations: Specialization[];
+}
+
+export default function EditDoctorDialog({
+    open,
+    onOpenChange,
+    doctor,
+    specializations,
+}: EditDoctorDialogProps) {
+
+    const {
+        nrcStates = [],
+        nrcTownships = [],
+        nrcTypes = [],
+    } = usePage<PageProps>().props;
+
+    const form = useForm<DoctorFormData>({
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+
+        specialization_id: '',
+
+        complete_address: '',
+        contact_number: '',
+        proof_of_identity : "",
+
+        nrc_state_id: '',
+        nrc_township_id: '',
+        nrc_type_id: '',
+        nrc_number: '',
+
+        user_name: '',
+        email: '',
+        password: '',
+
+        status: 'active',
+    });
+
+    useEffect(() => {
+
+        if (!doctor) {
+            return;
+        }
+
+        form.setData({
+            first_name:
+                doctor.first_name ?? '',
+
+            middle_name:
+                doctor.middle_name ?? '',
+
+            last_name:
+                doctor.last_name ?? '',
+
+            specialization_id:
+                doctor.specialization?.id
+                    ? String(
+                          doctor.specialization.id
+                      )
+                    : '',
+
+            complete_address:
+                doctor.complete_address ?? '',
+
+            contact_number:
+                doctor.contact_number ?? '',
+
+            /* ==========================================
+               NRC
+            ========================================== */
+
+            nrc_state_id:
+                doctor.nrc?.nrc_state_id != null
+                    ? String(
+                          doctor.nrc.nrc_state_id
+                      )
+                    : '',
+
+            nrc_township_id:
+                doctor.nrc?.nrc_township_id != null
+                    ? String(
+                          doctor.nrc
+                              .nrc_township_id
+                      )
+                    : '',
+
+            nrc_type_id:
+                doctor.nrc?.nrc_type_id != null
+                    ? String(
+                          doctor.nrc.nrc_type_id
+                      )
+                    : '',
+
+            nrc_number:
+                doctor.nrc_number ?? '',
+
+            /* ==========================================
+               Account
+            ========================================== */
+
+            user_name:
+                doctor.user_name ?? '',
+
+            email:
+                doctor?.email ?? '',
+
+            password: '',
+
+            status:
+                doctor.status ?? 'active',
+        });
+
+    }, [doctor]);
+
+    const handleSubmit = (
+        e: React.FormEvent
+    ) => {
+
+        e.preventDefault();
+
+        if (!doctor) {
+            return;
+        }
+
+        form.put(
+            `/clinic/doctors/${doctor.id}`,
+            {
+                preserveScroll: true,
+
+                onSuccess: () => {
+                    form.reset();
+                    onOpenChange(false);
+                },
+            }
+        );
+    };
+
+    const handleClose = (
+        value: boolean
+    ) => {
+
+        if (!value) {
+            form.clearErrors();
+        }
+
+        onOpenChange(value);
+    };
+
+    return (
+        <Drawer
+            open={open}
+            onOpenChange={handleClose}
+            direction="right"
+        >
+            <DrawerContent
+                className="
+                    h-full
+                    w-full
+                    border-neutral-800
+                    bg-neutral-900
+                    text-white
+                    sm:max-w-2xl
+                "
+            >
+
+                <DrawerHeader className="border-b border-neutral-800">
+                    <DrawerTitle className="text-white">
+                        Edit Doctor
+                    </DrawerTitle>
+                </DrawerHeader>
+
+                <div className="flex-1 overflow-y-auto px-6 py-4">
+
+                    <DoctorForm
+                        form={form}
+                        specializations={
+                            specializations ?? []
+                        }
+                        mode="edit"
+                        onSubmit={handleSubmit}
+                        onCancel={() =>
+                            handleClose(false)
+                        }
+                        nrcStates={nrcStates}
+                        nrcTownships={
+                            nrcTownships
+                        }
+                        nrcTypes={nrcTypes}
+                    />
+
+                </div>
+
+            </DrawerContent>
+        </Drawer>
+    );
+}

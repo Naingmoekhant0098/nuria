@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Illuminate\Http\Request;
+use Inertia\Middleware;
+
+class HandleInertiaRequests extends Middleware
+{
+    /**
+     * The root template that's loaded on the first page visit.
+     *
+     * @see https://inertiajs.com/server-side-setup#root-template
+     *
+     * @var string
+     */
+    protected $rootView = 'app';
+
+    /**
+     * Determines the current asset version.
+     *
+     * @see https://inertiajs.com/asset-versioning
+     */
+    public function version(Request $request): ?string
+    {
+        return parent::version($request);
+    }
+
+    /**
+     * Define the props that are shared by default.
+     *
+     * @see https://inertiajs.com/shared-data
+     *
+     * @return array<string, mixed>
+     */
+    public function share(Request $request): array
+    {
+        // Check both the clinic guard and default guard
+        $user = $request->user('clinic') ?? $request->user();
+
+        $userData = null;
+
+        if ($user) {
+            // Check if it's a Clinic model or a regular User model
+            $name = isset($user->clinic_name) ? $user->clinic_name : ($user->name ?? $user->user_name ?? 'User');
+
+            $userData = [
+                'id' => $user->id,
+                'name' => $name,
+                'email' => $user->user_name ?? $user->email ?? '',
+            ];
+        }
+
+        return [
+            ...parent::share($request),
+            'name' => config('app.name'),
+            'auth' => [
+                'user' => $userData,
+            ],
+            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
+        ];
+    }
+}
