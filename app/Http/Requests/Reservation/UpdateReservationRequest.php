@@ -25,6 +25,7 @@ class UpdateReservationRequest extends FormRequest
                 'integer',
                 'exists:doctor_clinic_schedules,id',
             ],
+            'appointment_at' => ['sometimes', 'required', 'date'],
             'appointment_type' => 'sometimes|required|string',
             'status' => 'sometimes|required|string',
             'remarks' => 'nullable|string',

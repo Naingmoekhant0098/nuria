@@ -34,6 +34,7 @@ export interface DoctorClinicSchedule {
     day_of_week: string;
     start_time: string;
     end_time: string;
+    max_patients_per_slot: number;
 
     clinic?: Clinic | null;
     doctor?: Doctor | null;
@@ -44,6 +45,7 @@ export interface DoctorClinicScheduleFormData {
     day_of_week: string;
     start_time: string;
     end_time: string;
+    max_patients_per_slot: number;
 }
 
 interface DoctorScheduleFormProps {
@@ -224,6 +226,31 @@ export default function DoctorScheduleForm({
                         </p>
                     )}
                 </div>
+            </div>
+
+            <div className="space-y-2">
+                <Label htmlFor="max-patients-per-slot">
+                    Maximum patients per time slot
+                </Label>
+                <Input
+                    id="max-patients-per-slot"
+                    type="number"
+                    min={1}
+                    max={1000}
+                    value={form.data.max_patients_per_slot}
+                    onChange={(event) =>
+                        form.setData(
+                            'max_patients_per_slot',
+                            Number(event.target.value),
+                        )
+                    }
+                    className="border-neutral-800 bg-neutral-950 text-white"
+                />
+                {form.errors.max_patients_per_slot && (
+                    <p className="text-xs text-red-500">
+                        {form.errors.max_patients_per_slot}
+                    </p>
+                )}
             </div>
 
             {/* Actions */}

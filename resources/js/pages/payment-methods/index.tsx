@@ -30,7 +30,7 @@ export default function PaymentMethodsIndex() {
                             Payment Methods
                         </h1>
                         <p className="mt-1 text-sm text-gray-500">
-                            Cash, KBZPay, and Wave Money are the available
+                            Cash, KBZPay, Wave Money, and Other are the available
                             payment methods. Only active methods can be selected
                             for a consultation.
                         </p>

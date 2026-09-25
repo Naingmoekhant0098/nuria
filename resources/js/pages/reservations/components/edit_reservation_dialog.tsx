@@ -50,14 +50,18 @@ export default function EditReservationDialog({
     const form = useForm<ReservationFormData>({
         patient_id: '',
         doctor_id: '',
-      
+
         service_id: '',
         schedule_id: '',
+        appointment_at: '',
 
         appointment_type: 'In-Person',
         status: 'Pending',
         remarks: '',
         amount: '',
+        payment_method: '',
+        transaction_code: '',
+        payment_image: null,
     });
 
     useEffect(() => {
@@ -76,8 +80,6 @@ export default function EditReservationDialog({
                     ? String(reservation.doctor_id)
                     : '',
 
-            
-
             service_id:
                 reservation.service_id != null
                     ? String(reservation.service_id)
@@ -88,6 +90,10 @@ export default function EditReservationDialog({
                     ? String(reservation.schedule_id)
                     : '',
 
+            appointment_at: reservation.appointment_at
+                ? reservation.appointment_at.substring(0, 16)
+                : '',
+
             appointment_type: reservation.appointment_type ?? 'In-Person',
 
             status: reservation.status ?? 'Pending',
@@ -96,6 +102,9 @@ export default function EditReservationDialog({
 
             amount:
                 reservation.amount != null ? String(reservation.amount) : '',
+            payment_method: '',
+            transaction_code: '',
+            payment_image: null,
         });
     }, [reservation]);
 
@@ -143,7 +152,7 @@ export default function EditReservationDialog({
                             onCancel={() => handleClose(false)}
                             patients={patients}
                             doctors={doctors}
-                           
+
                             services={services}
                             schedules={schedules}
                         />

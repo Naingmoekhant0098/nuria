@@ -34,7 +34,7 @@ export default function CreateClinicDialog() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        form.post('/clinics', {
+        form.post('/admin/clinics', {
             preserveScroll: true,
 
             onSuccess: () => {

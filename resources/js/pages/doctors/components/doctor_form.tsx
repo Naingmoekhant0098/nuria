@@ -98,6 +98,12 @@ export interface Doctor {
     email?: string | null;
 
     status: string;
+    clinics?: {
+        pivot: {
+            compensation_type: string | null;
+            compensation_rate: number | string | null;
+        };
+    }[];
 }
 
 /* =========================================================
@@ -129,6 +135,8 @@ export interface DoctorFormData {
     password: string;
 
     status: string;
+    compensation_type: string;
+    compensation_rate: string;
 }
 
 /* =========================================================
@@ -843,6 +851,76 @@ export default function DoctorForm({
 
                 </div>
 
+            </div>
+
+            {/* =================================================
+                Clinic Compensation
+            ================================================== */}
+
+            <div className="space-y-4">
+                <div>
+                    <h3 className="text-sm font-semibold text-white">
+                        Clinic Compensation
+                    </h3>
+                    <p className="mt-1 text-xs text-gray-500">
+                        Compensation applies to this clinic only.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                        <Label>Compensation type</Label>
+                        <Select
+                            value={form.data.compensation_type}
+                            onValueChange={(value) =>
+                                form.setData('compensation_type', value)
+                            }
+                        >
+                            <SelectTrigger className="w-full border-neutral-800 bg-neutral-950 text-white">
+                                <SelectValue placeholder="Select compensation type" />
+                            </SelectTrigger>
+                            <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
+                                <SelectItem value="monthly_salary">Monthly salary</SelectItem>
+                                <SelectItem value="hourly_rate">Hourly rate</SelectItem>
+                                <SelectItem value="per_appointment">Per appointment</SelectItem>
+                                <SelectItem value="commission_percentage">Commission percentage</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        {getError('compensation_type') && (
+                            <p className="text-xs text-red-500">
+                                {getError('compensation_type')}
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label>
+                            {form.data.compensation_type === 'commission_percentage'
+                                ? 'Commission rate (%)'
+                                : form.data.compensation_type === 'hourly_rate'
+                                  ? 'Rate per hour (MMK)'
+                                  : form.data.compensation_type === 'per_appointment'
+                                    ? 'Rate per appointment (MMK)'
+                                    : 'Monthly salary (MMK)'}
+                        </Label>
+                        <Input
+                            type="number"
+                            min="0"
+                            max={form.data.compensation_type === 'commission_percentage' ? 100 : undefined}
+                            step={form.data.compensation_type === 'commission_percentage' ? '0.01' : '1'}
+                            value={form.data.compensation_rate}
+                            onChange={(event) =>
+                                form.setData('compensation_rate', event.target.value)
+                            }
+                            className="border-neutral-800 bg-neutral-950 text-white"
+                        />
+                        {getError('compensation_rate') && (
+                            <p className="text-xs text-red-500">
+                                {getError('compensation_rate')}
+                            </p>
+                        )}
+                    </div>
+                </div>
             </div>
 
             {/* =================================================

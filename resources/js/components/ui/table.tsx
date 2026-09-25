@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 function Table({
     className,
-    cardGrid = true,
+    cardGrid = false,
     toolbarActions,
     searchValue,
     onSearchChange,
@@ -203,7 +203,10 @@ function Table({
 
     return (
         <div className="space-y-3">
-             
+            {toolbarActions && (
+                <div className="flex justify-end">{toolbarActions}</div>
+            )}
+
             <div
                 data-slot="table-container"
                 className={cn(

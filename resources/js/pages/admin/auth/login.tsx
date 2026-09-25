@@ -7,79 +7,59 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
-import { request } from '@/routes/password';
-type Props = {
-    status?: string;
-    canResetPassword: boolean;
-};
 
-export default function Login({ status, canResetPassword }: Props) {
-    // Initialize Inertia useForm with fields matching your backend validation
+export default function Login({
+    canRegisterAdmin,
+}: {
+    canRegisterAdmin: boolean;
+}) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        user_name: '',
+        email: '',
         password: '',
         remember: false,
     });
 
-    const submit = (e: React.FormEvent) => {
-        e.preventDefault();
-        post('/clinic/login', {
+    const submit = (event: React.FormEvent) => {
+        event.preventDefault();
+        post('/admin/login', {
             onFinish: () => reset('password'),
         });
     };
 
     return (
         <>
-            <Head title="Clinic Log in" />
+            <Head title="Admin log in" />
 
             <form onSubmit={submit} className="flex flex-col gap-6">
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="userName">
-                            Clinic Username / System ID
-                        </Label>
+                        <Label htmlFor="email">Admin email</Label>
                         <Input
-                            id="userName"
-                            type="text"
-                            name="userName"
-                            value={data.user_name}
-                            onChange={(e) =>
-                                setData('user_name', e.target.value)
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            onChange={(event) =>
+                                setData('email', event.target.value)
                             }
                             required
                             autoFocus
-                            tabIndex={1}
                             autoComplete="username"
-                            placeholder="CLN-00000"
                         />
-                        <InputError message={errors.user_name} />
+                        <InputError message={errors.email} />
                     </div>
 
                     <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
-                            {canResetPassword && (
-                                <TextLink
-                                    href={request()}
-                                    className="ml-auto text-sm"
-                                    tabIndex={5}
-                                >
-                                    Forgot your password?
-                                </TextLink>
-                            )}
-                        </div>
+                        <Label htmlFor="password">Password</Label>
                         <PasswordInput
                             id="password"
                             name="password"
                             value={data.password}
-                            onChange={(e) =>
-                                setData('password', e.target.value)
+                            onChange={(event) =>
+                                setData('password', event.target.value)
                             }
                             required
-                            tabIndex={2}
                             autoComplete="current-password"
-                            placeholder="Password"
                         />
                         <InputError message={errors.password} />
                     </div>
@@ -92,41 +72,34 @@ export default function Login({ status, canResetPassword }: Props) {
                             onCheckedChange={(checked) =>
                                 setData('remember', checked === true)
                             }
-                            tabIndex={3}
                         />
                         <Label htmlFor="remember">Remember me</Label>
                     </div>
 
-                    <Button
-                        type="submit"
-                        className="mt-4 w-full"
-                        tabIndex={4}
-                        disabled={processing}
-                        data-test="login-button"
-                    >
+                    <Button type="submit" className="w-full" disabled={processing}>
                         {processing && <Spinner />}
-                        Log in to Clinic Portal
+                        Log in to Admin Portal
                     </Button>
                 </div>
 
                 <div className="text-center text-sm text-muted-foreground">
-                    Don't have an account?{' '}
-                    <TextLink href={register()} tabIndex={5}>
-                        Apply for registration
-                    </TextLink>
+                    Clinic account?{' '}
+                    <TextLink href="/clinic/login">Go to clinic login</TextLink>
                 </div>
+                {canRegisterAdmin && (
+                    <div className="text-center text-sm text-muted-foreground">
+                        First time setup?{' '}
+                        <TextLink href="/admin/register">
+                            Create the first admin account
+                        </TextLink>
+                    </div>
+                )}
             </form>
-
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
         </>
     );
 }
 
 Login.layout = {
-    title: 'Clinic Login',
-    description: 'Enter your system-assigned username and password',
+    title: 'Admin Login',
+    description: 'Sign in with your administrator email and password',
 };

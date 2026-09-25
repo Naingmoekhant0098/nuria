@@ -398,6 +398,10 @@ export default function Index() {
                                                         Working Hours
                                                     </th>
 
+                                                    <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
+                                                        Patients per time slot
+                                                    </th>
+
                                                     <th className="px-4 py-3 text-right text-xs font-medium tracking-wide text-gray-500 uppercase">
                                                         Actions
                                                     </th>
@@ -437,6 +441,10 @@ export default function Index() {
                                                                         schedule.end_time
                                                                     }
                                                                 </div>
+                                                            </td>
+
+                                                            <td className="px-4 py-4 text-gray-300">
+                                                                {schedule.max_patients_per_slot}
                                                             </td>
 
                                                             {/* Actions */}

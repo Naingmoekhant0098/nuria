@@ -4,14 +4,22 @@ namespace App\Http\Controllers\Clinic;
 
 use App\Http\Controllers\Controller;
 use App\Models\Clinic;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ClinicAuthController extends Controller
 {
-    public function store(Request $request)
+    public function create(): Response
+    {
+        return Inertia::render('auth/login');
+    }
+
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'user_name' => 'required|string',
@@ -38,5 +46,15 @@ class ClinicAuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard'));
+    }
+
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::guard('clinic')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('clinic.login');
     }
 }

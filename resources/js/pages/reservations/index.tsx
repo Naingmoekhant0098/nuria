@@ -937,7 +937,7 @@ export default function Index() {
                             clientPagination={false}
                             searchValue={search}
                             onSearchChange={setSearch}
-                            toolbarActions={<CreateReservationDrawer />}
+                            toolbarActions={<CreateReservationDrawer paymentMethods={paymentMethods} />}
                         >
 
                             <TableHeader className="bg-neutral-950">

@@ -67,6 +67,8 @@ export default function EditDoctorDialog({
         password: '',
 
         status: 'active',
+        compensation_type: 'per_appointment',
+        compensation_rate: '',
     });
 
     useEffect(() => {
@@ -141,6 +143,14 @@ export default function EditDoctorDialog({
 
             status:
                 doctor.status ?? 'active',
+
+            compensation_type:
+                doctor.clinics?.[0]?.pivot.compensation_type ?? 'per_appointment',
+
+            compensation_rate:
+                doctor.clinics?.[0]?.pivot.compensation_rate != null
+                    ? String(doctor.clinics[0].pivot.compensation_rate)
+                    : '',
         });
 
     }, [doctor]);

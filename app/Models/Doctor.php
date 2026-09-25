@@ -74,6 +74,7 @@ class Doctor extends Model
     public function clinics(): BelongsToMany
     {
         return $this->belongsToMany(Clinic::class, 'clinic_doctor', 'doctor_id', 'clinic_id')
+            ->withPivot(['compensation_type', 'compensation_rate'])
             ->withTimestamps();
     }
 

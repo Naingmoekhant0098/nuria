@@ -1,5 +1,5 @@
 import type { useForm } from '@inertiajs/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -50,6 +50,7 @@ export interface DoctorClinicSchedule {
     day_of_week: string;
     start_time: string;
     end_time: string;
+    max_patients_per_slot: number;
 }
 
 export interface Reservation {
@@ -61,6 +62,7 @@ export interface Reservation {
     clinic_id: number;
     service_id: number;
     schedule_id: number;
+    appointment_at?: string | null;
 
     appointment_type: string;
     status: string;
@@ -79,11 +81,15 @@ export interface ReservationFormData {
     doctor_id: string;
     service_id: string;
     schedule_id: string;
+    appointment_at: string;
 
     appointment_type: string;
     status: string;
     remarks: string;
     amount: string;
+    payment_method: string;
+    transaction_code: string;
+    payment_image: File | null;
 }
 
 interface ReservationFormProps {
@@ -93,14 +99,13 @@ interface ReservationFormProps {
 
     onCancel: () => void;
 
-    onSubmit: (
-        e: React.FormEvent
-    ) => void;
+    onSubmit: (e: React.FormEvent) => void;
 
     patients: Patient[];
     doctors: Doctor[];
     services: ClinicService[];
     schedules: DoctorClinicSchedule[];
+    paymentMethods?: { id: number; name: string }[];
 }
 
 export default function ReservationForm({
@@ -112,7 +117,21 @@ export default function ReservationForm({
     doctors,
     services,
     schedules,
+    paymentMethods = [],
 }: ReservationFormProps) {
+    const [paymentImagePreview, setPaymentImagePreview] = useState<
+        string | null
+    >(null);
+
+    useEffect(() => {
+        if (!form.data.payment_image) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => setPaymentImagePreview(String(reader.result));
+        reader.readAsDataURL(form.data.payment_image);
+    }, [form.data.payment_image]);
     /*
     |--------------------------------------------------------------------------
     | Helpers
@@ -120,21 +139,13 @@ export default function ReservationForm({
     */
 
     const getPatientName = (patient: Patient) => {
-        return [
-            patient.first_name,
-            patient.middle_name,
-            patient.last_name,
-        ]
+        return [patient.first_name, patient.middle_name, patient.last_name]
             .filter(Boolean)
             .join(' ');
     };
 
     const getDoctorName = (doctor: Doctor) => {
-        return [
-            doctor.first_name,
-            doctor.middle_name,
-            doctor.last_name,
-        ]
+        return [doctor.first_name, doctor.middle_name, doctor.last_name]
             .filter(Boolean)
             .join(' ');
     };
@@ -161,36 +172,21 @@ export default function ReservationForm({
             return true;
         }
 
-        return (
-            String(service.doctor_id) ===
-            String(form.data.doctor_id)
-        );
+        return String(service.doctor_id) === String(form.data.doctor_id);
     });
 
- 
-
-    const filteredSchedules = schedules.filter(
-        (schedule) => {
-            if (!form.data.doctor_id) {
-                return false;
-            }
-
-            return (
-                String(schedule.doctor_id) ===
-                String(form.data.doctor_id)
-            );
+    const filteredSchedules = schedules.filter((schedule) => {
+        if (!form.data.doctor_id) {
+            return false;
         }
-    );
 
- 
+        return String(schedule.doctor_id) === String(form.data.doctor_id);
+    });
 
     const selectedService = services.find(
-        (service) =>
-            String(service.id) ===
-            String(form.data.service_id)
+        (service) => String(service.id) === String(form.data.service_id),
     );
 
- 
     const handleDoctorChange = (value: string) => {
         form.setData('doctor_id', value);
 
@@ -199,21 +195,16 @@ export default function ReservationForm({
         form.setData('schedule_id', '');
         form.setData('amount', '');
     };
- 
+
     const handleServiceChange = (value: string) => {
         form.setData('service_id', value);
 
         const service = services.find(
-            (item) =>
-                String(item.id) ===
-                String(value)
+            (item) => String(item.id) === String(value),
         );
 
         if (service) {
-            form.setData(
-                'amount',
-                String(service.amount)
-            );
+            form.setData('amount', String(service.amount));
         }
     };
 
@@ -223,21 +214,14 @@ export default function ReservationForm({
     |--------------------------------------------------------------------------
     */
 
-    const handleSubmit = (
-        e: React.FormEvent
-    ) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         onSubmit(e);
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="space-y-6 pt-2"
-        >
-            
-
+        <form onSubmit={handleSubmit} className="space-y-6 pt-2">
             <div className="space-y-4">
                 <div>
                     <h3 className="text-base font-semibold text-white">
@@ -255,10 +239,7 @@ export default function ReservationForm({
                     <Select
                         value={form.data.patient_id}
                         onValueChange={(value) =>
-                            form.setData(
-                                'patient_id',
-                                value
-                            )
+                            form.setData('patient_id', value)
                         }
                     >
                         <SelectTrigger className="w-full border-neutral-800 bg-neutral-950 text-white">
@@ -269,14 +250,9 @@ export default function ReservationForm({
                             {patients.map((patient) => (
                                 <SelectItem
                                     key={patient.id}
-                                    value={String(
-                                        patient.id
-                                    )}
+                                    value={String(patient.id)}
                                 >
-                                    {getPatientName(
-                                        patient
-                                    )}{' '}
-                                    ({patient.id})
+                                    {getPatientName(patient)} ({patient.id})
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -310,9 +286,7 @@ export default function ReservationForm({
 
                     <Select
                         value={form.data.doctor_id}
-                        onValueChange={
-                            handleDoctorChange
-                        }
+                        onValueChange={handleDoctorChange}
                     >
                         <SelectTrigger className="w-full border-neutral-800 bg-neutral-950 text-white">
                             <SelectValue placeholder="Select doctor" />
@@ -322,14 +296,9 @@ export default function ReservationForm({
                             {doctors.map((doctor) => (
                                 <SelectItem
                                     key={doctor.id}
-                                    value={String(
-                                        doctor.id
-                                    )}
+                                    value={String(doctor.id)}
                                 >
-                                    {getDoctorName(
-                                        doctor
-                                    )}{' '}
-                                    ({doctor.id})
+                                    {getDoctorName(doctor)} ({doctor.id})
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -354,8 +323,8 @@ export default function ReservationForm({
                     </h3>
 
                     <p className="mt-1 text-xs text-gray-500">
-                        Available services and schedules are based on
-                        the selected doctor.
+                        Available services and schedules are based on the
+                        selected doctor.
                     </p>
                 </div>
 
@@ -365,51 +334,34 @@ export default function ReservationForm({
                     <Label>Service</Label>
 
                     <Select
-                        value={
-                            form.data.service_id
-                        }
-                        onValueChange={
-                            handleServiceChange
-                        }
-                        disabled={
-                            !form.data.doctor_id
-                        }
+                        value={form.data.service_id}
+                        onValueChange={handleServiceChange}
+                        disabled={!form.data.doctor_id}
                     >
                         <SelectTrigger className="w-full border-neutral-800 bg-neutral-950 text-white">
                             <SelectValue placeholder="Select service" />
                         </SelectTrigger>
 
                         <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                            {filteredServices.length >
-                            0 ? (
-                                filteredServices.map(
-                                    (service) => (
-                                        <SelectItem
-                                            key={
-                                                service.id
-                                            }
-                                            value={String(
-                                                service.id
-                                            )}
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                <span>
-                                                    {
-                                                        service.service_name
-                                                    }
-                                                </span>
+                            {filteredServices.length > 0 ? (
+                                filteredServices.map((service) => (
+                                    <SelectItem
+                                        key={service.id}
+                                        value={String(service.id)}
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <span>{service.service_name}</span>
 
-                                                <span className="text-gray-500">
-                                                    -
-                                                    {Number(
-                                                        service.amount
-                                                    ).toLocaleString()}{' '}
-                                                    MMK
-                                                </span>
-                                            </div>
-                                        </SelectItem>
-                                    )
-                                )
+                                            <span className="text-gray-500">
+                                                -
+                                                {Number(
+                                                    service.amount,
+                                                ).toLocaleString()}{' '}
+                                                MMK
+                                            </span>
+                                        </div>
+                                    </SelectItem>
+                                ))
                             ) : (
                                 <div className="px-2 py-6 text-center text-sm text-gray-500">
                                     No services available
@@ -432,7 +384,7 @@ export default function ReservationForm({
 
                             <p className="mt-1 text-sm font-semibold text-white">
                                 {Number(
-                                    selectedService.amount
+                                    selectedService.amount,
                                 ).toLocaleString()}{' '}
                                 MMK
                             </p>
@@ -446,50 +398,32 @@ export default function ReservationForm({
                     <Label>Schedule</Label>
 
                     <Select
-                        value={
-                            form.data.schedule_id
-                        }
+                        value={form.data.schedule_id}
                         onValueChange={(value) =>
-                            form.setData(
-                                'schedule_id',
-                                value
-                            )
+                            form.setData('schedule_id', value)
                         }
-                        disabled={
-                            !form.data.doctor_id
-                        }
+                        disabled={!form.data.doctor_id}
                     >
                         <SelectTrigger className="w-full border-neutral-800 bg-neutral-950 text-white">
                             <SelectValue placeholder="Select schedule" />
                         </SelectTrigger>
 
                         <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                            {filteredSchedules.length >
-                            0 ? (
-                                filteredSchedules.map(
-                                    (schedule) => (
-                                        <SelectItem
-                                            key={
-                                                schedule.id
-                                            }
-                                            value={String(
-                                                schedule.id
-                                            )}
-                                        >
-                                            {schedule.day_of_week}
-                                            {' — '}
-                                            {schedule.start_time?.substring(
-                                                0,
-                                                5
-                                            )}
-                                            {' - '}
-                                            {schedule.end_time?.substring(
-                                                0,
-                                                5
-                                            )}
-                                        </SelectItem>
-                                    )
-                                )
+                            {filteredSchedules.length > 0 ? (
+                                filteredSchedules.map((schedule) => (
+                                    <SelectItem
+                                        key={schedule.id}
+                                        value={String(schedule.id)}
+                                    >
+                                        {schedule.day_of_week}
+                                        {' — '}
+                                        {schedule.start_time?.substring(0, 5)}
+                                        {' - '}
+                                        {schedule.end_time?.substring(0, 5)}
+                                        {' · '}
+                                        {schedule.max_patients_per_slot} patients per time slot
+                                    </SelectItem>
+                                ))
                             ) : (
                                 <div className="px-2 py-6 text-center text-sm text-gray-500">
                                     No schedules available
@@ -504,6 +438,26 @@ export default function ReservationForm({
                         </p>
                     )}
                 </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="reservation-appointment-at">
+                        Appointment date and time
+                    </Label>
+                    <Input
+                        id="reservation-appointment-at"
+                        type="datetime-local"
+                        value={form.data.appointment_at}
+                        onChange={(event) =>
+                            form.setData('appointment_at', event.target.value)
+                        }
+                        className="border-neutral-800 bg-neutral-950 text-white"
+                    />
+                    {form.errors.appointment_at && (
+                        <p className="text-xs text-red-500">
+                            {form.errors.appointment_at}
+                        </p>
+                    )}
+                </div>
             </div>
 
             {/* =========================================================
@@ -514,19 +468,12 @@ export default function ReservationForm({
                 {/* Appointment Type */}
 
                 <div className="space-y-2">
-                    <Label>
-                        Appointment Type
-                    </Label>
+                    <Label>Appointment Type</Label>
 
                     <Select
-                        value={
-                            form.data.appointment_type
-                        }
+                        value={form.data.appointment_type}
                         onValueChange={(value) =>
-                            form.setData(
-                                'appointment_type',
-                                value
-                            )
+                            form.setData('appointment_type', value)
                         }
                     >
                         <SelectTrigger className="w-full border-neutral-800 bg-neutral-950 text-white">
@@ -534,23 +481,15 @@ export default function ReservationForm({
                         </SelectTrigger>
 
                         <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                            <SelectItem value="In-Person">
-                                In-Person
-                            </SelectItem>
+                            <SelectItem value="In-Person">In-Person</SelectItem>
 
-                            <SelectItem value="Online">
-                                Online
-                            </SelectItem>
+                            <SelectItem value="Online">Online</SelectItem>
                         </SelectContent>
                     </Select>
 
-                    {form.errors
-                        .appointment_type && (
+                    {form.errors.appointment_type && (
                         <p className="text-xs text-red-500">
-                            {
-                                form.errors
-                                    .appointment_type
-                            }
+                            {form.errors.appointment_type}
                         </p>
                     )}
                 </div>
@@ -562,37 +501,22 @@ export default function ReservationForm({
 
                     <Select
                         value={form.data.status}
-                        onValueChange={(value) =>
-                            form.setData(
-                                'status',
-                                value
-                            )
-                        }
+                        onValueChange={(value) => form.setData('status', value)}
                     >
                         <SelectTrigger className="w-full border-neutral-800 bg-neutral-950 text-white">
                             <SelectValue placeholder="Select status" />
                         </SelectTrigger>
 
                         <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                            <SelectItem value="Pending">
-                                Pending
-                            </SelectItem>
+                            <SelectItem value="Pending">Pending</SelectItem>
 
-                            <SelectItem value="Confirmed">
-                                Confirmed
-                            </SelectItem>
+                            <SelectItem value="Confirmed">Confirmed</SelectItem>
 
-                            <SelectItem value="Completed">
-                                Completed
-                            </SelectItem>
+                            <SelectItem value="Completed">Completed</SelectItem>
 
-                            <SelectItem value="Cancelled">
-                                Cancelled
-                            </SelectItem>
+                            <SelectItem value="Cancelled">Cancelled</SelectItem>
 
-                            <SelectItem value="No Show">
-                                No Show
-                            </SelectItem>
+                            <SelectItem value="No Show">No Show</SelectItem>
                         </SelectContent>
                     </Select>
 
@@ -616,22 +540,112 @@ export default function ReservationForm({
                     min="0"
                     step="0.01"
                     value={form.data.amount}
-                    onChange={(e) =>
-                        form.setData(
-                            'amount',
-                            e.target.value
-                        )
-                    }
+                    onChange={(e) => form.setData('amount', e.target.value)}
                     placeholder="15000"
                     className="border-neutral-800 bg-neutral-950 text-white"
                 />
 
                 {form.errors.amount && (
-                    <p className="text-xs text-red-500">
-                        {form.errors.amount}
-                    </p>
+                    <p className="text-xs text-red-500">{form.errors.amount}</p>
                 )}
             </div>
+
+            {mode === 'create' && (
+                <div className="space-y-2">
+                    <Label htmlFor="reservation-payment-method">
+                        Payment method
+                    </Label>
+                    <select
+                        id="reservation-payment-method"
+                        value={form.data.payment_method}
+                        onChange={(event) => {
+                            form.setData('payment_method', event.target.value);
+
+                            if (
+                                ['Cash', 'Cash on Delivery'].includes(
+                                    event.target.value,
+                                )
+                            ) {
+                                setPaymentImagePreview(null);
+                                form.setData('transaction_code', '');
+                                form.setData('payment_image', null);
+                            }
+                        }}
+                        className="h-10 w-full rounded-md border border-neutral-800 bg-neutral-950 px-3 text-sm text-white"
+                        required
+                    >
+                        <option value="">Select payment method</option>
+                        {paymentMethods.map((method) => (
+                            <option key={method.id} value={method.name}>
+                                {method.name}
+                            </option>
+                        ))}
+                    </select>
+                    {form.errors.payment_method && (
+                        <p className="text-xs text-red-500">
+                            {form.errors.payment_method}
+                        </p>
+                    )}
+                    {!['Cash', 'Cash on Delivery'].includes(
+                        form.data.payment_method,
+                    ) && (
+                        <>
+                            <Label htmlFor="reservation-transaction-code">
+                                Transaction number
+                            </Label>
+                            <Input
+                                id="reservation-transaction-code"
+                                value={form.data.transaction_code}
+                                onChange={(event) =>
+                                    form.setData(
+                                        'transaction_code',
+                                        event.target.value,
+                                    )
+                                }
+                                placeholder="Mobile payment reference"
+                                required
+                                className="border-neutral-800 bg-neutral-950 text-white"
+                            />
+                            {form.errors.transaction_code && (
+                                <p className="text-xs text-red-500">
+                                    {form.errors.transaction_code}
+                                </p>
+                            )}
+                            <Label htmlFor="reservation-payment-image">
+                                Payment image
+                            </Label>
+                            <Input
+                                id="reservation-payment-image"
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp"
+                                required={!form.data.payment_image}
+                                onChange={(event) => {
+                                    const image =
+                                        event.target.files?.[0] ?? null;
+                                    form.setData('payment_image', image);
+
+                                    if (!image) {
+                                        setPaymentImagePreview(null);
+                                    }
+                                }}
+                                className="border-neutral-800 bg-neutral-950 text-white"
+                            />
+                            {paymentImagePreview && (
+                                <img
+                                    src={paymentImagePreview}
+                                    alt="Payment proof preview"
+                                    className="max-h-48 rounded-md border border-neutral-700 object-contain"
+                                />
+                            )}
+                            {form.errors.payment_image && (
+                                <p className="text-xs text-red-500">
+                                    {form.errors.payment_image}
+                                </p>
+                            )}
+                        </>
+                    )}
+                </div>
+            )}
 
             {/* =========================================================
                 Remarks
@@ -642,12 +656,7 @@ export default function ReservationForm({
 
                 <Textarea
                     value={form.data.remarks}
-                    onChange={(e) =>
-                        form.setData(
-                            'remarks',
-                            e.target.value
-                        )
-                    }
+                    onChange={(e) => form.setData('remarks', e.target.value)}
                     placeholder="Enter appointment remarks..."
                     rows={4}
                     className="resize-none border-neutral-800 bg-neutral-950 text-white"

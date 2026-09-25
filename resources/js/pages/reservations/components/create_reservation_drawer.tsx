@@ -2,7 +2,6 @@ import { useForm, usePage } from '@inertiajs/react';
 import { CalendarPlus } from 'lucide-react';
 import React, { useState } from 'react';
 
-
 import { Button } from '@/components/ui/button';
 import {
     Drawer,
@@ -28,6 +27,7 @@ interface PageProps {
     clinics?: Clinic[];
     services?: ClinicService[];
     schedules?: DoctorClinicSchedule[];
+    paymentMethods?: { id: number; name: string }[];
 
     [key: string]: unknown;
 }
@@ -38,9 +38,9 @@ export default function CreateReservationDrawer() {
     const {
         patients = [],
         doctors = [],
-        clinics = [],
         services = [],
         schedules = [],
+        paymentMethods = [],
     } = usePage<PageProps>().props;
 
     const form = useForm<ReservationFormData>({
@@ -49,11 +49,15 @@ export default function CreateReservationDrawer() {
 
         service_id: '',
         schedule_id: '',
+        appointment_at: '',
 
         appointment_type: 'In-Person',
-        status: 'Pending',
+        status: 'Reserved',
         remarks: '',
         amount: '',
+        payment_method: '',
+        transaction_code: '',
+        payment_image: null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -67,7 +71,7 @@ export default function CreateReservationDrawer() {
 
                 form.setData('appointment_type', 'In-Person');
 
-                form.setData('status', 'Pending');
+                form.setData('status', 'Reserved');
 
                 setOpen(false);
             },
@@ -80,7 +84,7 @@ export default function CreateReservationDrawer() {
 
         form.setData('appointment_type', 'In-Person');
 
-        form.setData('status', 'Pending');
+        form.setData('status', 'Reserved');
 
         setOpen(false);
     };
@@ -90,7 +94,7 @@ export default function CreateReservationDrawer() {
             <DrawerTrigger asChild>
                 <Button
                     type="button"
-                    className="w-full cursor-pointer justify-center whitespace-nowrap bg-main text-white hover:bg-main/90 sm:w-auto"
+                    className="w-full cursor-pointer justify-center bg-main whitespace-nowrap text-white hover:bg-main/90 sm:w-auto"
                 >
                     <CalendarPlus className="h-4 w-4" />
                     Create Reservation
@@ -116,6 +120,7 @@ export default function CreateReservationDrawer() {
 
                             services={services}
                             schedules={schedules}
+                            paymentMethods={paymentMethods}
                         />
                     </div>
                 </div>

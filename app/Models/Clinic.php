@@ -42,6 +42,7 @@ class Clinic extends Authenticatable
     public function doctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class, 'clinic_doctor', 'clinic_id', 'doctor_id')
+            ->withPivot(['compensation_type', 'compensation_rate'])
             ->withTimestamps();
     }
 

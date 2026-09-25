@@ -1,18 +1,19 @@
 import { Link, usePage } from "@inertiajs/react";
+import type { InertiaLinkProps } from "@inertiajs/react";
 import type { LucideIcon } from "lucide-react";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 
 interface NavItem {
     title: string;
-    href: string;
-    icon: LucideIcon;
+    href: NonNullable<InertiaLinkProps['href']>;
+    icon?: LucideIcon | null;
 }
 
 export function NavLink({ item }: { item: NavItem }) {
     const { url } = usePage();
-    
-     
-    const isActive = item.href === "/" ? url === "/" : url.startsWith(item.href);
+    const itemUrl = typeof item.href === 'string' ? item.href : item.href.url;
+    const pathname = url.split('?')[0];
+    const isActive = pathname === itemUrl;
 
     return (
         <SidebarMenuButton
@@ -25,7 +26,7 @@ export function NavLink({ item }: { item: NavItem }) {
             }`}
         >
             <Link href={item.href} prefetch>
-                <item.icon className="h-4 w-4" />
+                {item.icon && <item.icon className="h-4 w-4" />}
                 <span>{item.title}</span>
             </Link>
         </SidebarMenuButton>

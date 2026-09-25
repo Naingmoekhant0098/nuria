@@ -1,0 +1,1226 @@
+{
+    "info": {
+        "_postman_id": "3a0f7fa1-742e-47ca-8c71-5b8ba8880fcb",
+        "name": "Nuria Clinic API",
+        "description": "Admin, clinic, and patient API requests. Set base_url and actor credentials in collection variables before sending requests.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://127.0.0.1:8000"
+        },
+        {
+            "key": "admin_email",
+            "value": ""
+        },
+        {
+            "key": "admin_password",
+            "value": ""
+        },
+        {
+            "key": "admin_token",
+            "value": ""
+        },
+        {
+            "key": "clinic_user_name",
+            "value": ""
+        },
+        {
+            "key": "clinic_password",
+            "value": ""
+        },
+        {
+            "key": "clinic_token",
+            "value": ""
+        },
+        {
+            "key": "patient_email",
+            "value": ""
+        },
+        {
+            "key": "patient_password",
+            "value": ""
+        },
+        {
+            "key": "patient_token",
+            "value": ""
+        },
+        {
+            "key": "clinic_id",
+            "value": "1"
+        },
+        {
+            "key": "doctor_id",
+            "value": ""
+        },
+        {
+            "key": "service_id",
+            "value": ""
+        },
+        {
+            "key": "role_id",
+            "value": ""
+        },
+        {
+            "key": "admin_user_id",
+            "value": ""
+        },
+        {
+            "key": "admin_create_email",
+            "value": ""
+        },
+        {
+            "key": "appointment_date",
+            "value": "2026-10-01"
+        },
+        {
+            "key": "appointment_time",
+            "value": "10:00"
+        },
+        {
+            "key": "appointment_at",
+            "value": "2026-10-01T10:00:00+06:30"
+        },
+        {
+            "key": "search",
+            "value": ""
+        },
+        {
+            "key": "doctor_search",
+            "value": ""
+        },
+        {
+            "key": "cart_item_id",
+            "value": ""
+        },
+        {
+            "key": "shop_item_id",
+            "value": ""
+        },
+        {
+            "key": "shop_item_type",
+            "value": "medical_product"
+        },
+        {
+            "key": "drug_unit_id",
+            "value": ""
+        },
+        {
+            "key": "order_id",
+            "value": ""
+        }
+    ],
+    "item": [
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data.token) pm.collectionVariables.set('admin_token', data.token);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/api/v1/admin/login"
+                    }
+                },
+                {
+                    "name": "Current admin",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/admin/me"
+                    }
+                },
+                {
+                    "name": "List admin users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/admin/users?search={{search}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "admin", "users"],
+                            "query": [
+                                {
+                                    "key": "search",
+                                    "value": "{{search}}"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create admin user with role and direct permissions",
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.collectionVariables.set('admin_create_email', `operator+${Date.now()}@example.com`);"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const user = pm.response.json().user;",
+                                    "if (user?.id) pm.collectionVariables.set('admin_user_id', user.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Clinic Operator\",\n  \"email\": \"{{admin_create_email}}\",\n  \"password\": \"ChangeMe123!\",\n  \"role\": \"report_viewer\",\n  \"permissions\": [\"clinics.manage\"]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/api/v1/admin/users"
+                    }
+                },
+                {
+                    "name": "Update admin user role and direct permissions",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"role\": \"operations_manager\",\n  \"permissions\": [\"inventory.manage\"]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/api/v1/admin/users/{{admin_user_id}}"
+                    }
+                },
+                {
+                    "name": "Delete admin user",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/admin/users/{{admin_user_id}}"
+                    }
+                },
+                {
+                    "name": "List roles",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/admin/roles"
+                    }
+                },
+                {
+                    "name": "Create role",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const role = pm.response.json().role;",
+                                    "if (role?.id) pm.collectionVariables.set('role_id', role.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"clinic_manager\",\n  \"permissions\": [\"dashboard.view\", \"doctors.view\", \"patients.view\", \"reservations.view\"]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/api/v1/admin/roles"
+                    }
+                },
+                {
+                    "name": "Update role permissions",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"clinic_manager\",\n  \"permissions\": [\"dashboard.view\", \"patients.view\", \"reservations.view\"]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/api/v1/admin/roles/{{role_id}}"
+                    }
+                },
+                {
+                    "name": "Delete role (must not be assigned)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/admin/roles/{{role_id}}"
+                    }
+                },
+                {
+                    "name": "List permissions",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/admin/permissions"
+                    }
+                },
+                {
+                    "name": "List online orders",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/admin/orders"
+                    }
+                },
+                {
+                    "name": "Update online order status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/admin/orders/{{order_id}}",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"order_status\": \"Processing\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/admin/logout"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Clinic",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data.token) pm.collectionVariables.set('clinic_token', data.token);",
+                                    "if (data.clinic?.id) pm.collectionVariables.set('clinic_id', data.clinic.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"user_name\": \"{{clinic_user_name}}\",\n  \"password\": \"{{clinic_password}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/api/v1/clinic/login"
+                    }
+                },
+                {
+                    "name": "Current clinic",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinic/me"
+                    }
+                },
+                {
+                    "name": "List clinic doctors",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const doctor = pm.response.json().data?.[0];",
+                                    "if (doctor?.id) pm.collectionVariables.set('doctor_id', doctor.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinic/doctors"
+                    }
+                },
+                {
+                    "name": "List clinic services",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinic/services"
+                    }
+                },
+                {
+                    "name": "List clinic patients",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinic/patients"
+                    }
+                },
+                {
+                    "name": "List clinic schedules",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinic/schedules"
+                    }
+                },
+                {
+                    "name": "List clinic reservations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinic/reservations"
+                    }
+                },
+                {
+                    "name": "List clinic online orders",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinic/orders"
+                    }
+                },
+                {
+                    "name": "Update clinic order status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"order_status\": \"Processing\",\n  \"payment_status\": \"Paid\"\n}",
+                            "options": { "raw": { "language": "json" } }
+                        },
+                        "url": "{{base_url}}/api/v1/clinic/orders/{{order_id}}"
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{clinic_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinic/logout"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Patient",
+            "item": [
+                {
+                    "name": "Register",
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.collectionVariables.set('patient_email', `patient+${Date.now()}@example.com`);",
+                                    "pm.collectionVariables.set('patient_password', 'ChangeMe123!');"
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data.token) pm.collectionVariables.set('patient_token', data.token);",
+                                    "if (data.patient?.email) pm.collectionVariables.set('patient_email', data.patient.email);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"first_name\": \"Pat\",\n  \"middle_name\": null,\n  \"last_name\": \"Example\",\n  \"email\": \"{{patient_email}}\",\n  \"password\": \"{{patient_password}}\",\n  \"password_confirmation\": \"{{patient_password}}\",\n  \"contact_number\": \"09123456789\",\n  \"complete_address\": \"Yangon\",\n  \"birthdate\": \"1990-01-01\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/api/v1/register"
+                    }
+                },
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const data = pm.response.json();",
+                                    "if (data.token) pm.collectionVariables.set('patient_token', data.token);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"{{patient_email}}\",\n  \"password\": \"{{patient_password}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "{{base_url}}/api/v1/login"
+                    }
+                },
+                {
+                    "name": "List clinics",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const clinic = pm.response.json().data?.[0];",
+                                    "if (clinic?.id) pm.collectionVariables.set('clinic_id', clinic.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinics"
+                    }
+                },
+                {
+                    "name": "Choose clinic",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinics/{{clinic_id}}/select"
+                    }
+                },
+                {
+                    "name": "Search clinic doctors",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const doctor = pm.response.json().data?.[0];",
+                                    "if (doctor?.id) pm.collectionVariables.set('doctor_id', doctor.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinics/{{clinic_id}}/doctors?search={{doctor_search}}"
+                    }
+                },
+                {
+                    "name": "List doctor services",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const service = pm.response.json()?.[0];",
+                                    "if (service?.id) pm.collectionVariables.set('service_id', service.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinics/{{clinic_id}}/doctors/{{doctor_id}}/services"
+                    }
+                },
+                {
+                    "name": "Check availability",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/clinics/{{clinic_id}}/doctors/{{doctor_id}}/availability?date={{appointment_date}}&time={{appointment_time}}"
+                    }
+                },
+                {
+                    "name": "Create reservation",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "clinic_id",
+                                    "value": "{{clinic_id}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "doctor_id",
+                                    "value": "{{doctor_id}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "service_id",
+                                    "value": "{{service_id}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "appointment_at",
+                                    "value": "{{appointment_at}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "payment_method",
+                                    "value": "KBZPay",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "transaction_code",
+                                    "value": "TXN-123456",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "payment_image",
+                                    "type": "file",
+                                    "src": ""
+                                },
+                                {
+                                    "key": "remarks",
+                                    "value": "Postman test booking",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": "{{base_url}}/api/v1/reservations"
+                    }
+                },
+                {
+                    "name": "List my reservations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/reservations"
+                    }
+                },
+                {
+                    "name": "Browse shop products",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/shop/products?clinic_id={{clinic_id}}&search={{search}}"
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const item = pm.response.json().data?.find((product) => product.type === pm.collectionVariables.get(\"shop_item_type\")) ?? pm.response.json().data?.[0];",
+                                    "if (item?.id) pm.collectionVariables.set(\"shop_item_id\", item.id);",
+                                    "if (item?.type) pm.collectionVariables.set(\"shop_item_type\", item.type);",
+                                    "if (item?.units?.[0]?.id) pm.collectionVariables.set(\"drug_unit_id\", item.units[0].id);"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "View cart",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/shop/cart?clinic_id={{clinic_id}}"
+                    }
+                },
+                {
+                    "name": "Add item to cart",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const item = pm.response.json().item;",
+                                    "if (item?.id) pm.collectionVariables.set(\"cart_item_id\", item.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/shop/cart/items",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"clinic_id\": \"{{clinic_id}}\",\n  \"item_type\": \"{{shop_item_type}}\",\n  \"item_id\": \"{{shop_item_id}}\",\n  \"drug_unit_id\": \"{{drug_unit_id}}\",\n  \"quantity\": 1\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Update cart item quantity",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/shop/cart/items/{{cart_item_id}}",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"quantity\": 2\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Checkout cart",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const order = pm.response.json().order;",
+                                    "if (order?.id) pm.collectionVariables.set(\"order_id\", order.id);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/shop/checkout",
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "clinic_id",
+                                    "value": "{{clinic_id}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "delivery_address",
+                                    "value": "Yangon",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "delivery_contact",
+                                    "value": "09123456789",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "payment_method",
+                                    "value": "KBZPay",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "transaction_code",
+                                    "value": "TXN-123456",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "payment_image",
+                                    "type": "file",
+                                    "src": ""
+                                },
+                                {
+                                    "key": "order_note",
+                                    "value": "Please call on delivery",
+                                    "type": "text"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "List my shop orders",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/shop/orders"
+                    }
+                },
+                {
+                    "name": "Show shop order",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/shop/orders/{{order_id}}"
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{patient_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/api/v1/logout"
+                    }
+                },
+                {
+                    "name": "Optional cart cleanup",
+                    "item": [
+                        {
+                            "name": "Remove cart item (optional cleanup)",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{patient_token}}"
+                                    }
+                                ],
+                                "url": "{{base_url}}/api/v1/shop/cart/items/{{cart_item_id}}"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

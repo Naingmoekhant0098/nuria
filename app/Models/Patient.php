@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Patient extends Model
+class Patient extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
@@ -20,6 +20,8 @@ class Patient extends Model
     protected $fillable = [
         'id',
         'user_id',
+        'email',
+        'password',
 
         'first_name',
         'middle_name',
@@ -39,6 +41,11 @@ class Patient extends Model
 
     protected $casts = [
         'birthdate' => 'date',
+        'password' => 'hashed',
+    ];
+
+    protected $hidden = [
+        'password',
     ];
 
     /**

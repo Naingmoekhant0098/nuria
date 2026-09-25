@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             NrcSeeder::class,
+            AdminPermissionSeeder::class,
+            AdminSeeder::class,
         ]);
 
         /*
@@ -1064,6 +1066,7 @@ class DatabaseSeeder extends Seeder
 
             if (DB::table('patients')->where('id', $id)->exists()) {
                 $patientNumber++;
+
                 continue;
             }
 
@@ -1141,6 +1144,7 @@ class DatabaseSeeder extends Seeder
 
             if (DB::table('doctors')->where('id', $id)->exists()) {
                 $doctorNumber++;
+
                 continue;
             }
 
@@ -1346,8 +1350,7 @@ class DatabaseSeeder extends Seeder
                                 $serviceNumber
                             ),
 
-                            'service_description' =>
-                                'Seeded demonstration clinic service.',
+                            'service_description' => 'Seeded demonstration clinic service.',
 
                             'amount' => random_int(
                                 10000,
@@ -1513,8 +1516,7 @@ class DatabaseSeeder extends Seeder
                         'reservations'
                     )->insertGetId([
 
-                        'appointment_code' =>
-                            $appointmentCode,
+                        'appointment_code' => $appointmentCode,
 
                         'patient_id' => $patientId,
 
@@ -1526,29 +1528,25 @@ class DatabaseSeeder extends Seeder
 
                         'schedule_id' => $scheduleId,
 
-                        'appointment_type' =>
-                            $appointmentTypes[
+                        'appointment_type' => $appointmentTypes[
                                 array_rand(
                                     $appointmentTypes
                                 )
                             ],
 
-                        'status' =>
-                            $reservationStatuses[
+                        'status' => $reservationStatuses[
                                 array_rand(
                                     $reservationStatuses
                                 )
                             ],
 
-                        'remarks' =>
-                            'Seeded demonstration reservation.',
+                        'remarks' => 'Seeded demonstration reservation.',
 
                         'amount' => $service->amount,
 
-                        'created_at' =>
-                            Carbon::now()->subDays(
-                                random_int(0, 45)
-                            ),
+                        'created_at' => Carbon::now()->subDays(
+                            random_int(0, 45)
+                        ),
 
                         'updated_at' => $now,
                     ]);
@@ -1560,23 +1558,19 @@ class DatabaseSeeder extends Seeder
                     */
 
                     DB::table('consultations')->insert([
-                        'appointment_code' =>
-                            $appointmentCode,
+                        'appointment_code' => $appointmentCode,
 
-                        'date_of_consultation' =>
-                            Carbon::now()
-                                ->subDays(
-                                    random_int(0, 30)
-                                )
-                                ->setTime(10, 0),
+                        'date_of_consultation' => Carbon::now()
+                            ->subDays(
+                                random_int(0, 30)
+                            )
+                            ->setTime(10, 0),
 
-                        'diagnosis' =>
-                            $diagnoses[
+                        'diagnosis' => $diagnoses[
                                 array_rand($diagnoses)
                             ],
 
-                        'treatment' =>
-                            'Continue prescribed treatment and follow-up as scheduled.',
+                        'treatment' => 'Continue prescribed treatment and follow-up as scheduled.',
 
                         'created_at' => $now,
                         'updated_at' => $now,
@@ -1593,19 +1587,15 @@ class DatabaseSeeder extends Seeder
 
                         'doctor_id' => $doctorId,
 
-                        'appointment_code' =>
-                            $appointmentCode,
+                        'appointment_code' => $appointmentCode,
 
-                        'record_title' =>
-                            'Demo consultation record',
+                        'record_title' => 'Demo consultation record',
 
-                        'notes' =>
-                            'Seeded demonstration medical record.',
+                        'notes' => 'Seeded demonstration medical record.',
 
-                        'record_date' =>
-                            Carbon::now()->subDays(
-                                random_int(0, 30)
-                            ),
+                        'record_date' => Carbon::now()->subDays(
+                            random_int(0, 30)
+                        ),
 
                         'created_at' => $now,
                         'updated_at' => $now,
@@ -1622,8 +1612,7 @@ class DatabaseSeeder extends Seeder
 
                         'amount' => $service->amount,
 
-                        'payment_method' =>
-                            $paymentMethods[
+                        'payment_method' => $paymentMethods[
                                 array_rand(
                                     $paymentMethods
                                 )
@@ -1634,8 +1623,7 @@ class DatabaseSeeder extends Seeder
                             $reservationId
                         ),
 
-                        'payment_status' =>
-                            random_int(1, 4) === 1
+                        'payment_status' => random_int(1, 4) === 1
                                 ? 'Pending'
                                 : 'Paid',
 
@@ -1675,22 +1663,21 @@ class DatabaseSeeder extends Seeder
 
                     'title' => 'Demo clinic update',
 
-                    'message' =>
-                        'This is seeded demonstration notification data.',
+                    'message' => 'This is seeded demonstration notification data.',
 
                     'type' => 'In-App',
 
-                    'status' =>
-                        $index % 3 === 0
+                    'status' => $index % 3 === 0
                             ? 'Read'
                             : 'Unread',
 
-                    'created_at' =>
-                        Carbon::now()->subDays(
-                            $index % 30
-                        ),
+                    'created_at' => Carbon::now()->subDays(
+                        $index % 30
+                    ),
                 ]);
             }
         }
+
+        $this->call(OnlineOrderSeeder::class);
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentMethod extends Model
 {
-    public const SUPPORTED_NAMES = ['Cash', 'KBZPay', 'Wave Money'];
+    public const SUPPORTED_NAMES = ['Cash', 'Cash on Delivery', 'KBZPay', 'Wave Money', 'Other'];
 
     protected $fillable = ['name', 'status'];
 

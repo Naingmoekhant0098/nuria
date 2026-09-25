@@ -15,4 +15,9 @@ class DrugBatch extends Model
     {
         return $this->belongsTo(Drug::class);
     }
+
+    public function clinic(): BelongsTo
+    {
+        return $this->belongsTo(Clinic::class);
+    }
 }

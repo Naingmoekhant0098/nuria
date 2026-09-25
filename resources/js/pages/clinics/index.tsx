@@ -131,7 +131,7 @@ export default function Index() {
 
         const timer = setTimeout(() => {
             router.get(
-                '/clinics',
+                '/admin/clinics',
                 {
                     search: search || undefined,
                 },
@@ -196,7 +196,7 @@ export default function Index() {
             return;
         }
 
-        router.delete(`/clinics/${clinic.id}`, {
+        router.delete(`/admin/clinics/${clinic.id}`, {
             preserveScroll: true,
         });
     };

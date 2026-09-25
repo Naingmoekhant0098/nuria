@@ -242,6 +242,27 @@ export default function Index() {
         }
     };
 
+    const getCompensationLabel = (doctor: Doctor): string => {
+        const compensation = doctor.clinics?.[0]?.pivot;
+
+        if (compensation?.compensation_type == null || compensation.compensation_rate == null) {
+            return 'Not set';
+        }
+
+        const labels: Record<string, string> = {
+            monthly_salary: 'Monthly salary',
+            hourly_rate: 'Hourly rate',
+            per_appointment: 'Per appointment',
+            commission_percentage: 'Commission',
+        };
+        const rate = Number(compensation.compensation_rate);
+        const formattedRate = compensation.compensation_type === 'commission_percentage'
+            ? rate + '%'
+            : rate.toLocaleString() + ' MMK';
+
+        return (labels[compensation.compensation_type] ?? compensation.compensation_type) + ': ' + formattedRate;
+    };
+
     /* =====================================================
        NRC Display
     ====================================================== */
@@ -412,6 +433,10 @@ export default function Index() {
                                     Status
                                 </TableHead>
 
+                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                    Compensation
+                                </TableHead>
+
                                 {/* <TableHead className="whitespace-nowrap text-right text-xs font-semibold tracking-wider text-gray-400 uppercase">
                                     Actions
                                 </TableHead> */}
@@ -575,6 +600,10 @@ export default function Index() {
 
                                             </TableCell>
 
+                                            <TableCell className="whitespace-nowrap text-gray-300">
+                                                {getCompensationLabel(doctor)}
+                                            </TableCell>
+
                                             {/* =================================================
                                                 Actions
                                             ================================================== */}
@@ -627,7 +656,7 @@ export default function Index() {
                                 <TableRow className="border-neutral-800">
 
                                     <TableCell
-                                        colSpan={9}
+                                        colSpan={10}
                                         className="h-32 text-center"
                                     >
 

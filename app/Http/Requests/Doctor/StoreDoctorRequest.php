@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Doctor;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreDoctorRequest extends FormRequest
 {
@@ -74,6 +75,16 @@ class StoreDoctorRequest extends FormRequest
             ],
 
             'status' => 'required|string',
+            'compensation_type' => [
+                'required',
+                Rule::in(['monthly_salary', 'hourly_rate', 'per_appointment', 'commission_percentage']),
+            ],
+            'compensation_rate' => [
+                'required',
+                'numeric',
+                'min:0',
+                ...($this->input('compensation_type') === 'commission_percentage' ? ['max:100'] : []),
+            ],
         ];
     }
 }

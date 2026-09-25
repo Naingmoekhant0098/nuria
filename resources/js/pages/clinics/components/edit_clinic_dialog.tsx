@@ -68,7 +68,7 @@ export default function EditClinicDialog({
             return;
         }
 
-        form.put(`/clinics/${clinic.id}`, {
+        form.put(`/admin/clinics/${clinic.id}`, {
             preserveScroll: true,
 
             onSuccess: () => {

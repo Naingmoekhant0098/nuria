@@ -65,6 +65,8 @@ export default function CreateDoctorDrawer({
         password: '',
 
         status: 'active',
+        compensation_type: 'per_appointment',
+        compensation_rate: '',
     });
 
     const handleSubmit = (

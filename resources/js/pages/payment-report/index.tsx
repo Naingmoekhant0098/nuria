@@ -1,5 +1,5 @@
-import { Link, usePage } from '@inertiajs/react';
-import { index as paymentMethods } from '@/actions/App/Http/Controllers/PaymentMethodController';
+import { Link, router, usePage } from '@inertiajs/react';
+import { index as paymentMethodsRoute } from '@/actions/App/Http/Controllers/PaymentMethodController';
 import { Button } from '@/components/ui/button';
 import {
     Table,
@@ -16,6 +16,7 @@ type Payment = {
     payment_method: string;
     payment_status: string;
     transaction_code: string | null;
+    payment_image_path: string | null;
     created_at: string;
     reservation: {
         appointment_code: string;
@@ -24,7 +25,15 @@ type Payment = {
 };
 
 export default function PaymentReportIndex() {
-    const { payments } = usePage<{ payments: { data: Payment[] } }>().props;
+    const { payments } = usePage<{
+        payments: { data: Payment[] };
+    }>().props;
+
+    function updatePayment(paymentId: number, fields: Record<string, string>) {
+        router.patch(`/clinic/payments/${paymentId}`, fields, {
+            preserveScroll: true,
+        });
+    }
 
     return (
         <main className="min-h-screen bg-black p-8 text-gray-100">
@@ -43,10 +52,12 @@ export default function PaymentReportIndex() {
                         variant="outline"
                         className="border-neutral-800 bg-neutral-900"
                     >
-                        <Link href={paymentMethods.url()}>Payment methods</Link>
+                        <Link href={paymentMethodsRoute.url()}>
+                            Payment methods
+                        </Link>
                     </Button>
                 </div>
-                <div className="overflow-x-auto ">
+                <div className="overflow-x-auto">
                     <Table>
                         <TableHeader className="bg-neutral-950">
                             <TableRow className="border-neutral-800 hover:bg-transparent">
@@ -102,9 +113,41 @@ export default function PaymentReportIndex() {
                                         </TableCell>
                                         <TableCell>
                                             {payment.transaction_code ?? '-'}
+                                            {payment.payment_image_path && (
+                                                <a
+                                                    href={`/storage/${payment.payment_image_path}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="block text-xs text-blue-400 underline"
+                                                >
+                                                    View payment image
+                                                </a>
+                                            )}
                                         </TableCell>
                                         <TableCell>
-                                            {payment.payment_status}
+                                            <select
+                                                aria-label={`Payment ${payment.id} status`}
+                                                value={payment.payment_status}
+                                                onChange={(event) =>
+                                                    updatePayment(payment.id, {
+                                                        payment_status:
+                                                            event.target.value,
+                                                    })
+                                                }
+                                                className="h-9 rounded-md border border-neutral-700 bg-neutral-950 px-2 text-sm"
+                                            >
+                                                {[
+                                                    'Pending',
+                                                    'Paid',
+                                                    'Failed',
+                                                    'Refunded',
+                                                    'Cancelled',
+                                                ].map((status) => (
+                                                    <option key={status}>
+                                                        {status}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </TableCell>
                                         <TableCell>
                                             {payment.amount} MMK

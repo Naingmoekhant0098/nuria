@@ -17,6 +17,7 @@ class Reservation extends Model
         'clinic_id',
         'service_id',
         'schedule_id',
+        'appointment_at',
         'appointment_type',
         'status',
         'remarks',
@@ -25,6 +26,7 @@ class Reservation extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'appointment_at' => 'datetime',
     ];
 
     /*

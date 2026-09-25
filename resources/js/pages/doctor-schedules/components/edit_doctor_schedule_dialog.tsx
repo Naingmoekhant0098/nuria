@@ -35,6 +35,7 @@ export default function EditDoctorScheduleDialog({
         day_of_week: '',
         start_time: '',
         end_time: '',
+        max_patients_per_slot: 1,
     });
 
     useEffect(() => {
@@ -65,6 +66,7 @@ export default function EditDoctorScheduleDialog({
                       5,
                   )
                 : '',
+            max_patients_per_slot: schedule.max_patients_per_slot ?? 1,
         });
     }, [schedule]);
 

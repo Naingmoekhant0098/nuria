@@ -32,6 +32,7 @@ export default function CreateDoctorScheduleDialog({
         day_of_week: '',
         start_time: '',
         end_time: '',
+        max_patients_per_slot: 1,
     });
 
     const handleSubmit = (

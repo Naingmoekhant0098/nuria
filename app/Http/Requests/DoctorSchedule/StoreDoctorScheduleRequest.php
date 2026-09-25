@@ -46,6 +46,7 @@ class StoreDoctorScheduleRequest extends FormRequest
                 'date_format:H:i',
                 'after:start_time',
             ],
+            'max_patients_per_slot' => ['required', 'integer', 'min:1', 'max:1000'],
         ];
     }
 

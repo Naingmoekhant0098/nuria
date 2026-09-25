@@ -15,4 +15,9 @@ class ClinicMedicalProduct extends Model
     {
         return $this->belongsTo(MedicalProduct::class, 'medical_product_id');
     }
+
+    public function clinic(): BelongsTo
+    {
+        return $this->belongsTo(Clinic::class);
+    }
 }

@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
     LayoutDashboard,
     Users,
@@ -11,11 +11,8 @@ import {
     FileText, // Consultations
     CreditCard, // Payments
     Bell, // Notifications
-    MapPin, // Branches
     Briefcase, // Services
     Clock,
-    Map,
-    MapPinHouse,
     ListFilter, // Schedules
 } from 'lucide-react';
 
@@ -52,6 +49,11 @@ const mainNavGroups: NavGroup[] = [
     {
         title: 'Clinic Operations',
         items: [
+            {
+                title: 'Online orders & report',
+                href: '/clinic/orders',
+                icon: ClipboardList,
+            },
             { title: 'Services', href: '/clinic/services', icon: Briefcase },
             {
                 title: 'Schedules',
@@ -150,7 +152,180 @@ const mainNavGroups: NavGroup[] = [
     },
 ];
 
+const adminNavGroups: NavGroup[] = [
+    {
+        title: 'Overview',
+        items: [
+            {
+                title: 'Dashboard',
+                href: '/admin/dashboard',
+                icon: LayoutDashboard,
+            },
+        ],
+    },
+    {
+        title: 'Administration',
+        items: [
+            { title: 'Clinics', href: '/admin/clinics', icon: Building2 },
+            { title: 'Admin users', href: '/admin/users', icon: Users },
+            { title: 'Roles', href: '/admin/roles', icon: Settings },
+            {
+                title: 'Permissions',
+                href: '/admin/permissions',
+                icon: ListFilter,
+            },
+        ],
+    },
+    {
+        title: 'Doctors',
+        items: [{ title: 'Doctor list', href: '/admin/doctors', icon: Users }],
+    },
+    {
+        title: 'Patients',
+        items: [
+            { title: 'Patient list', href: '/admin/patients', icon: Users },
+        ],
+    },
+    {
+        title: 'Reservations',
+        items: [
+            {
+                title: 'Reservation log',
+                href: '/admin/reservations',
+                icon: ClipboardList,
+            },
+        ],
+    },
+    {
+        title: 'Online orders',
+        items: [
+            {
+                title: 'Order report',
+                href: '/admin/orders',
+                icon: ClipboardList,
+            },
+        ],
+    },
+    {
+        title: 'Drugs',
+        items: [
+            {
+                title: 'Drug catalog',
+                href: '/admin/inventory/drugs',
+                icon: Briefcase,
+            },
+        ],
+    },
+    {
+        title: 'Medical products',
+        items: [
+            {
+                title: 'Product catalog',
+                href: '/admin/inventory/medical-products',
+                icon: Briefcase,
+            },
+        ],
+    },
+    {
+        title: 'Clinic stock',
+        items: [
+            {
+                title: 'Stock allocation',
+                href: '/admin/inventory/stock',
+                icon: ClipboardList,
+            },
+            {
+                title: 'Drug batches by clinic',
+                href: '/admin/inventory/reports/drugs',
+                icon: FileText,
+            },
+            {
+                title: 'Medical product stock by clinic',
+                href: '/admin/inventory/reports/medical-products',
+                icon: FileText,
+            },
+        ],
+    },
+    {
+        title: 'Reporting',
+        items: [
+            {
+                title: 'Inventory summary',
+                href: '/admin/inventory/reports',
+                icon: FileText,
+            },
+            {
+                title: 'Recent inventory movements',
+                href: '/admin/inventory/reports/movements',
+                icon: FileText,
+            },
+            {
+                title: 'Reservation charges',
+                href: '/admin/inventory/reports/reservation-charges',
+                icon: FileText,
+            },
+            {
+                title: 'Recorded reservation payments',
+                href: '/admin/inventory/reports/reservation-payments',
+                icon: FileText,
+            },
+            {
+                title: 'Prescription sales',
+                href: '/admin/inventory/reports/prescription-sales',
+                icon: FileText,
+            },
+        ],
+    },
+];
+
+const adminNavigationPermissions: Record<string, string> = {
+    '/admin/dashboard': 'dashboard.view',
+    '/admin/clinics': 'clinics.manage',
+    '/admin/users': 'admins.manage',
+    '/admin/roles': 'roles.manage',
+    '/admin/permissions': 'permissions.view',
+    '/admin/doctors': 'doctors.view',
+    '/admin/patients': 'patients.view',
+    '/admin/reservations': 'reservations.view',
+    '/admin/orders': 'orders.manage',
+    '/admin/inventory/drugs': 'inventory.manage',
+    '/admin/inventory/medical-products': 'inventory.manage',
+    '/admin/inventory/stock': 'inventory.manage',
+    '/admin/inventory/reports/drugs': 'inventory.manage',
+    '/admin/inventory/reports/medical-products': 'inventory.manage',
+    '/admin/inventory/reports': 'reports.view',
+    '/admin/inventory/reports/movements': 'reports.view',
+    '/admin/inventory/reports/reservation-charges': 'finance.view',
+    '/admin/inventory/reports/reservation-payments': 'finance.view',
+    '/admin/inventory/reports/prescription-sales': 'finance.view',
+};
+
 export function AppSidebar() {
+    const { url, props } = usePage<{ auth: { permissions?: string[] } }>();
+    const isAdmin = url.startsWith('/admin');
+    const permissions = props.auth?.permissions ?? [];
+    const navGroups = isAdmin
+        ? adminNavGroups
+              .map((group) => ({
+                  ...group,
+                  items: group.items.filter((item) => {
+                      const href =
+                          typeof item.href === 'string'
+                              ? item.href
+                              : item.href.url;
+                      const requiredPermission =
+                          adminNavigationPermissions[href];
+
+                      return (
+                          !requiredPermission ||
+                          permissions.includes(requiredPermission)
+                      );
+                  }),
+              }))
+              .filter((group) => group.items.length > 0)
+        : mainNavGroups;
+    const dashboardUrl = isAdmin ? '/admin/dashboard' : '/clinic/dashboard';
+
     return (
         <Sidebar collapsible="icon" variant="inset" className="border-r-0">
             <SidebarHeader className="border-b border-sidebar-border/60 px-3 py-3">
@@ -158,7 +333,7 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <div className="rounded-xl">
                             <Link
-                                href="/clinic/dashboard"
+                                href={dashboardUrl}
                                 prefetch
                                 className="block"
                             >
@@ -172,7 +347,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent className="px-2 py-3">
-                {mainNavGroups.map((group) => (
+                {navGroups.map((group) => (
                     <SidebarGroup key={group.title} className="px-0 py-2">
                         <SidebarGroupLabel className="mb-1 px-3 text-[10px] font-semibold tracking-[0.12em] text-muted-foreground/70 uppercase group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
                             {group.title}

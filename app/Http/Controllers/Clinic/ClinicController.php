@@ -36,7 +36,7 @@ class ClinicController extends Controller
         $action->execute($request->validated());
 
         return redirect()
-            ->route('clinics.index')
+            ->route('admin.clinics.index')
             ->with('success', 'Clinic created successfully.');
     }
 
@@ -51,7 +51,7 @@ class ClinicController extends Controller
         );
 
         return redirect()
-            ->route('clinics.index')
+            ->route('admin.clinics.index')
             ->with('success', 'Clinic updated successfully.');
     }
 
@@ -62,7 +62,7 @@ class ClinicController extends Controller
         $action->execute($clinic);
 
         return redirect()
-            ->route('clinics.index')
+            ->route('admin.clinics.index')
             ->with('success', 'Clinic deleted successfully.');
     }
 }

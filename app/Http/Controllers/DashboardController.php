@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClinicMedicalProduct;
 use App\Models\Clinic;
+use App\Models\ClinicMedicalProduct;
 use App\Models\Consultation;
 use App\Models\DrugBatch;
 use App\Models\Reservation;
@@ -47,6 +47,7 @@ class DashboardController extends Controller
         $reservations = Reservation::query()->where('clinic_id', $clinicId)->whereBetween('created_at', [$start, $end]);
         $sales = Sale::query()->where('clinic_id', $clinicId)->whereBetween('created_at', [$start, $end]);
         $consultations = Consultation::query()->whereHas('reservation', fn ($query) => $query->where('clinic_id', $clinicId))->whereBetween('created_at', [$start, $end]);
+        $onlineOrders = Sale::query()->where('clinic_id', $clinicId)->where('sale_type', 'online_order')->whereBetween('created_at', [$start, $end]);
 
         foreach ((clone $sales)->get(['total', 'created_at']) as $sale) {
             $key = $sale->created_at->format($bucketFormat);
@@ -93,6 +94,15 @@ class DashboardController extends Controller
                 'patients' => (clone $reservations)->distinct('patient_id')->count('patient_id'),
                 'consultations' => (clone $consultations)->count(),
             ],
+            'onlineOrderSummary' => [
+                'orders_count' => (clone $onlineOrders)->count(),
+                'paid_total' => (float) (clone $onlineOrders)->where('payment_status', 'Paid')->sum('total'),
+                'pending_payment_count' => (clone $onlineOrders)->where('payment_status', 'Pending')->count(),
+            ],
+            'recentOnlineOrders' => (clone $onlineOrders)
+                ->with('patient:id,first_name,last_name')
+                ->latest()->limit(6)
+                ->get(['id', 'patient_id', 'order_status', 'payment_status', 'total', 'created_at']),
             'trends' => $buckets->map(fn (array $values, string $label): array => ['label' => $label, ...$values])->values(),
             'reservationStatuses' => Reservation::query()->where('clinic_id', $clinicId)->whereBetween('created_at', [$start, $end])->selectRaw('status, count(*) as total')->groupBy('status')->get(),
             'recentReservations' => Reservation::query()->with(['patient', 'doctor'])->where('clinic_id', $clinicId)->latest()->limit(6)->get(),

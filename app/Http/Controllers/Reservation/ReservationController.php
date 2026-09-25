@@ -4,16 +4,20 @@ namespace App\Http\Controllers\Reservation;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservation\UpdateReservationRequest;
-use App\Models\ClinicService;
 use App\Models\ClinicDrug;
 use App\Models\ClinicMedicalProduct;
+use App\Models\ClinicService;
 use App\Models\Doctor;
 use App\Models\DoctorClinicSchedule;
 use App\Models\Patient;
+use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -191,6 +195,7 @@ class ReservationController extends Controller
                 'day_of_week',
                 'start_time',
                 'end_time',
+                'max_patients_per_slot',
             ])
             ->orderBy('day_of_week')
             ->orderBy('start_time')
@@ -259,6 +264,8 @@ class ReservationController extends Controller
                 'exists:doctor_clinic_schedules,id',
             ],
 
+            'appointment_at' => ['required', 'date', 'after:now'],
+
             'appointment_type' => [
                 'required',
                 'string',
@@ -284,6 +291,9 @@ class ReservationController extends Controller
                 'numeric',
                 'min:0',
             ],
+            'payment_method' => ['required', Rule::in(PaymentMethod::SUPPORTED_NAMES), Rule::exists('payment_methods', 'name')->where('status', 'Active')],
+            'transaction_code' => ['required_unless:payment_method,Cash,Cash on Delivery', 'nullable', 'string', 'max:255'],
+            'payment_image' => ['required_unless:payment_method,Cash,Cash on Delivery', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ]);
 
         /*
@@ -334,8 +344,13 @@ class ReservationController extends Controller
             )
             ->first();
 
+        $appointmentAt = Carbon::parse($validated['appointment_at']);
+
         abort_unless(
-            $schedule,
+            $schedule
+                && $schedule->day_of_week === $appointmentAt->englishDayOfWeek
+                && $schedule->start_time <= $appointmentAt->format('H:i:s')
+                && $schedule->end_time > $appointmentAt->format('H:i:s'),
             422,
             'Invalid schedule.'
         );
@@ -348,54 +363,54 @@ class ReservationController extends Controller
 
         $year = now()->year;
 
-        $lastReservation = Reservation::query()
-            ->where(
-                'appointment_code',
-                'like',
-                "APT-{$year}-%"
-            )
-            ->orderByDesc('id')
-            ->first();
+        $reservation = DB::transaction(function () use ($appointmentAt, $clinicId, $schedule, $validated, $year): Reservation {
+            Doctor::query()->whereKey($schedule->doctor_id)->lockForUpdate()->firstOrFail();
 
-        $nextNumber = $lastReservation
-            ? ((int) substr(
-                $lastReservation->appointment_code,
-                -4
-            )) + 1
-            : 1;
+            $activeReservations = Reservation::query()
+                ->where('clinic_id', $clinicId)
+                ->where('doctor_id', $schedule->doctor_id)
+                ->where('appointment_at', $appointmentAt)
+                ->whereIn('status', ['Reserved', 'Confirmed', 'Checked In'])
+                ->count();
 
-        $appointmentCode = sprintf(
-            'APT-%d-%04d',
-            $year,
-            $nextNumber
-        );
+            if ($activeReservations >= $schedule->max_patients_per_slot) {
+                throw ValidationException::withMessages([
+                    'appointment_at' => ['This time slot has reached its patient limit.'],
+                ]);
+            }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Create Reservation
-        |--------------------------------------------------------------------------
-        */
+            $lastReservation = Reservation::query()
+                ->where('appointment_code', 'like', "APT-{$year}-%")
+                ->orderByDesc('id')
+                ->first();
 
-        Reservation::create([
-            'appointment_code' => $appointmentCode,
+            $nextNumber = $lastReservation
+                ? ((int) substr($lastReservation->appointment_code, -4)) + 1
+                : 1;
 
-            'patient_id' => $validated['patient_id'],
+            $appointmentCode = sprintf('APT-%d-%04d', $year, $nextNumber);
 
-            'doctor_id' => $validated['doctor_id'],
-
-            'clinic_id' => $clinicId,
-
-            'service_id' => $validated['service_id'],
-
-            'schedule_id' => $validated['schedule_id'],
-
-            'appointment_type' => $validated['appointment_type'],
-
-            'status' => $validated['status'] ?? 'Reserved',
-
-            'remarks' => $validated['remarks'] ?? null,
-
+            return Reservation::create([
+                'appointment_code' => $appointmentCode,
+                'patient_id' => $validated['patient_id'],
+                'doctor_id' => $validated['doctor_id'],
+                'clinic_id' => $clinicId,
+                'service_id' => $validated['service_id'],
+                'schedule_id' => $validated['schedule_id'],
+                'appointment_at' => $appointmentAt,
+                'appointment_type' => $validated['appointment_type'],
+                'status' => $validated['status'] ?? 'Reserved',
+                'remarks' => $validated['remarks'] ?? null,
+                'amount' => $validated['amount'],
+            ]);
+        });
+        Payment::query()->create([
+            'reservation_id' => $reservation->id,
             'amount' => $validated['amount'],
+            'payment_method' => $validated['payment_method'],
+            'transaction_code' => $validated['transaction_code'] ?? null,
+            'payment_image_path' => $request->hasFile('payment_image') ? $request->file('payment_image')->store('payment-proofs', 'public') : null,
+            'payment_status' => 'Pending',
         ]);
 
         return redirect()
@@ -512,8 +527,18 @@ class ReservationController extends Controller
             )
             ->first();
 
+        $appointmentAt = isset($data['appointment_at'])
+            ? Carbon::parse($data['appointment_at'])
+            : ($reservation->appointment_at
+                ? Carbon::parse($reservation->appointment_at)
+                : null);
+
         abort_unless(
-            $schedule,
+            $schedule
+                && (! $appointmentAt
+                    || ($schedule->day_of_week === $appointmentAt->englishDayOfWeek
+                        && $schedule->start_time <= $appointmentAt->format('H:i:s')
+                        && $schedule->end_time > $appointmentAt->format('H:i:s'))),
             422,
             'Invalid schedule.'
         );
@@ -561,23 +586,38 @@ class ReservationController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $reservation->update([
-            'patient_id' => $data['patient_id'],
+        DB::transaction(function () use ($appointmentAt, $data, $reservation, $schedule): void {
+            Doctor::query()->whereKey($schedule->doctor_id)->lockForUpdate()->firstOrFail();
 
-            'doctor_id' => $data['doctor_id'],
+            $nextStatus = $data['status'];
+            if (
+                $appointmentAt
+                && in_array($nextStatus, ['Reserved', 'Confirmed', 'Checked In'], true)
+                && Reservation::query()
+                    ->where('clinic_id', $schedule->clinic_id)
+                    ->where('doctor_id', $schedule->doctor_id)
+                    ->where('appointment_at', $appointmentAt)
+                    ->whereIn('status', ['Reserved', 'Confirmed', 'Checked In'])
+                    ->where('id', '!=', $reservation->id)
+                    ->count() >= $schedule->max_patients_per_slot
+            ) {
+                throw ValidationException::withMessages([
+                    'appointment_at' => ['This time slot has reached its patient limit.'],
+                ]);
+            }
 
-            'service_id' => $data['service_id'],
-
-            'schedule_id' => $data['schedule_id'],
-
-            'appointment_type' => $data['appointment_type'],
-
-            'status' => $data['status'],
-
-            'remarks' => $data['remarks'] ?? null,
-
-            'amount' => $data['amount'],
-        ]);
+            $reservation->update([
+                'patient_id' => $data['patient_id'],
+                'doctor_id' => $data['doctor_id'],
+                'service_id' => $data['service_id'],
+                'schedule_id' => $data['schedule_id'],
+                'appointment_at' => $appointmentAt,
+                'appointment_type' => $data['appointment_type'],
+                'status' => $nextStatus,
+                'remarks' => $data['remarks'] ?? null,
+                'amount' => $data['amount'],
+            ]);
+        });
 
         return redirect()
             ->route('reservations.index')

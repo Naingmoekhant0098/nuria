@@ -1,4 +1,4 @@
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     Activity,
     CalendarDays,
@@ -34,6 +34,14 @@ type Reservation = {
 };
 type Status = { status: string; total: number };
 type Stock = { name: string; quantity: number; unit: string };
+type OnlineOrder = {
+    id: number;
+    order_status: string;
+    payment_status: string;
+    total: number | string;
+    created_at: string;
+    patient: { first_name: string; last_name: string } | null;
+};
 
 export default function Dashboard() {
     const {
@@ -44,6 +52,8 @@ export default function Dashboard() {
         reservationStatuses,
         recentReservations,
         lowStock,
+        onlineOrderSummary,
+        recentOnlineOrders,
     } = usePage<{
         clinic: { name: string };
         filters: { period: string; start_date: string; end_date: string };
@@ -57,6 +67,12 @@ export default function Dashboard() {
         reservationStatuses: Status[];
         recentReservations: Reservation[];
         lowStock: Stock[];
+        onlineOrderSummary: {
+            orders_count: number;
+            paid_total: number;
+            pending_payment_count: number;
+        };
+        recentOnlineOrders: OnlineOrder[];
     }>().props;
     const [startDate, setStartDate] = useState(filters.start_date);
     const [endDate, setEndDate] = useState(filters.end_date);
@@ -179,6 +195,129 @@ export default function Dashboard() {
                             icon={<Activity className="size-4" />}
                             accent="text-amber-600"
                         />
+                    </section>
+
+                    <section className="space-y-3">
+                        <div className="flex items-center justify-between gap-3">
+                            <div>
+                                <h2 className="text-lg font-semibold">
+                                    Online orders
+                                </h2>
+                                <p className="text-sm text-muted-foreground">
+                                    For the selected dashboard period
+                                </p>
+                            </div>
+                            <Link
+                                href="/clinic/orders"
+                                className="text-sm font-medium text-primary hover:underline"
+                            >
+                                Open order report
+                            </Link>
+                        </div>
+                        <div className="grid gap-4 sm:grid-cols-3">
+                            <Link
+                                href="/clinic/orders"
+                                className="block rounded-lg focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                            >
+                                <MetricCard
+                                    label="Online orders"
+                                    value={onlineOrderSummary.orders_count.toLocaleString()}
+                                    detail="Orders placed"
+                                    icon={<Package className="size-4" />}
+                                    accent="text-blue-600"
+                                />
+                            </Link>
+                            <Link
+                                href="/clinic/orders"
+                                className="block rounded-lg focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                            >
+                                <MetricCard
+                                    label="Paid order value"
+                                    value={`${currency.format(onlineOrderSummary.paid_total)} MMK`}
+                                    detail="Payments marked paid"
+                                    icon={<Activity className="size-4" />}
+                                    accent="text-emerald-600"
+                                />
+                            </Link>
+                            <Link
+                                href="/clinic/orders"
+                                className="block rounded-lg focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                            >
+                                <MetricCard
+                                    label="Awaiting payment"
+                                    value={onlineOrderSummary.pending_payment_count.toLocaleString()}
+                                    detail="Orders with pending payment"
+                                    icon={<CalendarDays className="size-4" />}
+                                    accent="text-amber-600"
+                                />
+                            </Link>
+                        </div>
+                        <Card>
+                            <CardHeader className="pb-2">
+                                <CardTitle className="text-base">
+                                    Recent online orders
+                                </CardTitle>
+                                <p className="text-sm text-muted-foreground">
+                                    Latest orders in this period
+                                </p>
+                            </CardHeader>
+                            <CardContent>
+                                {recentOnlineOrders.length === 0 ? (
+                                    <EmptyState message="No online orders in this period." />
+                                ) : (
+                                    <Table cardGrid={false}>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Order</TableHead>
+                                                <TableHead>Date</TableHead>
+                                                <TableHead>Patient</TableHead>
+                                                <TableHead>
+                                                    Order status
+                                                </TableHead>
+                                                <TableHead>Payment</TableHead>
+                                                <TableHead>Total</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {recentOnlineOrders.map((order) => (
+                                                <TableRow key={order.id}>
+                                                    <TableCell>
+                                                        <Link
+                                                            href="/clinic/orders"
+                                                            className="font-medium text-primary hover:underline"
+                                                        >
+                                                            #{order.id}
+                                                        </Link>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {new Date(
+                                                            order.created_at,
+                                                        ).toLocaleDateString()}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {order.patient
+                                                            ? `${order.patient.first_name} ${order.patient.last_name}`
+                                                            : 'Patient unavailable'}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {order.order_status}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {order.payment_status}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {currency.format(
+                                                            Number(order.total),
+                                                        )}{' '}
+                                                        MMK
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                )}
+                            </CardContent>
+                        </Card>
                     </section>
 
                     <section className="grid gap-4 xl:grid-cols-3">

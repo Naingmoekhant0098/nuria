@@ -35,8 +35,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        // Check both the clinic guard and default guard
-        $user = $request->user('clinic') ?? $request->user();
+        $user = $request->user('admin') ?? $request->user('clinic') ?? $request->user();
 
         $userData = null;
 
@@ -56,6 +55,7 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $userData,
+                'permissions' => $request->user('admin')?->adminPermissions() ?? [],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => [

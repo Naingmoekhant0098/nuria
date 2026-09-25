@@ -24,8 +24,9 @@ class DoctorController extends Controller
      */
     public function index(Request $request): Response
     {
+        $clinicId = auth()->user()->id;
         $doctors = Doctor::query()
-            ->whereHas('clinics', fn ($query) => $query->whereKey(auth()->user()->id))
+            ->whereHas('clinics', fn ($query) => $query->whereKey($clinicId))
             ->with([
                 'specialization',
                 'user',
@@ -33,6 +34,7 @@ class DoctorController extends Controller
                 'nrc.state',
                 'nrc.township',
                 'nrc.type',
+                'clinics' => fn ($query) => $query->whereKey($clinicId),
             ])
             ->filter(
                 $request->only(['search'])

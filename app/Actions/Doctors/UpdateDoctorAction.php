@@ -122,7 +122,10 @@ class UpdateDoctorAction
                 $doctor
                     ->clinics()
                     ->syncWithoutDetaching([
-                        $currentClinicId,
+                        $currentClinicId => [
+                            'compensation_type' => $data['compensation_type'],
+                            'compensation_rate' => $data['compensation_rate'],
+                        ],
                     ]);
             }
 

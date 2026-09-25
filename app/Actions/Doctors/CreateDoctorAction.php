@@ -52,7 +52,10 @@ class CreateDoctorAction
                     $existingDoctor
                         ->clinics()
                         ->syncWithoutDetaching([
-                            $currentClinicId,
+                            $currentClinicId => [
+                                'compensation_type' => $data['compensation_type'],
+                                'compensation_rate' => $data['compensation_rate'],
+                            ],
                         ]);
                 }
 
@@ -176,7 +179,10 @@ class CreateDoctorAction
 
                 $doctor
                     ->clinics()
-                    ->attach($currentClinicId);
+                    ->attach($currentClinicId, [
+                        'compensation_type' => $data['compensation_type'],
+                        'compensation_rate' => $data['compensation_rate'],
+                    ]);
             }
 
             return $doctor->fresh([
