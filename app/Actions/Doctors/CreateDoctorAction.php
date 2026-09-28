@@ -2,18 +2,27 @@
 
 namespace App\Actions\Doctors;
 
+use App\Models\Clinic;
 use App\Models\Doctor;
 use App\Models\Nrc;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class CreateDoctorAction
 {
     public function execute(array $data): Doctor
     {
         return DB::transaction(function () use ($data) {
+            $currentClinicId =
+                Auth::guard('clinic')->id()
+                ?? Auth::id();
+
+            $clinic = $currentClinicId
+                ? Clinic::query()->whereKey($currentClinicId)->lockForUpdate()->first()
+                : null;
 
             /*
             |--------------------------------------------------------------------------
@@ -30,15 +39,22 @@ class CreateDoctorAction
                 $data['nrc_number']
             )->first();
 
+            if ($clinic !== null) {
+                $alreadyLinked = $existingDoctor?->clinics()->whereKey($clinic->id)->exists() ?? false;
+                $doctorLimit = $clinic->planLimit('doctors');
+
+                if (! $alreadyLinked && $doctorLimit !== null && $clinic->doctors()->count() >= $doctorLimit) {
+                    throw ValidationException::withMessages([
+                        'plan' => ['Your current plan has reached its doctor limit.'],
+                    ]);
+                }
+            }
+
             /*
             |--------------------------------------------------------------------------
             | Current Clinic
             |--------------------------------------------------------------------------
             */
-
-            $currentClinicId =
-                Auth::guard('clinic')->id()
-                ?? Auth::id();
 
             /*
             |--------------------------------------------------------------------------

@@ -2,12 +2,14 @@
 
 namespace App\Actions\Patients;
 
+use App\Models\Clinic;
 use App\Models\Nrc;
 use App\Models\Patient;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class CreatePatientAction
 {
@@ -67,6 +69,15 @@ class CreatePatientAction
             $clinicId = Auth::guard('clinic')->id() ?? Auth::id();
 
             if ($clinicId) {
+                $clinic = Clinic::query()->whereKey($clinicId)->lockForUpdate()->firstOrFail();
+                $patientLimit = $clinic->planLimit('patients');
+
+                if ($patientLimit !== null && $clinic->patients()->count() >= $patientLimit) {
+                    throw ValidationException::withMessages([
+                        'plan' => ['Your current plan has reached its patient limit.'],
+                    ]);
+                }
+
                 $patient->clinics()->attach($clinicId);
             }
 

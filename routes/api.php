@@ -52,13 +52,16 @@ Route::prefix('v1')->group(function (): void {
     Route::prefix('clinic')->middleware(['auth:sanctum', 'clinic.api'])->group(function (): void {
         Route::get('/me', [PortalAuthController::class, 'clinicMe']);
         Route::post('/logout', [PortalAuthController::class, 'logout']);
-        Route::get('/doctors', [ClinicPortalController::class, 'doctors']);
-        Route::get('/services', [ClinicPortalController::class, 'services']);
-        Route::get('/patients', [ClinicPortalController::class, 'patients']);
-        Route::get('/reservations', [ClinicPortalController::class, 'reservations']);
-        Route::get('/schedules', [ClinicPortalController::class, 'schedules']);
-        Route::get('/orders', [OnlineOrderController::class, 'apiIndex']);
-        Route::patch('/orders/{sale}', [OnlineOrderController::class, 'update']);
+
+        Route::middleware('clinic.subscription')->group(function (): void {
+            Route::get('/doctors', [ClinicPortalController::class, 'doctors'])->middleware('clinic.feature:doctors');
+            Route::get('/services', [ClinicPortalController::class, 'services'])->middleware('clinic.feature:services');
+            Route::get('/patients', [ClinicPortalController::class, 'patients'])->middleware('clinic.feature:patients');
+            Route::get('/reservations', [ClinicPortalController::class, 'reservations'])->middleware('clinic.feature:reservations');
+            Route::get('/schedules', [ClinicPortalController::class, 'schedules'])->middleware('clinic.feature:schedules');
+            Route::get('/orders', [OnlineOrderController::class, 'apiIndex'])->middleware('clinic.feature:online_orders');
+            Route::patch('/orders/{sale}', [OnlineOrderController::class, 'update'])->middleware('clinic.feature:online_orders');
+        });
     });
 
     Route::middleware(['auth:sanctum', 'patient.api'])->group(function (): void {

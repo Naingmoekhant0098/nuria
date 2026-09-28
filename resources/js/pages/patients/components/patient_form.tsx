@@ -136,6 +136,11 @@ export default function PatientForm({
             onSubmit={onSubmit}
             className="space-y-5 pt-2"
         >
+            {form.errors.plan && (
+                <p className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                    {form.errors.plan}
+                </p>
+            )}
 
             {/* Name */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

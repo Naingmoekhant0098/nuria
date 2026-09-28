@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
+import { logout as clinicLogout } from '@/routes/clinic';
 import { logout } from '@/routes';
 import { logout as adminLogout } from '@/routes/admin';
 import { edit } from '@/routes/profile';
@@ -19,7 +20,9 @@ type Props = {
 
 export function UserMenuContent({ user }: Props) {
     const cleanup = useMobileNavigation();
-    const isAdmin = usePage().url.startsWith('/admin');
+    const currentUrl = usePage().url;
+    const isAdmin = currentUrl.startsWith('/admin');
+    const isClinic = currentUrl.startsWith('/clinic');
 
     const handleLogout = () => {
         cleanup();
@@ -53,7 +56,8 @@ export function UserMenuContent({ user }: Props) {
             <DropdownMenuItem asChild>
                 <Link
                     className="block w-full cursor-pointer"
-                    href={isAdmin ? adminLogout() : logout()}
+                    href={isAdmin ? adminLogout() : isClinic ? clinicLogout() : logout()}
+                    method="post"
                     as="button"
                     onClick={handleLogout}
                     data-test="logout-button"

@@ -5,8 +5,10 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminPermissionController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\ClinicSubscriptionController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Clinic\ClinicController;
 use Illuminate\Support\Facades\Route;
 
@@ -70,6 +72,22 @@ Route::prefix('admin')
         Route::resource('clinics', ClinicController::class)
             ->only(['index', 'store', 'update', 'destroy'])
             ->middleware('admin.permission:clinics.manage');
+
+        Route::get('/plans', [PlanController::class, 'index'])
+            ->middleware('admin.permission:clinics.manage')
+            ->name('plans.index');
+        Route::post('/plans', [PlanController::class, 'store'])
+            ->middleware('admin.permission:clinics.manage')
+            ->name('plans.store');
+        Route::put('/plans/{plan}', [PlanController::class, 'update'])
+            ->middleware('admin.permission:clinics.manage')
+            ->name('plans.update');
+        Route::get('/subscriptions', [ClinicSubscriptionController::class, 'index'])
+            ->middleware('admin.permission:clinics.manage')
+            ->name('subscriptions.index');
+        Route::patch('/subscriptions/{subscription}/review', [ClinicSubscriptionController::class, 'review'])
+            ->middleware('admin.permission:clinics.manage')
+            ->name('subscriptions.review');
 
         /*
         |--------------------------------------------------------------------------

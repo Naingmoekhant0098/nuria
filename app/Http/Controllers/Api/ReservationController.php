@@ -52,6 +52,7 @@ class ReservationController extends Controller
         ]);
 
         $clinic = Clinic::query()->findOrFail($data['clinic_id']);
+        abort_unless($clinic->hasPlanFeature('reservations'), 403, 'This clinic is not accepting reservations on its current plan.');
         $doctor = Doctor::query()->findOrFail($data['doctor_id']);
         $service = ClinicService::query()
             ->whereKey($data['service_id'])
@@ -82,6 +83,22 @@ class ReservationController extends Controller
         }
 
         $reservation = DB::transaction(function () use ($appointmentAt, $clinic, $doctor, $patient, $request, $schedule, $service, $data): Reservation {
+            Clinic::query()->whereKey($clinic->id)->lockForUpdate()->firstOrFail();
+
+            $monthlyLimit = $clinic->planLimit('monthly_reservations');
+            if (
+                $monthlyLimit !== null
+                && Reservation::query()
+                    ->where('clinic_id', $clinic->id)
+                    ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
+                    ->whereNotIn('status', ['Cancelled', 'No Show'])
+                    ->count() >= $monthlyLimit
+            ) {
+                throw ValidationException::withMessages([
+                    'appointment_at' => ['This clinic has reached its monthly reservation limit.'],
+                ]);
+            }
+
             Doctor::query()
                 ->whereKey($doctor->getKey())
                 ->lockForUpdate()

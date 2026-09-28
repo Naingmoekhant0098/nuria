@@ -4,6 +4,8 @@ use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureAdminApi;
 use App\Http\Middleware\EnsureAdminPermission;
 use App\Http\Middleware\EnsureClinicApi;
+use App\Http\Middleware\EnsureClinicFeature;
+use App\Http\Middleware\EnsureClinicSubscription;
 use App\Http\Middleware\EnsurePatientApi;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -26,6 +28,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.permission' => EnsureAdminPermission::class,
             'admin.api' => EnsureAdminApi::class,
             'clinic.api' => EnsureClinicApi::class,
+            'clinic.subscription' => EnsureClinicSubscription::class,
+            'clinic.feature' => EnsureClinicFeature::class,
             'patient.api' => EnsurePatientApi::class,
         ]);
 

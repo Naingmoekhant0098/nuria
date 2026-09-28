@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Reservation;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reservation\UpdateReservationRequest;
+use App\Models\Clinic;
 use App\Models\ClinicDrug;
 use App\Models\ClinicMedicalProduct;
 use App\Models\ClinicService;
@@ -364,6 +365,22 @@ class ReservationController extends Controller
         $year = now()->year;
 
         $reservation = DB::transaction(function () use ($appointmentAt, $clinicId, $schedule, $validated, $year): Reservation {
+            $clinic = Clinic::query()->whereKey($clinicId)->lockForUpdate()->firstOrFail();
+            $monthlyLimit = $clinic->planLimit('monthly_reservations');
+
+            if (
+                $monthlyLimit !== null
+                && Reservation::query()
+                    ->where('clinic_id', $clinicId)
+                    ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
+                    ->whereNotIn('status', ['Cancelled', 'No Show'])
+                    ->count() >= $monthlyLimit
+            ) {
+                throw ValidationException::withMessages([
+                    'appointment_at' => ['This clinic has reached its monthly reservation limit.'],
+                ]);
+            }
+
             Doctor::query()->whereKey($schedule->doctor_id)->lockForUpdate()->firstOrFail();
 
             $activeReservations = Reservation::query()

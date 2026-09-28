@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Clinic;
 use App\Models\ClinicDrug;
 use App\Models\ClinicMedicalProduct;
 use App\Models\DrugBatch;
@@ -30,6 +31,7 @@ class PatientShopController extends Controller
     {
         $filters = $request->validate(['clinic_id' => ['required', 'integer', 'exists:clinics,id'], 'search' => ['nullable', 'string', 'max:120'], 'type' => ['nullable', Rule::in(['drug', 'medical_product'])]]);
         $clinicId = (int) $filters['clinic_id'];
+        abort_unless(Clinic::query()->findOrFail($clinicId)->hasPlanFeature('online_orders'), 404);
         $data = collect();
         if (($filters['type'] ?? null) !== 'medical_product') {
             $data = $data->concat(ClinicDrug::query()->with(['drug.category', 'drug.form', 'drug.manufacturer', 'drug.units'])
@@ -106,6 +108,7 @@ class PatientShopController extends Controller
             'transaction_code' => ['required_unless:payment_method,Cash,Cash on Delivery', 'nullable', 'string', 'max:255'],
             'payment_image' => ['required_unless:payment_method,Cash,Cash on Delivery', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ]);
+        abort_unless(Clinic::query()->findOrFail((int) $data['clinic_id'])->hasPlanFeature('online_orders'), 404);
         $sale = DB::transaction(function () use ($patient, $data, $request): Sale {
             $cart = PatientCartItem::query()->where('patient_id', $patient->id)->where('clinic_id', $data['clinic_id'])->lockForUpdate()->get();
             if ($cart->isEmpty()) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Clinic;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -38,6 +39,8 @@ class HandleInertiaRequests extends Middleware
         $user = $request->user('admin') ?? $request->user('clinic') ?? $request->user();
 
         $userData = null;
+        $clinic = $request->user('clinic');
+        $clinicSubscription = $clinic instanceof Clinic ? $clinic->currentSubscription() : null;
 
         if ($user) {
             // Check if it's a Clinic model or a regular User model
@@ -56,6 +59,12 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $userData,
                 'permissions' => $request->user('admin')?->adminPermissions() ?? [],
+                'features' => $clinicSubscription?->plan?->features ?? [],
+                'subscription' => $clinicSubscription === null ? null : [
+                    'plan_name' => $clinicSubscription->plan->name,
+                    'ends_at' => $clinicSubscription->ends_at?->toIso8601String(),
+                    'limits' => $clinicSubscription->plan->limits ?? [],
+                ],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => [

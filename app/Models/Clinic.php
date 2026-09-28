@@ -55,6 +55,44 @@ class Clinic extends Authenticatable
         );
     }
 
+    public function patients(): BelongsToMany
+    {
+        return $this->belongsToMany(Patient::class, 'patient_clinic', 'clinic_id', 'patient_id')
+            ->withTimestamps();
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(ClinicSubscription::class);
+    }
+
+    public function currentSubscription(): ?ClinicSubscription
+    {
+        return $this->subscriptions()
+            ->with('plan')
+            ->where('status', 'active')
+            ->where('starts_at', '<=', now())
+            ->where('ends_at', '>', now())
+            ->latest('starts_at')
+            ->first();
+    }
+
+    public function hasPlanFeature(string $feature): bool
+    {
+        return in_array(
+            $feature,
+            $this->currentSubscription()?->plan?->features ?? [],
+            true,
+        );
+    }
+
+    public function planLimit(string $limit): ?int
+    {
+        $value = $this->currentSubscription()?->plan?->limits[$limit] ?? null;
+
+        return $value === null ? null : (int) $value;
+    }
+
     public function scopeFilter(
         Builder $query,
         array $filters

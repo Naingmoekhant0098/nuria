@@ -122,6 +122,11 @@ const mainNavGroups: NavGroup[] = [
                 icon: CreditCard,
             },
             {
+                title: 'Plans & Billing',
+                href: '/clinic/plans',
+                icon: CreditCard,
+            },
+            {
                 title: 'Notifications',
                 href: '/clinic/notifications',
                 icon: Bell,
@@ -167,6 +172,12 @@ const adminNavGroups: NavGroup[] = [
         title: 'Administration',
         items: [
             { title: 'Clinics', href: '/admin/clinics', icon: Building2 },
+            { title: 'Plans', href: '/admin/plans', icon: CreditCard },
+            {
+                title: 'Subscriptions',
+                href: '/admin/subscriptions',
+                icon: CreditCard,
+            },
             { title: 'Admin users', href: '/admin/users', icon: Users },
             { title: 'Roles', href: '/admin/roles', icon: Settings },
             {
@@ -281,6 +292,8 @@ const adminNavGroups: NavGroup[] = [
 const adminNavigationPermissions: Record<string, string> = {
     '/admin/dashboard': 'dashboard.view',
     '/admin/clinics': 'clinics.manage',
+    '/admin/plans': 'clinics.manage',
+    '/admin/subscriptions': 'clinics.manage',
     '/admin/users': 'admins.manage',
     '/admin/roles': 'roles.manage',
     '/admin/permissions': 'permissions.view',
@@ -301,9 +314,61 @@ const adminNavigationPermissions: Record<string, string> = {
 };
 
 export function AppSidebar() {
-    const { url, props } = usePage<{ auth: { permissions?: string[] } }>();
+    const { url, props } = usePage<{
+        auth: {
+            permissions?: string[];
+            features?: string[];
+            subscription?: { plan_name: string } | null;
+        };
+    }>();
     const isAdmin = url.startsWith('/admin');
     const permissions = props.auth?.permissions ?? [];
+    const clinicFeatures = props.auth?.features ?? [];
+    const clinicNavigationPermissions: Record<string, string> = {
+        '/clinic/doctors': 'doctors',
+        '/clinic/doctor-schedules': 'schedules',
+        '/clinic/patients': 'patients',
+        '/clinic/services': 'services',
+        '/clinic/reservations': 'reservations',
+        '/clinic/consultations': 'consultations',
+        '/clinic/medical-records': 'medical_records',
+        '/clinic/prescriptions': 'pharmacy',
+        '/clinic/pos': 'pharmacy',
+        '/clinic/inventory': 'pharmacy',
+        '/clinic/pharmacy/drugs': 'pharmacy',
+        '/clinic/pharmacy/stock': 'pharmacy',
+        '/clinic/pharmacy/sales': 'pharmacy',
+        '/clinic/orders': 'online_orders',
+        '/clinic/reports/stock': 'reports',
+        '/clinic/reports/operations': 'reports',
+        '/clinic/payments': 'finance',
+        '/clinic/payment-methods': 'finance',
+    };
+    const filteredClinicGroups = mainNavGroups
+        .map((group) => ({
+            ...group,
+            items: group.items.filter((item) => {
+                const href = typeof item.href === 'string' ? item.href : item.href.url;
+                const requiredFeature = clinicNavigationPermissions[href];
+
+                return !requiredFeature || clinicFeatures.includes(requiredFeature);
+            }),
+        }))
+        .filter((group) => group.items.length > 0);
+    const clinicNavGroups = props.auth?.subscription
+        ? filteredClinicGroups
+        : [
+              {
+                  title: 'Account',
+                  items: [
+                      {
+                          title: 'Plans & Billing',
+                          href: '/clinic/plans',
+                          icon: CreditCard,
+                      },
+                  ],
+              },
+          ];
     const navGroups = isAdmin
         ? adminNavGroups
               .map((group) => ({
@@ -323,8 +388,12 @@ export function AppSidebar() {
                   }),
               }))
               .filter((group) => group.items.length > 0)
-        : mainNavGroups;
-    const dashboardUrl = isAdmin ? '/admin/dashboard' : '/clinic/dashboard';
+        : clinicNavGroups;
+    const dashboardUrl = isAdmin
+        ? '/admin/dashboard'
+        : props.auth?.subscription
+          ? '/clinic/dashboard'
+          : '/clinic/plans';
 
     return (
         <Sidebar collapsible="icon" variant="inset" className="border-r-0">

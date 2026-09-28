@@ -222,6 +222,11 @@ export default function ReservationForm({
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6 pt-2">
+            {form.errors.plan && (
+                <p className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                    {form.errors.plan}
+                </p>
+            )}
             <div className="space-y-4">
                 <div>
                     <h3 className="text-base font-semibold text-white">

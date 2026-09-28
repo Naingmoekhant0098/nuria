@@ -19,6 +19,11 @@ class ClinicDiscoveryController extends Controller
     {
         $clinics = Clinic::query()
             ->select(['id', 'clinic_name', 'complete_address', 'latitude', 'longitude', 'status'])
+            ->whereHas('subscriptions', fn ($query) => $query
+                ->where('status', 'active')
+                ->where('starts_at', '<=', now())
+                ->where('ends_at', '>', now())
+                ->whereHas('plan', fn ($planQuery) => $planQuery->whereJsonContains('features', 'reservations')))
             ->when($request->string('search')->trim()->value(), function ($query, string $search): void {
                 $query->where(function ($query) use ($search): void {
                     $query->where('clinic_name', 'like', "%{$search}%")
@@ -33,6 +38,8 @@ class ClinicDiscoveryController extends Controller
 
     public function doctors(Request $request, Clinic $clinic): JsonResponse
     {
+        abort_unless($clinic->hasPlanFeature('doctors'), 404);
+
         $data = $request->validate([
             'search' => ['nullable', 'string', 'max:255'],
         ]);
@@ -72,7 +79,11 @@ class ClinicDiscoveryController extends Controller
             'time' => ['required', 'date_format:H:i'],
         ]);
 
-        abort_unless($clinic->doctors()->whereKey($doctor->getKey())->exists(), 404);
+        abort_unless(
+            $clinic->hasPlanFeature('reservations')
+            && $clinic->doctors()->whereKey($doctor->getKey())->exists(),
+            404,
+        );
 
         $requestedAt = Carbon::createFromFormat('Y-m-d H:i', $data['date'].' '.$data['time']);
         $day = $requestedAt->englishDayOfWeek;
@@ -110,7 +121,11 @@ class ClinicDiscoveryController extends Controller
 
     public function services(Clinic $clinic, Doctor $doctor): JsonResponse
     {
-        abort_unless($clinic->doctors()->whereKey($doctor->getKey())->exists(), 404);
+        abort_unless(
+            $clinic->hasPlanFeature('services')
+            && $clinic->doctors()->whereKey($doctor->getKey())->exists(),
+            404,
+        );
 
         return response()->json(
             ClinicService::query()

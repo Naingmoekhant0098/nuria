@@ -6,6 +6,7 @@ use App\Http\Controllers\Clinic\DoctorController;
 use App\Http\Controllers\Clinic\DoctorScheduleController;
 use App\Http\Controllers\Clinic\OnlineOrderController;
 use App\Http\Controllers\Clinic\PatientController;
+use App\Http\Controllers\Clinic\PlanController;
 use App\Http\Controllers\Consultation\ConsultationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MedicalRecords\MedicalRecordController;
@@ -49,8 +50,15 @@ Route::post('/clinic/logout', [ClinicAuthController::class, 'destroy'])
 */
 
 Route::prefix('clinic')
-    ->middleware(['auth:clinic', 'verified'])
+    ->middleware(['auth:clinic', 'verified', 'clinic.subscription'])
     ->group(function () {
+
+        Route::get('/plans', [PlanController::class, 'index'])
+            ->name('clinic.plans.index');
+        Route::post('/plans/{plan}/subscribe', [PlanController::class, 'subscribe'])
+            ->name('clinic.plans.subscribe');
+        Route::get('/subscription', [PlanController::class, 'index'])
+            ->name('clinic.subscription.show');
 
         /*
         |--------------------------------------------------------------------------
@@ -68,7 +76,8 @@ Route::prefix('clinic')
         */
 
         Route::resource('services', ClinicServiceController::class)
-            ->names('clinic.services');
+            ->names('clinic.services')
+            ->middleware('clinic.feature:services');
 
         /*
         |--------------------------------------------------------------------------
@@ -76,7 +85,8 @@ Route::prefix('clinic')
         |--------------------------------------------------------------------------
         */
 
-        Route::resource('doctors', DoctorController::class);
+        Route::resource('doctors', DoctorController::class)
+            ->middleware('clinic.feature:doctors');
 
         /*
         |--------------------------------------------------------------------------
@@ -84,7 +94,8 @@ Route::prefix('clinic')
         |--------------------------------------------------------------------------
         */
 
-        Route::resource('doctor-schedules', DoctorScheduleController::class);
+        Route::resource('doctor-schedules', DoctorScheduleController::class)
+            ->middleware('clinic.feature:schedules');
 
         /*
         |--------------------------------------------------------------------------
@@ -92,14 +103,18 @@ Route::prefix('clinic')
         |--------------------------------------------------------------------------
         */
 
-        Route::resource('patients', PatientController::class);
+        Route::resource('patients', PatientController::class)
+            ->middleware('clinic.feature:patients');
 
         Route::get('/orders', [OnlineOrderController::class, 'index'])
-            ->name('orders.index');
+            ->name('orders.index')
+            ->middleware('clinic.feature:online_orders');
         Route::get('/orders/report.csv', [OnlineOrderController::class, 'export'])
-            ->name('orders.report');
+            ->name('orders.report')
+            ->middleware('clinic.feature:online_orders');
         Route::patch('/orders/{sale}', [OnlineOrderController::class, 'update'])
-            ->name('orders.update');
+            ->name('orders.update')
+            ->middleware('clinic.feature:online_orders');
 
         /*
         |--------------------------------------------------------------------------
@@ -108,10 +123,12 @@ Route::prefix('clinic')
         */
 
         Route::get('/payment-methods', [PaymentMethodController::class, 'index'])
-            ->name('payment-methods.index');
+            ->name('payment-methods.index')
+            ->middleware('clinic.feature:finance');
 
         Route::put('/payment-methods/{paymentMethod}', [PaymentMethodController::class, 'update'])
-            ->name('payment-methods.update');
+            ->name('payment-methods.update')
+            ->middleware('clinic.feature:finance');
 
         /*
         |--------------------------------------------------------------------------
@@ -120,9 +137,11 @@ Route::prefix('clinic')
         */
 
         Route::get('/payments', [PaymentReportController::class, 'index'])
-            ->name('payments.index');
+            ->name('payments.index')
+            ->middleware('clinic.feature:finance');
         Route::patch('/payments/{payment}', [PaymentReportController::class, 'update'])
-            ->name('payments.update');
+            ->name('payments.update')
+            ->middleware('clinic.feature:finance');
 
         /*
         |--------------------------------------------------------------------------
@@ -131,10 +150,12 @@ Route::prefix('clinic')
         */
 
         Route::get('/reports/stock', [ReportController::class, 'stock'])
-            ->name('reports.stock');
+            ->name('reports.stock')
+            ->middleware('clinic.feature:reports');
 
         Route::get('/reports/operations', [ReportController::class, 'operations'])
-            ->name('reports.operations');
+            ->name('reports.operations')
+            ->middleware('clinic.feature:reports');
 
         /*
         |--------------------------------------------------------------------------
@@ -142,7 +163,8 @@ Route::prefix('clinic')
         |--------------------------------------------------------------------------
         */
 
-        Route::resource('reservations', ReservationController::class);
+        Route::resource('reservations', ReservationController::class)
+            ->middleware('clinic.feature:reservations');
 
         /*
         |--------------------------------------------------------------------------
@@ -151,7 +173,8 @@ Route::prefix('clinic')
         */
 
         Route::resource('consultations', ConsultationController::class)
-            ->except(['create', 'edit']);
+            ->except(['create', 'edit'])
+            ->middleware('clinic.feature:consultations');
 
         /*
         |--------------------------------------------------------------------------
@@ -162,10 +185,12 @@ Route::prefix('clinic')
         Route::post(
             '/consultations/{consultation}/medical-record',
             [MedicalRecordController::class, 'store']
-        )->name('consultations.medical-record.store');
+        )->name('consultations.medical-record.store')
+            ->middleware('clinic.feature:medical_records');
 
         Route::resource('medical-records', MedicalRecordController::class)
-            ->except(['edit']);
+            ->except(['edit'])
+            ->middleware('clinic.feature:medical_records');
 
         /*
         |--------------------------------------------------------------------------
@@ -174,7 +199,8 @@ Route::prefix('clinic')
         */
 
         Route::post('/prescriptions', [PrescriptionController::class, 'store'])
-            ->name('prescriptions.store');
+            ->name('prescriptions.store')
+            ->middleware('clinic.feature:pharmacy');
 
         /*
         |--------------------------------------------------------------------------
@@ -183,10 +209,12 @@ Route::prefix('clinic')
         */
 
         Route::get('/pos', [PosController::class, 'index'])
-            ->name('pos.index');
+            ->name('pos.index')
+            ->middleware('clinic.feature:pharmacy');
 
         Route::post('/pos', [PosController::class, 'store'])
-            ->name('pos.store');
+            ->name('pos.store')
+            ->middleware('clinic.feature:pharmacy');
 
         /*
         |--------------------------------------------------------------------------
@@ -195,14 +223,18 @@ Route::prefix('clinic')
         */
 
         Route::get('/inventory', [InventoryController::class, 'index'])
-            ->name('inventory.index');
+            ->name('inventory.index')
+            ->middleware('clinic.feature:pharmacy');
 
         Route::get('/pharmacy/drugs', [InventoryController::class, 'drugs'])
-            ->name('pharmacy.drugs.index');
+            ->name('pharmacy.drugs.index')
+            ->middleware('clinic.feature:pharmacy');
 
         Route::get('/pharmacy/stock', [InventoryController::class, 'stock'])
-            ->name('pharmacy.stock.index');
+            ->name('pharmacy.stock.index')
+            ->middleware('clinic.feature:pharmacy');
 
         Route::get('/pharmacy/sales', [InventoryController::class, 'sales'])
-            ->name('pharmacy.sales.index');
+            ->name('pharmacy.sales.index')
+            ->middleware('clinic.feature:pharmacy');
     });

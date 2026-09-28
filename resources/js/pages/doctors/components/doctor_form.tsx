@@ -197,6 +197,11 @@ export default function DoctorForm({
             onSubmit={onSubmit}
             className="space-y-6 pt-2"
         >
+            {form.errors.plan && (
+                <p className="rounded-md border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300">
+                    {form.errors.plan}
+                </p>
+            )}
 
             {/* =================================================
                 Personal Information

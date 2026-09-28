@@ -39,36 +39,6 @@ Route::get('/', function () {
 
 
 
-// Route::post('clinic/login', [ClinicAuthController::class, 'store'])->name('clinic.login.store');
-
-// Route::middleware(['auth:clinic', 'verified'])->prefix('clinic')->group(function () {
-//     Route::get('dashboard', DashboardController::class)->name('dashboard');
-//     Route::resource('services', ClinicServiceController::class)->names('clinic.services');
-//     Route::resource('doctor-schedules', DoctorScheduleController::class);
-//     Route::resource('doctors', DoctorController::class);
-//     Route::resource('patients', PatientController::class);
-//     Route::get('payment-methods', [PaymentMethodController::class, 'index'])->name('payment-methods.index');
-//     Route::put('payment-methods/{paymentMethod}', [PaymentMethodController::class, 'update'])->name('payment-methods.update');
-//     Route::get('payments', [PaymentReportController::class, 'index'])->name('payments.index');
-//     Route::get('reports/stock', [ReportController::class, 'stock'])->name('reports.stock');
-//     Route::get('reports/operations', [ReportController::class, 'operations'])->name('reports.operations');
-//     Route::resource('reservations', ReservationController::class);
-//     Route::resource('consultations', ConsultationController::class)
-//         ->except(['create', 'edit']);
-//     Route::post(
-//         '/consultations/{consultation}/medical-record',
-//         [MedicalRecordController::class, 'store']
-//     )->name('consultations.medical-record.store');
-//     Route::resource('medical-records', MedicalRecordController::class)
-//         ->except(['edit']);
-//     Route::post('prescriptions', [PrescriptionController::class, 'store'])->name('prescriptions.store');
-//     Route::get('pos', [PosController::class, 'index'])->name('pos.index');
-//     Route::post('pos', [PosController::class, 'store'])->name('pos.store');
-//     Route::get('inventory', [InventoryController::class, 'index'])->name('inventory.index');
-//     Route::get('pharmacy/drugs', [InventoryController::class, 'drugs'])->name('pharmacy.drugs.index');
-//     Route::get('pharmacy/stock', [InventoryController::class, 'stock'])->name('pharmacy.stock.index');
-//     Route::get('pharmacy/sales', [InventoryController::class, 'sales'])->name('pharmacy.sales.index');
-// });
 require __DIR__ . '/clinic.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/settings.php';
