@@ -39,7 +39,6 @@ export default function EditDoctorDialog({
     doctor,
     specializations,
 }: EditDoctorDialogProps) {
-
     const {
         nrcStates = [],
         nrcTownships = [],
@@ -55,7 +54,8 @@ export default function EditDoctorDialog({
 
         complete_address: '',
         contact_number: '',
-        proof_of_identity : "",
+        proof_of_identity: '',
+        photo: null,
 
         nrc_state_id: '',
         nrc_township_id: '',
@@ -72,33 +72,26 @@ export default function EditDoctorDialog({
     });
 
     useEffect(() => {
-
         if (!doctor) {
             return;
         }
 
         form.setData({
-            first_name:
-                doctor.first_name ?? '',
+            first_name: doctor.first_name ?? '',
 
-            middle_name:
-                doctor.middle_name ?? '',
+            middle_name: doctor.middle_name ?? '',
 
-            last_name:
-                doctor.last_name ?? '',
+            last_name: doctor.last_name ?? '',
 
-            specialization_id:
-                doctor.specialization?.id
-                    ? String(
-                          doctor.specialization.id
-                      )
-                    : '',
+            specialization_id: doctor.specialization?.id
+                ? String(doctor.specialization.id)
+                : '',
 
-            complete_address:
-                doctor.complete_address ?? '',
+            complete_address: doctor.complete_address ?? '',
 
-            contact_number:
-                doctor.contact_number ?? '',
+            contact_number: doctor.contact_number ?? '',
+
+            photo: null,
 
             /* ==========================================
                NRC
@@ -106,82 +99,62 @@ export default function EditDoctorDialog({
 
             nrc_state_id:
                 doctor.nrc?.nrc_state_id != null
-                    ? String(
-                          doctor.nrc.nrc_state_id
-                      )
+                    ? String(doctor.nrc.nrc_state_id)
                     : '',
 
             nrc_township_id:
                 doctor.nrc?.nrc_township_id != null
-                    ? String(
-                          doctor.nrc
-                              .nrc_township_id
-                      )
+                    ? String(doctor.nrc.nrc_township_id)
                     : '',
 
             nrc_type_id:
                 doctor.nrc?.nrc_type_id != null
-                    ? String(
-                          doctor.nrc.nrc_type_id
-                      )
+                    ? String(doctor.nrc.nrc_type_id)
                     : '',
 
-            nrc_number:
-                doctor.nrc_number ?? '',
+            nrc_number: doctor.nrc_number ?? '',
 
             /* ==========================================
                Account
             ========================================== */
 
-            user_name:
-                doctor.user_name ?? '',
+            user_name: doctor.user_name ?? '',
 
-            email:
-                doctor?.email ?? '',
+            email: doctor?.email ?? '',
 
             password: '',
 
-            status:
-                doctor.status ?? 'active',
+            status: doctor.status ?? 'active',
 
             compensation_type:
-                doctor.clinics?.[0]?.pivot.compensation_type ?? 'per_appointment',
+                doctor.clinics?.[0]?.pivot.compensation_type ??
+                'per_appointment',
 
             compensation_rate:
                 doctor.clinics?.[0]?.pivot.compensation_rate != null
                     ? String(doctor.clinics[0].pivot.compensation_rate)
                     : '',
         });
-
     }, [doctor]);
 
-    const handleSubmit = (
-        e: React.FormEvent
-    ) => {
-
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!doctor) {
             return;
         }
 
-        form.put(
-            `/clinic/doctors/${doctor.id}`,
-            {
-                preserveScroll: true,
-
-                onSuccess: () => {
-                    form.reset();
-                    onOpenChange(false);
-                },
-            }
-        );
+        form.transform((data) => ({ ...data, _method: 'put' }));
+        form.post(`/clinic/doctors/${doctor.id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+                onOpenChange(false);
+            },
+        });
     };
 
-    const handleClose = (
-        value: boolean
-    ) => {
-
+    const handleClose = (value: boolean) => {
         if (!value) {
             form.clearErrors();
         }
@@ -190,22 +163,8 @@ export default function EditDoctorDialog({
     };
 
     return (
-        <Drawer
-            open={open}
-            onOpenChange={handleClose}
-            direction="right"
-        >
-            <DrawerContent
-                className="
-                    h-full
-                    w-full
-                    border-neutral-800
-                    bg-neutral-900
-                    text-white
-                    sm:max-w-2xl
-                "
-            >
-
+        <Drawer open={open} onOpenChange={handleClose} direction="right">
+            <DrawerContent className="h-full w-full border-neutral-800 bg-neutral-900 text-white sm:max-w-2xl">
                 <DrawerHeader className="border-b border-neutral-800">
                     <DrawerTitle className="text-white">
                         Edit Doctor
@@ -213,26 +172,18 @@ export default function EditDoctorDialog({
                 </DrawerHeader>
 
                 <div className="flex-1 overflow-y-auto px-6 py-4">
-
                     <DoctorForm
                         form={form}
-                        specializations={
-                            specializations ?? []
-                        }
+                        currentPhotoUrl={doctor?.photo_url}
+                        specializations={specializations ?? []}
                         mode="edit"
                         onSubmit={handleSubmit}
-                        onCancel={() =>
-                            handleClose(false)
-                        }
+                        onCancel={() => handleClose(false)}
                         nrcStates={nrcStates}
-                        nrcTownships={
-                            nrcTownships
-                        }
+                        nrcTownships={nrcTownships}
                         nrcTypes={nrcTypes}
                     />
-
                 </div>
-
             </DrawerContent>
         </Drawer>
     );

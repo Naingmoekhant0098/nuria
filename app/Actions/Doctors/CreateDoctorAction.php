@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class CreateDoctorAction
@@ -63,6 +64,14 @@ class CreateDoctorAction
             */
 
             if ($existingDoctor) {
+
+                if (! empty($data['photo_path'])) {
+                    $oldPhotoPath = $existingDoctor->photo_path;
+                    $existingDoctor->update(['photo_path' => $data['photo_path']]);
+                    if ($oldPhotoPath !== null) {
+                        Storage::disk('public')->delete($oldPhotoPath);
+                    }
+                }
 
                 if ($currentClinicId) {
                     $existingDoctor
@@ -164,6 +173,8 @@ class CreateDoctorAction
                 'contact_number' => $data['contact_number'],
 
                 'proof_of_identity' => $data['proof_of_identity'],
+
+                'photo_path' => $data['photo_path'] ?? null,
 
                 /*
                  * NRC

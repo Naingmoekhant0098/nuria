@@ -2,7 +2,6 @@ import { useForm, usePage } from '@inertiajs/react';
 import { UserPlus } from 'lucide-react';
 import React, { useState } from 'react';
 
-
 import { Button } from '@/components/ui/button';
 import {
     Drawer,
@@ -36,7 +35,6 @@ interface CreateDoctorDrawerProps {
 export default function CreateDoctorDrawer({
     specializations,
 }: CreateDoctorDrawerProps) {
-
     const [open, setOpen] = useState(false);
 
     const {
@@ -54,7 +52,8 @@ export default function CreateDoctorDrawer({
 
         complete_address: '',
         contact_number: '',
-        proof_of_identity : "",
+        proof_of_identity: '',
+        photo: null,
         nrc_state_id: '',
         nrc_township_id: '',
         nrc_type_id: '',
@@ -69,9 +68,7 @@ export default function CreateDoctorDrawer({
         compensation_rate: '',
     });
 
-    const handleSubmit = (
-        e: React.FormEvent
-    ) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         form.post('/clinic/doctors', {
@@ -91,11 +88,7 @@ export default function CreateDoctorDrawer({
     };
 
     return (
-        <Drawer
-            open={open}
-            onOpenChange={setOpen}
-            direction="right"
-        >
+        <Drawer open={open} onOpenChange={setOpen} direction="right">
             <DrawerTrigger asChild>
                 <Button
                     type="button"
@@ -106,25 +99,8 @@ export default function CreateDoctorDrawer({
                 </Button>
             </DrawerTrigger>
 
-            <DrawerContent
-                className="
-                    fixed
-                    inset-y-0
-                    right-0
-                    left-auto
-                    mt-0
-                    h-full
-                    w-full
-                    rounded-none
-                    border-l
-                    border-neutral-800
-                    bg-neutral-900
-                    text-white
-                    sm:max-w-2xl
-                "
-            >
+            <DrawerContent className="fixed inset-y-0 right-0 left-auto mt-0 h-full w-full rounded-none border-l border-neutral-800 bg-neutral-900 text-white sm:max-w-2xl">
                 <div className="flex h-full flex-col">
-
                     <DrawerHeader className="border-b border-neutral-800 px-6 py-5">
                         <DrawerTitle className="text-lg font-semibold text-white">
                             Create New Doctor
@@ -132,22 +108,16 @@ export default function CreateDoctorDrawer({
                     </DrawerHeader>
 
                     <div className="flex-1 overflow-y-auto px-6 py-5">
-
                         <DoctorForm
                             form={form}
-                            specializations={
-                                specializations ?? []
-                            }
+                            specializations={specializations ?? []}
                             mode="create"
                             onSubmit={handleSubmit}
                             onCancel={handleCancel}
                             nrcStates={nrcStates}
-                            nrcTownships={
-                                nrcTownships
-                            }
+                            nrcTownships={nrcTownships}
                             nrcTypes={nrcTypes}
                         />
-
                     </div>
                 </div>
             </DrawerContent>

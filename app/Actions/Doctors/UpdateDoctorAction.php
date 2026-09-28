@@ -68,6 +68,8 @@ class UpdateDoctorAction
 
                 'contact_number' => $data['contact_number'] ?? null,
 
+                'photo_path' => $data['photo_path'] ?? $doctor->photo_path,
+
                 'nrc_id' => $nrc?->id ?? $doctor->nrc_id,
 
                 'nrc_number' => $data['nrc_number'] ?? null,

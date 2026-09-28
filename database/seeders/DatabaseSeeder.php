@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -1201,6 +1202,13 @@ class DatabaseSeeder extends Seeder
 
             $doctorNumber++;
         }
+
+        DB::table('doctors')->whereNull('photo_path')->get(['id'])->each(function (object $doctor): void {
+            $photoPath = sprintf('doctors/demo-portrait-%02d.jpg', (abs(crc32($doctor->id)) % 8) + 1);
+            if (Storage::disk('public')->exists($photoPath)) {
+                DB::table('doctors')->where('id', $doctor->id)->update(['photo_path' => $photoPath]);
+            }
+        });
 
         /*
         |--------------------------------------------------------------------------

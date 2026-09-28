@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class Doctor extends Model
@@ -28,6 +29,7 @@ class Doctor extends Model
         'complete_address',
         'contact_number',
         'proof_of_identity',
+        'photo_path',
         'user_name',
         'nrc_number',
         'nrc_id',
@@ -40,6 +42,15 @@ class Doctor extends Model
     protected $hidden = [
         'password',
     ];
+
+    protected $appends = ['photo_url'];
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        return $this->photo_path === null
+            ? null
+            : Storage::disk('public')->url($this->photo_path);
+    }
 
     public function specialization(): BelongsTo
     {

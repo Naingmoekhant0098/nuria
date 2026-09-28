@@ -62,6 +62,8 @@ class StoreDoctorRequest extends FormRequest
 
             'proof_of_identity' => 'required|string',
 
+            'photo' => ['nullable', 'image', 'max:5120'],
+
             'user_name' => [
                 'required',
                 'string',

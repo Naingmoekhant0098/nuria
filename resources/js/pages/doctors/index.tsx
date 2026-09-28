@@ -13,7 +13,6 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-
 import CreateDoctorDialog from './components/create_doctor_dialog';
 import type {
     Doctor,
@@ -22,7 +21,6 @@ import type {
     NrcType,
 } from './components/doctor_form';
 import EditDoctorDialog from './components/edit_doctor_dialog';
-
 
 /* =========================================================
    Specialization
@@ -99,22 +97,17 @@ export default function Index() {
        Search
     ====================================================== */
 
-    const [search, setSearch] = useState(
-        filters?.search ?? ''
-    );
+    const [search, setSearch] = useState(filters?.search ?? '');
 
     /* =====================================================
        Edit
     ====================================================== */
 
-    const [isEditOpen, setIsEditOpen] =
-        useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
-    const [selectedDoctor, setSelectedDoctor] =
-        useState<Doctor | null>(null);
+    const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
 
-    const [isInitialMount, setIsInitialMount] =
-        useState(true);
+    const [isInitialMount, setIsInitialMount] = useState(true);
 
     /* =====================================================
        Search Effect
@@ -137,7 +130,7 @@ export default function Index() {
                     preserveState: true,
                     preserveScroll: true,
                     replace: true,
-                }
+                },
             );
         }, 300);
 
@@ -189,33 +182,24 @@ export default function Index() {
             .join(' ');
 
         const confirmed = window.confirm(
-            `Are you sure you want to delete Dr. ${doctorName}?`
+            `Are you sure you want to delete Dr. ${doctorName}?`,
         );
 
         if (!confirmed) {
             return;
         }
 
-        router.delete(
-            `/doctors/${doctor.id}`,
-            {
-                preserveScroll: true,
-            }
-        );
+        router.delete(`/doctors/${doctor.id}`, {
+            preserveScroll: true,
+        });
     };
 
     /* =====================================================
        Doctor Name
     ====================================================== */
 
-    const getDoctorName = (
-        doctor: Doctor
-    ): string => {
-        return [
-            doctor.first_name,
-            doctor.middle_name,
-            doctor.last_name,
-        ]
+    const getDoctorName = (doctor: Doctor): string => {
+        return [doctor.first_name, doctor.middle_name, doctor.last_name]
             .filter(Boolean)
             .join(' ');
     };
@@ -224,9 +208,7 @@ export default function Index() {
        Status Class
     ====================================================== */
 
-    const getStatusClass = (
-        status?: string | null
-    ): string => {
+    const getStatusClass = (status?: string | null): string => {
         switch ((status ?? '').toLowerCase()) {
             case 'active':
                 return 'border-emerald-500/20 bg-emerald-500/10 text-emerald-400';
@@ -245,7 +227,10 @@ export default function Index() {
     const getCompensationLabel = (doctor: Doctor): string => {
         const compensation = doctor.clinics?.[0]?.pivot;
 
-        if (compensation?.compensation_type == null || compensation.compensation_rate == null) {
+        if (
+            compensation?.compensation_type == null ||
+            compensation.compensation_rate == null
+        ) {
             return 'Not set';
         }
 
@@ -256,66 +241,51 @@ export default function Index() {
             commission_percentage: 'Commission',
         };
         const rate = Number(compensation.compensation_rate);
-        const formattedRate = compensation.compensation_type === 'commission_percentage'
-            ? rate + '%'
-            : rate.toLocaleString() + ' MMK';
+        const formattedRate =
+            compensation.compensation_type === 'commission_percentage'
+                ? rate + '%'
+                : rate.toLocaleString() + ' MMK';
 
-        return (labels[compensation.compensation_type] ?? compensation.compensation_type) + ': ' + formattedRate;
+        return (
+            (labels[compensation.compensation_type] ??
+                compensation.compensation_type) +
+            ': ' +
+            formattedRate
+        );
     };
 
     /* =====================================================
        NRC Display
     ====================================================== */
 
-    const getNrcDisplay = (
-        doctor: Doctor
-    ): string => {
-        const state =
-            doctor.nrc?.state?.name ?? '';
+    const getNrcDisplay = (doctor: Doctor): string => {
+        const state = doctor.nrc?.state?.name ?? '';
 
-        const township =
-            doctor.nrc?.township?.name ?? '';
+        const township = doctor.nrc?.township?.name ?? '';
 
-        const type =
-            doctor.nrc?.type?.name ?? '';
+        const type = doctor.nrc?.type?.name ?? '';
 
-        const number =
-            doctor.nrc_number ?? '';
+        const number = doctor.nrc_number ?? '';
 
-        if (
-            !state &&
-            !township &&
-            !type &&
-            !number
-        ) {
+        if (!state && !township && !type && !number) {
             return '-';
         }
 
-        const prefix = [
-            state,
-            township,
-        ]
-            .filter(Boolean)
-            .join('/');
+        const prefix = [state, township].filter(Boolean).join('/');
 
-        const typePart = type
-            ? `(${type})`
-            : '';
+        const typePart = type ? `(${type})` : '';
 
         return `${prefix}${typePart}${number}`;
     };
 
     return (
         <div className="min-h-screen bg-black p-8 text-gray-100">
-
             <div className="mx-auto max-w-7xl space-y-6">
-
                 {/* =================================================
                     Header
                 ================================================== */}
 
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-
                     <div>
                         <h1 className="text-xl font-extrabold tracking-tight text-white">
                             Doctor Management
@@ -325,7 +295,6 @@ export default function Index() {
                             Manage doctors and their professional information.
                         </p>
                     </div>
-
                 </div>
 
                 {/* =================================================
@@ -333,55 +302,40 @@ export default function Index() {
                 ================================================== */}
 
                 {doctors?.total > 0 && (
-
                     <div className="hidden">
-
                         <p className="text-sm text-gray-500">
-
                             Showing{' '}
-
                             <span className="font-medium text-gray-300">
                                 {doctors.from}
                             </span>{' '}
-
                             to{' '}
-
                             <span className="font-medium text-gray-300">
                                 {doctors.to}
                             </span>{' '}
-
                             of{' '}
-
                             <span className="font-medium text-gray-300">
                                 {doctors.total}
                             </span>{' '}
-
                             doctors
-
                         </p>
 
                         {search && (
                             <button
                                 type="button"
-                                onClick={() =>
-                                    setSearch('')
-                                }
+                                onClick={() => setSearch('')}
                                 className="text-sm text-indigo-400 hover:text-indigo-300"
                             >
                                 Clear search
                             </button>
                         )}
-
                     </div>
-
                 )}
 
                 {/* =================================================
                     Table
                 ================================================== */}
 
-                <div className="overflow-x-auto ">
-
+                <div className="overflow-x-auto">
                     <Table
                         clientPagination={false}
                         searchValue={search}
@@ -392,57 +346,52 @@ export default function Index() {
                             />
                         }
                     >
-
                         {/* =================================================
                             Header
                         ================================================== */}
 
                         <TableHeader className="bg-neutral-950">
-
                             <TableRow className="border-neutral-800 hover:bg-transparent">
-
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     Doctor
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     Specialization
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     NRC
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     Contact
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     Proof of Identity
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     Email
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     Username
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     Status
                                 </TableHead>
 
-                                <TableHead className="whitespace-nowrap text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     Compensation
                                 </TableHead>
 
                                 {/* <TableHead className="whitespace-nowrap text-right text-xs font-semibold tracking-wider text-gray-400 uppercase">
                                     Actions
                                 </TableHead> */}
-
                             </TableRow>
-
                         </TableHeader>
 
                         {/* =================================================
@@ -450,218 +399,171 @@ export default function Index() {
                         ================================================== */}
 
                         <TableBody>
-
                             {doctors?.data?.length > 0 ? (
-
-                                doctors.data.map(
-                                    (doctor) => (
-
-                                        <TableRow
-                                            key={doctor.id}
-                                            className="border-neutral-800 transition-colors hover:bg-neutral-800/50"
-                                        >
-
-                                            {/* =================================================
+                                doctors.data.map((doctor) => (
+                                    <TableRow
+                                        key={doctor.id}
+                                        className="border-neutral-800 transition-colors hover:bg-neutral-800/50"
+                                    >
+                                        {/* =================================================
                                                 Doctor
                                             ================================================== */}
 
-                                            <TableCell>
-
+                                        <TableCell>
+                                            <div className="flex items-center gap-3">
+                                                {doctor.photo_url ? (
+                                                    <img
+                                                        src={doctor.photo_url}
+                                                        alt={`${getDoctorName(doctor)} photo`}
+                                                        className="size-10 rounded-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="flex size-10 items-center justify-center rounded-full bg-neutral-800 text-xs font-semibold text-gray-300">
+                                                        {doctor.first_name.slice(
+                                                            0,
+                                                            1,
+                                                        )}
+                                                        {doctor.last_name.slice(
+                                                            0,
+                                                            1,
+                                                        )}
+                                                    </div>
+                                                )}
                                                 <div>
-
                                                     <div className="font-medium text-white">
                                                         Dr.{' '}
-                                                        {getDoctorName(
-                                                            doctor
-                                                        )}
+                                                        {getDoctorName(doctor)}
                                                     </div>
 
                                                     <div className="mt-1 text-xs text-gray-500">
-                                                        ID:{' '}
-                                                        {doctor.id}
+                                                        ID: {doctor.id}
                                                     </div>
-
                                                 </div>
+                                            </div>
+                                        </TableCell>
 
-                                            </TableCell>
-
-                                            {/* =================================================
+                                        {/* =================================================
                                                 Specialization
                                             ================================================== */}
 
-                                            <TableCell>
+                                        <TableCell>
+                                            <span className="text-gray-300">
+                                                {doctor.specialization?.name ??
+                                                    '-'}
+                                            </span>
+                                        </TableCell>
 
-                                                <span className="text-gray-300">
-                                                    {
-                                                        doctor
-                                                            .specialization
-                                                            ?.name ??
-                                                        '-'
-                                                    }
-                                                </span>
-
-                                            </TableCell>
-
-                                            {/* =================================================
+                                        {/* =================================================
                                                 NRC
                                             ================================================== */}
 
-                                            <TableCell>
+                                        <TableCell>
+                                            <span className="whitespace-nowrap text-gray-400">
+                                                {getNrcDisplay(doctor)}
+                                            </span>
+                                        </TableCell>
 
-                                                <span className="whitespace-nowrap text-gray-400">
-                                                    {getNrcDisplay(
-                                                        doctor
-                                                    )}
-                                                </span>
-
-                                            </TableCell>
-
-                                            {/* =================================================
+                                        {/* =================================================
                                                 Contact
                                             ================================================== */}
 
-                                            <TableCell>
+                                        <TableCell>
+                                            <span className="whitespace-nowrap text-gray-400">
+                                                {doctor.contact_number ?? '-'}
+                                            </span>
+                                        </TableCell>
 
-                                                <span className="whitespace-nowrap text-gray-400">
-                                                    {
-                                                        doctor
-                                                            .contact_number ??
-                                                        '-'
-                                                    }
-                                                </span>
-
-                                            </TableCell>
-
-                                            {/* =================================================
+                                        {/* =================================================
                                                 Proof of Identity
                                             ================================================== */}
 
-                                            <TableCell>
+                                        <TableCell>
+                                            <span className="whitespace-nowrap text-gray-400">
+                                                {doctor.proof_of_identity ??
+                                                    '-'}
+                                            </span>
+                                        </TableCell>
 
-                                                <span className="whitespace-nowrap text-gray-400">
-                                                    {
-                                                        doctor
-                                                            .proof_of_identity ??
-                                                        '-'
-                                                    }
-                                                </span>
-
-                                            </TableCell>
-
-                                            {/* =================================================
+                                        {/* =================================================
                                                 Email
                                             ================================================== */}
 
-                                            <TableCell>
+                                        <TableCell>
+                                            <span className="text-gray-400">
+                                                {doctor.email ?? '-'}
+                                            </span>
+                                        </TableCell>
 
-                                                <span className="text-gray-400">
-                                                    {
-                                                        doctor
-                                                            .email ??
-                                                        '-'
-                                                    }
-                                                </span>
-
-                                            </TableCell>
-
-                                            {/* =================================================
+                                        {/* =================================================
                                                 Username
                                             ================================================== */}
 
-                                            <TableCell>
+                                        <TableCell>
+                                            <span className="text-gray-400">
+                                                {doctor.user_name ?? '-'}
+                                            </span>
+                                        </TableCell>
 
-                                                <span className="text-gray-400">
-                                                    {
-                                                        doctor
-                                                            .user_name ??
-                                                        '-'
-                                                    }
-                                                </span>
-
-                                            </TableCell>
-
-                                            {/* =================================================
+                                        {/* =================================================
                                                 Status
                                             ================================================== */}
 
-                                            <TableCell>
+                                        <TableCell>
+                                            <span
+                                                className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${getStatusClass(
+                                                    doctor.status,
+                                                )}`}
+                                            >
+                                                {doctor.status ?? '-'}
+                                            </span>
+                                        </TableCell>
 
-                                                <span
-                                                    className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${getStatusClass(
-                                                        doctor.status
-                                                    )}`}
-                                                >
-                                                    {
-                                                        doctor
-                                                            .status ??
-                                                        '-'
-                                                    }
-                                                </span>
+                                        <TableCell className="whitespace-nowrap text-gray-300">
+                                            {getCompensationLabel(doctor)}
+                                        </TableCell>
 
-                                            </TableCell>
-
-                                            <TableCell className="whitespace-nowrap text-gray-300">
-                                                {getCompensationLabel(doctor)}
-                                            </TableCell>
-
-                                            {/* =================================================
+                                        {/* =================================================
                                                 Actions
                                             ================================================== */}
 
-                                            <TableCell className="text-right">
+                                        <TableCell className="text-right">
+                                            <div className="flex justify-end gap-2">
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    onClick={() =>
+                                                        handleEdit(doctor)
+                                                    }
+                                                    className="border-neutral-700 bg-transparent text-gray-300 hover:bg-neutral-800"
+                                                >
+                                                    Edit
+                                                </Button>
 
-                                                <div className="flex justify-end gap-2">
-
-                                                    <Button
-                                                        size="sm"
-                                                        variant="outline"
-                                                        onClick={() =>
-                                                            handleEdit(
-                                                                doctor
-                                                            )
-                                                        }
-                                                        className="border-neutral-700 bg-transparent text-gray-300 hover:bg-neutral-800"
-                                                    >
-                                                        Edit
-                                                    </Button>
-
-                                                    <Button
-                                                        size="sm"
-                                                        variant="destructive"
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                doctor
-                                                            )
-                                                        }
-                                                        className="border border-red-900 bg-red-600/20 text-red-400 hover:bg-red-600/30"
-                                                    >
-                                                        Delete
-                                                    </Button>
-
-                                                </div>
-
-                                            </TableCell>
-
-                                        </TableRow>
-
-                                    )
-                                )
-
+                                                <Button
+                                                    size="sm"
+                                                    variant="destructive"
+                                                    onClick={() =>
+                                                        handleDelete(doctor)
+                                                    }
+                                                    className="border border-red-900 bg-red-600/20 text-red-400 hover:bg-red-600/30"
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
                             ) : (
-
                                 /* =================================================
                                    Empty State
                                 ================================================== */
 
                                 <TableRow className="border-neutral-800">
-
                                     <TableCell
                                         colSpan={10}
                                         className="h-32 text-center"
                                     >
-
                                         <div className="flex flex-col items-center justify-center gap-2">
-
                                             <p className="text-sm font-medium text-gray-400">
                                                 No doctors found
                                             </p>
@@ -671,89 +573,57 @@ export default function Index() {
                                                     Try a different search term.
                                                 </p>
                                             )}
-
                                         </div>
-
                                     </TableCell>
-
                                 </TableRow>
-
                             )}
-
                         </TableBody>
-
                     </Table>
-
                 </div>
 
                 {/* =================================================
                     Pagination
                 ================================================== */}
 
-                {doctors?.links &&
-                    doctors.links.length > 3 && (
-
+                {doctors?.links && doctors.links.length > 3 && (
                     <div className="flex items-center justify-between">
-
                         <div className="text-sm text-gray-500">
-
                             Page{' '}
-
                             <span className="text-gray-300">
                                 {doctors.current_page}
                             </span>{' '}
-
                             of{' '}
-
                             <span className="text-gray-300">
                                 {doctors.last_page}
                             </span>
-
                         </div>
 
                         <div className="flex items-center gap-1.5">
+                            {doctors.links.map((link, index) => {
+                                const Component = link.url ? Link : 'span';
 
-                            {doctors.links.map(
-                                (
-                                    link,
-                                    index
-                                ) => {
-
-                                    const Component =
-                                        link.url
-                                            ? Link
-                                            : 'span';
-
-                                    return (
-                                        <Component
-                                            key={index}
-                                            href={
-                                                link.url ||
-                                                '#'
-                                            }
-                                            preserveScroll
-                                            dangerouslySetInnerHTML={{
-                                                __html:
-                                                    link.label,
-                                            }}
-                                            className={`rounded-lg border px-3.5 py-2 text-xs font-medium transition-all ${
-                                                link.active
-                                                    ? 'border-indigo-600 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
-                                                    : 'border-neutral-800 bg-neutral-900 text-gray-300 hover:border-neutral-700 hover:bg-neutral-800'
-                                            } ${
-                                                !link.url
-                                                    ? 'cursor-not-allowed opacity-40'
-                                                    : ''
-                                            }`}
-                                        />
-                                    );
-                                }
-                            )}
-
+                                return (
+                                    <Component
+                                        key={index}
+                                        href={link.url || '#'}
+                                        preserveScroll
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
+                                        className={`rounded-lg border px-3.5 py-2 text-xs font-medium transition-all ${
+                                            link.active
+                                                ? 'border-indigo-600 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                                                : 'border-neutral-800 bg-neutral-900 text-gray-300 hover:border-neutral-700 hover:bg-neutral-800'
+                                        } ${
+                                            !link.url
+                                                ? 'cursor-not-allowed opacity-40'
+                                                : ''
+                                        }`}
+                                    />
+                                );
+                            })}
                         </div>
-
                     </div>
-
                 )}
 
                 {/* =================================================
@@ -762,18 +632,11 @@ export default function Index() {
 
                 <EditDoctorDialog
                     open={isEditOpen}
-                    onOpenChange={
-                        handleEditClose
-                    }
+                    onOpenChange={handleEditClose}
                     doctor={selectedDoctor}
-                    specializations={
-                        specializations
-                    }
-                    
+                    specializations={specializations}
                 />
-
             </div>
-
         </div>
     );
 }

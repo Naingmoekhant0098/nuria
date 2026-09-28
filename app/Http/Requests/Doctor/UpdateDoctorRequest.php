@@ -75,6 +75,8 @@ class UpdateDoctorRequest extends FormRequest
                 'string',
             ],
 
+            'photo' => ['nullable', 'image', 'max:5120'],
+
             'user_name' => [
                 'required',
                 'string',

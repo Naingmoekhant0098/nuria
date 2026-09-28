@@ -14,6 +14,7 @@ use App\Models\NrcTownship;
 use App\Models\NrcType;
 use App\Models\Specialization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -90,8 +91,11 @@ class DoctorController extends Controller
         StoreDoctorRequest $request,
         CreateDoctorAction $action
     ) {
+        $data = $request->validated();
+        $data['photo_path'] = $request->file('photo')?->store('doctors', 'public');
+
         $action->execute(
-            $request->validated()
+            $data
         );
 
         return redirect()
@@ -109,10 +113,18 @@ class DoctorController extends Controller
     ) {
         abort_unless($doctor->clinics()->whereKey(auth()->user()->id)->exists(), 404);
 
+        $oldPhotoPath = $doctor->photo_path;
+        $data = $request->validated();
+        $data['photo_path'] = $request->file('photo')?->store('doctors', 'public');
+
         $action->execute(
             $doctor,
-            $request->validated()
+            $data
         );
+
+        if ($data['photo_path'] !== null && $oldPhotoPath !== null) {
+            Storage::disk('public')->delete($oldPhotoPath);
+        }
 
         return redirect()
             ->route('doctors.index')
