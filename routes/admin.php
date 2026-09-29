@@ -37,7 +37,6 @@ Route::prefix('admin')
             ->name('admin.register.store');
     });
 
-// Admin Logout
 Route::post('/admin/logout', [AdminAuthController::class, 'destroy'])
     ->middleware(['auth:admin', 'admin'])
     ->name('admin.logout');

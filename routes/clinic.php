@@ -1,4 +1,4 @@
- <?php
+<?php
 
 use App\Http\Controllers\Clinic\ClinicAuthController;
 use App\Http\Controllers\Clinic\ClinicServiceController;

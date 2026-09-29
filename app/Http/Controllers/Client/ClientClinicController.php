@@ -81,15 +81,15 @@ class ClientClinicController extends Controller
      */
     public function show(Clinic $clinic): Response
     {
-        abort_unless(
-            $clinic->status === 'active',
-            404
-        );
+        // abort_unless(
+        //     $clinic->status === 'active',
+        //     404
+        // );
 
-        $clinic->loadCount('doctors');
+        // $clinic->loadCount('doctors');
 
         return Inertia::render('Client/Clinics/Show', [
-            'clinic' => $clinic,
+            // 'clinic' => $clinic,
         ]);
     }
 

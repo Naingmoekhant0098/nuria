@@ -52,6 +52,7 @@
         "clsx": "^2.1.1",
         "cn": "^0.3.0",
         "concurrently": "^9.0.1",
+        "framer-motion": "^13.4.4",
         "globals": "^15.14.0",
         "kilo": "^0.0.0",
         "laravel-vite-plugin": "^3.0.0",

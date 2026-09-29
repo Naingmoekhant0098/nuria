@@ -9,7 +9,7 @@ import {
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { logout as clinicLogout } from '@/routes/clinic';
-import { logout } from '@/routes';
+// Removed the import for 'logout' as it is not exported from '@/routes'
 import { logout as adminLogout } from '@/routes/admin';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
@@ -56,7 +56,7 @@ export function UserMenuContent({ user }: Props) {
             <DropdownMenuItem asChild>
                 <Link
                     className="block w-full cursor-pointer"
-                    href={isAdmin ? adminLogout() : isClinic ? clinicLogout() : logout()}
+                    href={isAdmin ? adminLogout() : clinicLogout()}
                     method="post"
                     as="button"
                     onClick={handleLogout}
