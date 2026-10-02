@@ -78,7 +78,7 @@ export default function Index() {
 
         const timer = setTimeout(() => {
             router.get(
-                '/patients',
+                '/clinic/patients',
                 {
                     search: search || undefined,
                 },

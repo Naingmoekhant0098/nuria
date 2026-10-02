@@ -18,6 +18,7 @@ class UpdateClinicRequest extends FormRequest
             'clinic_name' => 'sometimes|required|string|max:255',
             'clinic_permit' => 'sometimes|required|string|max:255',
             'complete_address' => 'sometimes|required|string',
+            'photo' => ['nullable', 'image', 'max:5120'],
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'status' => 'sometimes|required|string',

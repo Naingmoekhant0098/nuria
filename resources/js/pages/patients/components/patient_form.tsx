@@ -55,10 +55,12 @@ export interface Patient {
     first_name: string;
     middle_name?: string | null;
     last_name: string;
+    gender?: string | null;
 
     birthdate?: string | null;
 
     complete_address: string;
+    region?: string | null;
     contact_number: string;
     proof_of_identity: string;
 
@@ -78,10 +80,12 @@ export interface PatientFormData {
     first_name: string;
     middle_name: string;
     last_name: string;
+    gender: string;
 
     birthdate: string;
 
     complete_address: string;
+    region: string;
     contact_number: string;
 
     nrc_state_id: string;
@@ -97,17 +101,13 @@ export interface PatientFormData {
 }
 
 interface PatientFormProps {
-    form: ReturnType<
-        typeof useForm<PatientFormData>
-    >;
+    form: ReturnType<typeof useForm<PatientFormData>>;
 
     mode: 'create' | 'edit';
 
     onCancel: () => void;
 
-    onSubmit: (
-        e: React.FormEvent
-    ) => void;
+    onSubmit: (e: React.FormEvent) => void;
 
     nrcStates: NrcState[];
     nrcTownships: NrcTownship[];
@@ -123,19 +123,13 @@ export default function PatientForm({
     nrcTownships,
     nrcTypes,
 }: PatientFormProps) {
-
-    const filteredTownships =
-        nrcTownships.filter(
-            (township) =>
-                String(township.state_id) ===
-                String(form.data.nrc_state_id)
-        );
+    const filteredTownships = nrcTownships.filter(
+        (township) =>
+            String(township.state_id) === String(form.data.nrc_state_id),
+    );
 
     return (
-        <form
-            onSubmit={onSubmit}
-            className="space-y-5 pt-2"
-        >
+        <form onSubmit={onSubmit} className="space-y-5 pt-2">
             {form.errors.plan && (
                 <p className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
                     {form.errors.plan}
@@ -144,17 +138,13 @@ export default function PatientForm({
 
             {/* Name */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-
                 <div className="space-y-2">
                     <Label>First Name</Label>
 
                     <Input
                         value={form.data.first_name}
                         onChange={(e) =>
-                            form.setData(
-                                'first_name',
-                                e.target.value
-                            )
+                            form.setData('first_name', e.target.value)
                         }
                         placeholder="First name"
                         className="border-neutral-800 bg-neutral-950 text-white"
@@ -173,10 +163,7 @@ export default function PatientForm({
                     <Input
                         value={form.data.middle_name}
                         onChange={(e) =>
-                            form.setData(
-                                'middle_name',
-                                e.target.value
-                            )
+                            form.setData('middle_name', e.target.value)
                         }
                         placeholder="Middle name"
                         className="border-neutral-800 bg-neutral-950 text-white"
@@ -195,10 +182,7 @@ export default function PatientForm({
                     <Input
                         value={form.data.last_name}
                         onChange={(e) =>
-                            form.setData(
-                                'last_name',
-                                e.target.value
-                            )
+                            form.setData('last_name', e.target.value)
                         }
                         placeholder="Last name"
                         className="border-neutral-800 bg-neutral-950 text-white"
@@ -219,12 +203,7 @@ export default function PatientForm({
                 <Input
                     type="date"
                     value={form.data.birthdate}
-                    onChange={(e) =>
-                        form.setData(
-                            'birthdate',
-                            e.target.value
-                        )
-                    }
+                    onChange={(e) => form.setData('birthdate', e.target.value)}
                     className="border-neutral-800 bg-neutral-950 text-white"
                 />
 
@@ -235,6 +214,39 @@ export default function PatientForm({
                 )}
             </div>
 
+            <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                    <Label>Gender</Label>
+                    <Select
+                        value={form.data.gender}
+                        onValueChange={(value) => form.setData('gender', value)}
+                    >
+                        <SelectTrigger className="border-neutral-800 bg-neutral-950 text-white">
+                            <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                        <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
+                            <SelectItem value="Male">Male</SelectItem>
+                            <SelectItem value="Female">Female</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-2">
+                    <Label>Region</Label>
+                    <Input
+                        value={form.data.region}
+                        onChange={(e) => form.setData('region', e.target.value)}
+                        placeholder="Yangon Region"
+                        className="border-neutral-800 bg-neutral-950 text-white"
+                    />
+                    {form.errors.region && (
+                        <p className="text-xs text-red-500">
+                            {form.errors.region}
+                        </p>
+                    )}
+                </div>
+            </div>
+
             {/* Contact */}
             <div className="space-y-2">
                 <Label>Contact Number</Label>
@@ -243,10 +255,7 @@ export default function PatientForm({
                     type="tel"
                     value={form.data.contact_number}
                     onChange={(e) =>
-                        form.setData(
-                            'contact_number',
-                            e.target.value
-                        )
+                        form.setData('contact_number', e.target.value)
                     }
                     placeholder="09xxxxxxxxx"
                     className="border-neutral-800 bg-neutral-950 text-white"
@@ -266,10 +275,7 @@ export default function PatientForm({
                 <textarea
                     value={form.data.complete_address}
                     onChange={(e) =>
-                        form.setData(
-                            'complete_address',
-                            e.target.value
-                        )
+                        form.setData('complete_address', e.target.value)
                     }
                     placeholder="Enter complete address"
                     rows={3}
@@ -285,11 +291,8 @@ export default function PatientForm({
 
             {/* NRC */}
             <div className="space-y-4">
-
                 <div>
-                    <Label className="text-base">
-                        NRC Information
-                    </Label>
+                    <Label className="text-base">NRC Information</Label>
 
                     <p className="mt-1 text-xs text-gray-500">
                         Example: 12/MBAND(N)99893
@@ -297,26 +300,17 @@ export default function PatientForm({
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-
                     {/* State */}
                     <div className="space-y-2">
                         <Label>NRC State</Label>
 
                         <Select
-                            value={
-                                form.data.nrc_state_id
-                            }
+                            value={form.data.nrc_state_id}
                             onValueChange={(value) => {
-                                form.setData(
-                                    'nrc_state_id',
-                                    value
-                                );
+                                form.setData('nrc_state_id', value);
 
                                 // Reset township when state changes
-                                form.setData(
-                                    'nrc_township_id',
-                                    ''
-                                );
+                                form.setData('nrc_township_id', '');
                             }}
                         >
                             <SelectTrigger className="border-neutral-800 bg-neutral-950 text-white">
@@ -324,27 +318,20 @@ export default function PatientForm({
                             </SelectTrigger>
 
                             <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                                {nrcStates.map(
-                                    (state) => (
-                                        <SelectItem
-                                            key={state.id}
-                                            value={String(
-                                                state.id
-                                            )}
-                                        >
-                                            {state.name}
-                                        </SelectItem>
-                                    )
-                                )}
+                                {nrcStates.map((state) => (
+                                    <SelectItem
+                                        key={state.id}
+                                        value={String(state.id)}
+                                    >
+                                        {state.name}
+                                    </SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
 
                         {form.errors.nrc_state_id && (
                             <p className="text-xs text-red-500">
-                                {
-                                    form.errors
-                                        .nrc_state_id
-                                }
+                                {form.errors.nrc_state_id}
                             </p>
                         )}
                     </div>
@@ -354,52 +341,31 @@ export default function PatientForm({
                         <Label>NRC Township</Label>
 
                         <Select
-                            value={
-                                form.data
-                                    .nrc_township_id
-                            }
+                            value={form.data.nrc_township_id}
                             onValueChange={(value) =>
-                                form.setData(
-                                    'nrc_township_id',
-                                    value
-                                )
+                                form.setData('nrc_township_id', value)
                             }
-                            disabled={
-                                !form.data
-                                    .nrc_state_id
-                            }
+                            disabled={!form.data.nrc_state_id}
                         >
                             <SelectTrigger className="border-neutral-800 bg-neutral-950 text-white">
                                 <SelectValue placeholder="Township" />
                             </SelectTrigger>
 
                             <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                                {filteredTownships.map(
-                                    (township) => (
-                                        <SelectItem
-                                            key={
-                                                township.id
-                                            }
-                                            value={String(
-                                                township.id
-                                            )}
-                                        >
-                                            {
-                                                township.name
-                                            }
-                                        </SelectItem>
-                                    )
-                                )}
+                                {filteredTownships.map((township) => (
+                                    <SelectItem
+                                        key={township.id}
+                                        value={String(township.id)}
+                                    >
+                                        {township.name}
+                                    </SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
 
-                        {form.errors
-                            .nrc_township_id && (
+                        {form.errors.nrc_township_id && (
                             <p className="text-xs text-red-500">
-                                {
-                                    form.errors
-                                        .nrc_township_id
-                                }
+                                {form.errors.nrc_township_id}
                             </p>
                         )}
                     </div>
@@ -409,14 +375,9 @@ export default function PatientForm({
                         <Label>NRC Type</Label>
 
                         <Select
-                            value={
-                                form.data.nrc_type_id
-                            }
+                            value={form.data.nrc_type_id}
                             onValueChange={(value) =>
-                                form.setData(
-                                    'nrc_type_id',
-                                    value
-                                )
+                                form.setData('nrc_type_id', value)
                             }
                         >
                             <SelectTrigger className="border-neutral-800 bg-neutral-950 text-white">
@@ -424,27 +385,20 @@ export default function PatientForm({
                             </SelectTrigger>
 
                             <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                                {nrcTypes.map(
-                                    (type) => (
-                                        <SelectItem
-                                            key={type.id}
-                                            value={String(
-                                                type.id
-                                            )}
-                                        >
-                                            {type.name}
-                                        </SelectItem>
-                                    )
-                                )}
+                                {nrcTypes.map((type) => (
+                                    <SelectItem
+                                        key={type.id}
+                                        value={String(type.id)}
+                                    >
+                                        {type.name}
+                                    </SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
 
                         {form.errors.nrc_type_id && (
                             <p className="text-xs text-red-500">
-                                {
-                                    form.errors
-                                        .nrc_type_id
-                                }
+                                {form.errors.nrc_type_id}
                             </p>
                         )}
                     </div>
@@ -455,14 +409,9 @@ export default function PatientForm({
                     <Label>NRC Number</Label>
 
                     <Input
-                        value={
-                            form.data.nrc_number
-                        }
+                        value={form.data.nrc_number}
                         onChange={(e) =>
-                            form.setData(
-                                'nrc_number',
-                                e.target.value
-                            )
+                            form.setData('nrc_number', e.target.value)
                         }
                         placeholder="99893"
                         maxLength={50}
@@ -471,10 +420,7 @@ export default function PatientForm({
 
                     {form.errors.nrc_number && (
                         <p className="text-xs text-red-500">
-                            {
-                                form.errors
-                                    .nrc_number
-                            }
+                            {form.errors.nrc_number}
                         </p>
                     )}
                 </div>
@@ -485,51 +431,27 @@ export default function PatientForm({
                     form.data.nrc_type_id ||
                     form.data.nrc_number) && (
                     <div className="rounded-lg border border-neutral-800 bg-neutral-950 p-3">
-                        <p className="text-xs text-gray-500">
-                            NRC Preview
-                        </p>
+                        <p className="text-xs text-gray-500">NRC Preview</p>
 
                         <p className="mt-1 font-medium text-white">
-                            {
-                                nrcStates.find(
-                                    (state) =>
-                                        String(
-                                            state.id
-                                        ) ===
-                                        String(
-                                            form.data
-                                                .nrc_state_id
-                                        )
-                                )?.name ?? ''
-                            }
+                            {nrcStates.find(
+                                (state) =>
+                                    String(state.id) ===
+                                    String(form.data.nrc_state_id),
+                            )?.name ?? ''}
                             /
-                            {
-                                nrcTownships.find(
-                                    (township) =>
-                                        String(
-                                            township.id
-                                        ) ===
-                                        String(
-                                            form.data
-                                                .nrc_township_id
-                                        )
-                                )?.name ?? ''
-                            }
+                            {nrcTownships.find(
+                                (township) =>
+                                    String(township.id) ===
+                                    String(form.data.nrc_township_id),
+                            )?.name ?? ''}
                             (
-                            {
-                                nrcTypes.find(
-                                    (type) =>
-                                        String(
-                                            type.id
-                                        ) ===
-                                        String(
-                                            form.data
-                                                .nrc_type_id
-                                        )
-                                )?.name ?? ''
-                            }
-                            )
-                            {form.data.nrc_number}
+                            {nrcTypes.find(
+                                (type) =>
+                                    String(type.id) ===
+                                    String(form.data.nrc_type_id),
+                            )?.name ?? ''}
+                            ){form.data.nrc_number}
                         </p>
                     </div>
                 )}
@@ -537,7 +459,6 @@ export default function PatientForm({
 
             {/* Account */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-
                 {/* Email */}
                 <div className="space-y-2">
                     <Label>Email</Label>
@@ -545,12 +466,7 @@ export default function PatientForm({
                     <Input
                         type="email"
                         value={form.data.email}
-                        onChange={(e) =>
-                            form.setData(
-                                'email',
-                                e.target.value
-                            )
-                        }
+                        onChange={(e) => form.setData('email', e.target.value)}
                         placeholder="patient@example.com"
                         autoComplete="email"
                         className="border-neutral-800 bg-neutral-950 text-white"
@@ -570,10 +486,7 @@ export default function PatientForm({
                     <Input
                         value={form.data.user_name}
                         onChange={(e) =>
-                            form.setData(
-                                'user_name',
-                                e.target.value
-                            )
+                            form.setData('user_name', e.target.value)
                         }
                         placeholder="Patient username"
                         autoComplete="username"
@@ -592,7 +505,6 @@ export default function PatientForm({
             <div className="space-y-2">
                 <Label>
                     Password
-
                     {mode === 'edit' && (
                         <span className="ml-1 text-xs text-gray-500">
                             (leave blank to keep current)
@@ -603,12 +515,7 @@ export default function PatientForm({
                 <Input
                     type="password"
                     value={form.data.password}
-                    onChange={(e) =>
-                        form.setData(
-                            'password',
-                            e.target.value
-                        )
-                    }
+                    onChange={(e) => form.setData('password', e.target.value)}
                     placeholder={
                         mode === 'edit'
                             ? 'Leave blank to keep current'
@@ -631,38 +538,26 @@ export default function PatientForm({
 
                 <Select
                     value={form.data.status}
-                    onValueChange={(value) =>
-                        form.setData(
-                            'status',
-                            value
-                        )
-                    }
+                    onValueChange={(value) => form.setData('status', value)}
                 >
                     <SelectTrigger className="w-full border-neutral-800 bg-neutral-950 text-white">
                         <SelectValue placeholder="Select status" />
                     </SelectTrigger>
 
                     <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                        <SelectItem value="active">
-                            Active
-                        </SelectItem>
+                        <SelectItem value="active">Active</SelectItem>
 
-                        <SelectItem value="inactive">
-                            Inactive
-                        </SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
                     </SelectContent>
                 </Select>
 
                 {form.errors.status && (
-                    <p className="text-xs text-red-500">
-                        {form.errors.status}
-                    </p>
+                    <p className="text-xs text-red-500">{form.errors.status}</p>
                 )}
             </div>
 
             {/* Actions */}
             <div className="flex justify-end gap-2 pt-4">
-
                 <Button
                     type="button"
                     variant="outline"
@@ -682,8 +577,8 @@ export default function PatientForm({
                             ? 'Saving...'
                             : 'Updating...'
                         : mode === 'create'
-                            ? 'Save Patient'
-                            : 'Update Patient'}
+                          ? 'Save Patient'
+                          : 'Update Patient'}
                 </Button>
             </div>
         </form>

@@ -18,6 +18,7 @@ class StoreClinicRequest extends FormRequest
             'clinic_name' => 'required|string|max:255',
             'clinic_permit' => 'required|string|max:255',
             'complete_address' => 'required|string',
+            'photo' => ['nullable', 'image', 'max:5120'],
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'status' => 'required|string',

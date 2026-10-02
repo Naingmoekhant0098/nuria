@@ -33,9 +33,29 @@ return Application::configure(basePath: dirname(__DIR__))
             'patient.api' => EnsurePatientApi::class,
         ]);
 
-        $middleware->redirectGuestsTo(fn (Request $request): string => $request->is('admin/*')
-            ? route('admin.login')
-            : route('clinic.login'));
+        $middleware->redirectGuestsTo(function (Request $request): string {
+            if ($request->is('admin/*')) {
+                return route('admin.login');
+            }
+
+            if ($request->routeIs('client.*')) {
+                return route('client.login');
+            }
+
+            return route('clinic.login');
+        });
+
+        $middleware->redirectUsersTo(function (Request $request): string {
+            if ($request->routeIs('client.*')) {
+                return route('client.profile');
+            }
+
+            if ($request->is('admin/*')) {
+                return route('admin.dashboard');
+            }
+
+            return route('dashboard');
+        });
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 

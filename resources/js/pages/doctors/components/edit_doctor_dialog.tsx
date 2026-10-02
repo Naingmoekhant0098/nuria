@@ -49,10 +49,14 @@ export default function EditDoctorDialog({
         first_name: '',
         middle_name: '',
         last_name: '',
+        birthdate: '',
+        gender: '',
 
         specialization_id: '',
 
         complete_address: '',
+        about: '',
+        region: '',
         contact_number: '',
         proof_of_identity: '',
         photo: null,
@@ -83,11 +87,16 @@ export default function EditDoctorDialog({
 
             last_name: doctor.last_name ?? '',
 
+            birthdate: doctor.birthdate?.substring(0, 10) ?? '',
+            gender: doctor.gender ?? '',
+
             specialization_id: doctor.specialization?.id
                 ? String(doctor.specialization.id)
                 : '',
 
             complete_address: doctor.complete_address ?? '',
+            about: doctor.about ?? '',
+            region: doctor.region ?? '',
 
             contact_number: doctor.contact_number ?? '',
 

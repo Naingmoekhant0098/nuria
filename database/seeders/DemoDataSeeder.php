@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class DemoDataSeeder extends Seeder
 {
@@ -15,6 +14,18 @@ class DemoDataSeeder extends Seeder
         $target = 120;
         $now = now();
         $password = Hash::make('password123');
+        $clinicImages = [
+            'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1200&q=80',
+        ];
+        $doctorImages = [
+            'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80',
+        ];
+        $localImage = '/images/healthcare-demo.jpg';
+        $clinicImages = [$localImage, $localImage];
+        $doctorImages = [$localImage, $localImage, $localImage];
 
         /*
         |--------------------------------------------------------------------------
@@ -156,6 +167,8 @@ class DemoDataSeeder extends Seeder
                     $doctorNumber
                 ),
 
+                'photo_path' => $doctorImages[$doctorNumber % count($doctorImages)],
+
                 'email' => sprintf(
                     'demo.doctor.%03d@example.test',
                     $doctorNumber
@@ -188,11 +201,12 @@ class DemoDataSeeder extends Seeder
             $doctorNumber++;
         }
 
-        DB::table('doctors')->whereNull('photo_path')->get(['id'])->each(function (object $doctor): void {
-            $photoPath = sprintf('doctors/demo-portrait-%02d.jpg', (abs(crc32($doctor->id)) % 8) + 1);
-            if (Storage::disk('public')->exists($photoPath)) {
-                DB::table('doctors')->where('id', $doctor->id)->update(['photo_path' => $photoPath]);
-            }
+        DB::table('doctors')->where(function ($query): void {
+            $query->whereNull('photo_path')->orWhere('photo_path', 'like', 'https://images.unsplash.com/%');
+        })->get(['id'])->each(function (object $doctor) use ($doctorImages): void {
+            DB::table('doctors')->where('id', $doctor->id)->update([
+                'photo_path' => $doctorImages[abs(crc32($doctor->id)) % count($doctorImages)],
+            ]);
         });
 
         /*
@@ -287,6 +301,8 @@ class DemoDataSeeder extends Seeder
                     $clinicNumber
                 ),
 
+                'photo_path' => $clinicImages[$clinicNumber % count($clinicImages)],
+
                 'latitude' => 16.80 + (
                     random_int(1, 999) / 10000
                 ),
@@ -306,6 +322,10 @@ class DemoDataSeeder extends Seeder
             ]);
 
             $clinicIds[] = $clinicId;
+
+            DB::table('clinics')->where('id', $clinicId)->where(function ($query): void {
+                $query->whereNull('photo_path')->orWhere('photo_path', 'like', 'https://images.unsplash.com/%');
+            })->update(['photo_path' => $localImage]);
 
             /*
             |--------------------------------------------------------------------------

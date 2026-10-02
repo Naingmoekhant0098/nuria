@@ -82,8 +82,12 @@ class UpdatePatientAction
 
                 'birthdate' => $data['birthdate'],
 
+                'gender' => $data['gender'] ?? null,
+
                 'contact_number' => $data['contact_number'],
                 'complete_address' => $data['complete_address'],
+
+                'region' => $data['region'] ?? null,
 
                 // NRC
                 'nrc_id' => $nrc->id,

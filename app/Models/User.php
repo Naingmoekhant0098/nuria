@@ -42,7 +42,7 @@ class User extends Authenticatable
         return [
             'super_admin' => [
                 'label' => 'Super admin',
-                'permissions' => ['dashboard.view', 'clinics.manage', 'admins.manage', 'doctors.view', 'patients.view', 'reservations.view', 'inventory.manage', 'reports.view', 'finance.view', 'roles.manage', 'permissions.view', 'orders.manage'],
+                'permissions' => ['dashboard.view', 'clinics.manage', 'admins.manage', 'doctors.view', 'patients.view', 'reservations.view', 'inventory.manage', 'reports.view', 'finance.view', 'roles.manage', 'permissions.view', 'orders.manage', 'specializations.manage'],
             ],
             'operations_manager' => [
                 'label' => 'Operations manager',
@@ -75,6 +75,7 @@ class User extends Authenticatable
             'roles.manage' => 'Manage roles and role permissions',
             'permissions.view' => 'View permission catalog',
             'orders.manage' => 'View and manage online orders',
+            'specializations.manage' => 'Manage doctor specializations',
         ];
     }
 

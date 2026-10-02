@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Clinic\StoreClinicRequest;
 use App\Http\Requests\Clinic\UpdateClinicRequest;
 use App\Models\Clinic;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -32,8 +34,11 @@ class ClinicController extends Controller
     public function store(
         StoreClinicRequest $request,
         CreateClinicAction $action
-    ) {
-        $action->execute($request->validated());
+    ): RedirectResponse {
+        $data = $request->validated();
+        $data['photo_path'] = $request->file('photo')?->store('clinics', 'public');
+
+        $action->execute($data);
 
         return redirect()
             ->route('admin.clinics.index')
@@ -44,11 +49,23 @@ class ClinicController extends Controller
         UpdateClinicRequest $request,
         Clinic $clinic,
         UpdateClinicAction $action
-    ) {
+    ): RedirectResponse {
+        $oldPhotoPath = $clinic->photo_path;
+        $data = $request->validated();
+        $newPhotoPath = $request->file('photo')?->store('clinics', 'public');
+
+        if ($newPhotoPath !== null) {
+            $data['photo_path'] = $newPhotoPath;
+        }
+
         $action->execute(
             $clinic,
-            $request->validated()
+            $data
         );
+
+        if ($newPhotoPath !== null && $oldPhotoPath !== null && ! str_starts_with($oldPhotoPath, 'http')) {
+            Storage::disk('public')->delete($oldPhotoPath);
+        }
 
         return redirect()
             ->route('admin.clinics.index')
@@ -58,7 +75,7 @@ class ClinicController extends Controller
     public function destroy(
         Clinic $clinic,
         DeleteClinicAction $action
-    ) {
+    ): RedirectResponse {
         $action->execute($clinic);
 
         return redirect()

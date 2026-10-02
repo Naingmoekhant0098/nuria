@@ -62,9 +62,16 @@ class UpdateDoctorAction
 
                 'last_name' => $data['last_name'],
 
+                'birthdate' => $data['birthdate'] ?? null,
+                'gender' => $data['gender'] ?? null,
+
                 'specialization_id' => $data['specialization_id'] ?? null,
 
                 'complete_address' => $data['complete_address'] ?? null,
+
+                'about' => $data['about'] ?? null,
+
+                'region' => $data['region'] ?? null,
 
                 'contact_number' => $data['contact_number'] ?? null,
 

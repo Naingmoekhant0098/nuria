@@ -25,8 +25,12 @@ class Doctor extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'birthdate',
+        'gender',
         'specialization_id',
         'complete_address',
+        'about',
+        'region',
         'contact_number',
         'proof_of_identity',
         'photo_path',
@@ -45,10 +49,21 @@ class Doctor extends Model
 
     protected $appends = ['photo_url'];
 
+    protected function casts(): array
+    {
+        return [
+            'birthdate' => 'date',
+        ];
+    }
+
     public function getPhotoUrlAttribute(): ?string
     {
-        return $this->photo_path === null
-            ? null
+        if ($this->photo_path === null) {
+            return null;
+        }
+
+        return str_starts_with($this->photo_path, 'http') || str_starts_with($this->photo_path, '/')
+            ? $this->photo_path
             : Storage::disk('public')->url($this->photo_path);
     }
 
@@ -87,6 +102,16 @@ class Doctor extends Model
         return $this->belongsToMany(Clinic::class, 'clinic_doctor', 'doctor_id', 'clinic_id')
             ->withPivot(['compensation_type', 'compensation_rate'])
             ->withTimestamps();
+    }
+
+    public function services(): HasMany
+    {
+        return $this->hasMany(ClinicService::class, 'doctor_id', 'id');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'doctor_id', 'id');
     }
 
     public function scopeFilter(

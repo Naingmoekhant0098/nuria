@@ -2,7 +2,6 @@ import { useForm } from '@inertiajs/react';
 import { FilePlus } from 'lucide-react';
 import React, { useState } from 'react';
 
-
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -12,9 +11,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 
-import type {
-    ClinicFormData,
-} from './clinic_form';
+import type { ClinicFormData } from './clinic_form';
 import ClinicForm from './clinic_form';
 
 export default function CreateClinicDialog() {
@@ -24,6 +21,7 @@ export default function CreateClinicDialog() {
         clinic_name: '',
         clinic_permit: '',
         complete_address: '',
+        photo: null,
         latitude: '',
         longitude: '',
         open_time: '09:00',
@@ -35,6 +33,7 @@ export default function CreateClinicDialog() {
         e.preventDefault();
 
         form.post('/admin/clinics', {
+            forceFormData: true,
             preserveScroll: true,
 
             onSuccess: () => {
@@ -51,10 +50,7 @@ export default function CreateClinicDialog() {
     };
 
     return (
-        <Dialog
-            open={open}
-            onOpenChange={setOpen}
-        >
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
                     type="button"
@@ -67,9 +63,7 @@ export default function CreateClinicDialog() {
 
             <DialogContent className="max-h-[90vh] overflow-y-auto border-neutral-800 bg-neutral-900 text-white sm:max-w-lg">
                 <DialogHeader>
-                    <DialogTitle>
-                        Create New Clinic
-                    </DialogTitle>
+                    <DialogTitle>Create New Clinic</DialogTitle>
                 </DialogHeader>
 
                 <ClinicForm

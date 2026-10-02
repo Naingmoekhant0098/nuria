@@ -47,10 +47,14 @@ export default function CreateDoctorDrawer({
         first_name: '',
         middle_name: '',
         last_name: '',
+        birthdate: '',
+        gender: '',
 
         specialization_id: '',
 
         complete_address: '',
+        about: '',
+        region: '',
         contact_number: '',
         proof_of_identity: '',
         photo: null,

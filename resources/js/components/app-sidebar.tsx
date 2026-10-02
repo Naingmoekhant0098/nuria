@@ -185,6 +185,11 @@ const adminNavGroups: NavGroup[] = [
                 href: '/admin/permissions',
                 icon: ListFilter,
             },
+            {
+                title: 'Specializations',
+                href: '/admin/specializations',
+                icon: Stethoscope,
+            },
         ],
     },
     {
@@ -297,6 +302,7 @@ const adminNavigationPermissions: Record<string, string> = {
     '/admin/users': 'admins.manage',
     '/admin/roles': 'roles.manage',
     '/admin/permissions': 'permissions.view',
+    '/admin/specializations': 'specializations.manage',
     '/admin/doctors': 'doctors.view',
     '/admin/patients': 'patients.view',
     '/admin/reservations': 'reservations.view',
@@ -348,10 +354,13 @@ export function AppSidebar() {
         .map((group) => ({
             ...group,
             items: group.items.filter((item) => {
-                const href = typeof item.href === 'string' ? item.href : item.href.url;
+                const href =
+                    typeof item.href === 'string' ? item.href : item.href.url;
                 const requiredFeature = clinicNavigationPermissions[href];
 
-                return !requiredFeature || clinicFeatures.includes(requiredFeature);
+                return (
+                    !requiredFeature || clinicFeatures.includes(requiredFeature)
+                );
             }),
         }))
         .filter((group) => group.items.length > 0);

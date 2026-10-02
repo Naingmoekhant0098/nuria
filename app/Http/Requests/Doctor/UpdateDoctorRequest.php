@@ -23,6 +23,9 @@ class UpdateDoctorRequest extends FormRequest
 
             'last_name' => ['required', 'string', 'max:255'],
 
+            'birthdate' => ['nullable', 'date', 'before:today'],
+            'gender' => ['nullable', 'string', 'in:Male,Female,Other'],
+
             'email' => [
                 'required',
                 'email',
@@ -39,6 +42,10 @@ class UpdateDoctorRequest extends FormRequest
                 'required',
                 'string',
             ],
+
+            'about' => ['nullable', 'string', 'max:10000'],
+
+            'region' => ['nullable', 'string', 'max:100'],
 
             'contact_number' => [
                 'required',

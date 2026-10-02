@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class Clinic extends Authenticatable
@@ -17,6 +18,7 @@ class Clinic extends Authenticatable
         'clinic_name',
         'clinic_permit',
         'complete_address',
+        'photo_path',
         'latitude',
         'longitude',
         'status',
@@ -30,6 +32,19 @@ class Clinic extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $appends = ['photo_url'];
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        if ($this->photo_path === null) {
+            return null;
+        }
+
+        return str_starts_with($this->photo_path, 'http') || str_starts_with($this->photo_path, '/')
+            ? $this->photo_path
+            : Storage::disk('public')->url($this->photo_path);
+    }
 
     protected function casts(): array
     {
@@ -53,6 +68,11 @@ class Clinic extends Authenticatable
             'clinic_id',
             'id'
         );
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function patients(): BelongsToMany

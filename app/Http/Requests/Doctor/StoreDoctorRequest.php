@@ -19,6 +19,9 @@ class StoreDoctorRequest extends FormRequest
 
             'last_name' => 'required|string|max:255',
 
+            'birthdate' => ['nullable', 'date', 'before:today'],
+            'gender' => ['nullable', 'string', 'in:Male,Female,Other'],
+
             'email' => [
                 'required',
                 'email',
@@ -32,6 +35,10 @@ class StoreDoctorRequest extends FormRequest
             ],
 
             'complete_address' => 'required|string',
+
+            'about' => ['nullable', 'string', 'max:10000'],
+
+            'region' => ['nullable', 'string', 'max:100'],
 
             'contact_number' => 'required|string|max:50',
 

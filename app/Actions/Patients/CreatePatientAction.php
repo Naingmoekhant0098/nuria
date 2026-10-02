@@ -54,8 +54,12 @@ class CreatePatientAction
 
                 'birthdate' => $data['birthdate'],
 
+                'gender' => $data['gender'] ?? null,
+
                 'contact_number' => $data['contact_number'],
                 'complete_address' => $data['complete_address'],
+
+                'region' => $data['region'] ?? null,
 
                 // NRC
                 'nrc_id' => $nrc->id,
@@ -64,6 +68,10 @@ class CreatePatientAction
                 'user_name' => $data['user_name'],
 
                 'status' => $data['status'],
+                'email'=> $data['email'],
+
+                // Store password
+                'password' => Hash::make($data['password']),
             ]);
 
             $clinicId = Auth::guard('clinic')->id() ?? Auth::id();

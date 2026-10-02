@@ -2,28 +2,21 @@
 
 use App\Http\Controllers\Client\ClientAuthController;
 use App\Http\Controllers\Client\ClientClinicController;
+use App\Http\Controllers\Client\ClientProfileController;
 use App\Http\Controllers\Client\ClientReservationController;
 use App\Http\Controllers\Client\ClientShopController;
+use App\Http\Controllers\Client\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('client.')->group(function (): void {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Public Home
-    |--------------------------------------------------------------------------
-    */
 
     Route::get('/', [
         ClientClinicController::class,
         'home',
     ])->name('home');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication
-    |--------------------------------------------------------------------------
-    */
+
 
     Route::middleware('guest:patient')->group(function (): void {
 
@@ -58,6 +51,11 @@ Route::name('client.')->group(function (): void {
         ClientClinicController::class,
         'index',
     ])->name('clinics');
+
+    Route::get('/doctors', [
+        ClientClinicController::class,
+        'doctorsIndex',
+    ])->name('doctors');
 
     Route::get('/clinics/{clinic}', [
         ClientClinicController::class,
@@ -113,6 +111,9 @@ Route::name('client.')->group(function (): void {
             'logout',
         ])->name('logout');
 
+        Route::get('/profile', [ClientProfileController::class, 'edit'])->name('profile');
+        Route::patch('/profile', [ClientProfileController::class, 'update'])->name('profile.update');
+
         Route::post('/clinics/{clinic}/select', [
             ClientClinicController::class,
             'select',
@@ -132,6 +133,11 @@ Route::name('client.')->group(function (): void {
             ClientReservationController::class,
             'store',
         ])->name('reservations.store');
+
+        Route::post('/reviews', [
+            ReviewController::class,
+            'store',
+        ])->name('reviews.store');
 
         Route::get('/reservations/{reservation}', [
             ClientReservationController::class,

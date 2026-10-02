@@ -1,23 +1,24 @@
-import { useState, type CSSProperties } from 'react';
+import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
+    ArrowLeftIcon,
+    ArrowRightIcon,
     ArrowUpRightIcon,
     CalendarCheckIcon,
     CheckIcon,
-    HeartPulseIcon,
+    FileTextIcon,
     ImageIcon,
     ListChecksIcon,
     MapPinIcon,
-    MenuIcon,
     PlusIcon,
     SearchIcon,
-    ShoppingBagIcon,
+    ShieldCheckIcon,
     StarIcon,
-    StethoscopeIcon,
-    XIcon,
+    StoreIcon,
 } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 
+/* ---------- helpers ---------- */
 const src = (id: string, w = 900) =>
     id.startsWith('/') || id.startsWith('http')
         ? id
@@ -29,18 +30,18 @@ function Img({
     className = '',
     eager,
 }: {
-    id: string;
+    id?: string | null;
     alt: string;
     className?: string;
     eager?: boolean;
 }) {
     const [ok, setOk] = useState(true);
-    if (!ok)
+    if (!ok || !id)
         return (
             <div
                 role="img"
                 aria-label={alt}
-                className="grid size-full place-items-center bg-[#F0E6EE] text-[#337983]/60"
+                className="grid size-full place-items-center bg-[#E3EEF1] text-[#337983]/60"
             >
                 <ImageIcon className="size-8" />
             </div>
@@ -56,299 +57,71 @@ function Img({
     );
 }
 
-const chips = [
-    'Family medicine',
-    'Pediatrics',
-    "Women's health",
-    'Dental',
-    'Mental health',
-    'Lab tests',
-];
-const stack = [
-    {
-        id: 'photo-1594824476967-48c8b964273f',
-        label: 'Pediatrics',
-        sub: 'Child health visits',
-        rotate: -10,
-        y: 36,
-        z: 1,
-        hide: true,
-    },
-    {
-        id: 'photo-1576091160399-112ba8d25d1d',
-        label: 'Family medicine',
-        sub: 'Check-ups and care plans',
-        rotate: -5,
-        y: 14,
-        z: 2,
-        hide: false,
-    },
-    {
-        id: 'photo-1612349317150-e413f6a5b16d',
-        label: "Women's health",
-        sub: 'Screening and advice',
-        rotate: 0,
-        y: 0,
-        z: 3,
-        hide: false,
-    },
-    {
-        id: 'photo-1579684385127-1ef15d508118',
-        label: 'Lab tests',
-        sub: 'Results in your account',
-        rotate: 5,
-        y: 14,
-        z: 2,
-        hide: false,
-    },
-    {
-        id: 'photo-1622253692010-333f2da6031d',
-        label: 'Mental health',
-        sub: 'Talk to a professional',
-        rotate: 10,
-        y: 36,
-        z: 1,
-        hide: true,
-    },
-];
-const services = [
-    {
-        name: 'General consultation',
-        note: 'See a doctor for everyday health concerns and long-term conditions.',
-        id: 'photo-1576091160399-112ba8d25d1d',
-        big: true,
-    },
-    {
-        name: 'Vaccination',
-        note: 'Routine and travel vaccines.',
-        id: 'photo-1584515933487-779824d29309',
-    },
-    {
-        name: 'Dental care',
-        note: 'Check-ups, cleaning and treatment.',
-        id: 'photo-1606811841689-23dfddce3e95',
-    },
-    {
-        name: 'Child health',
-        note: 'Growth checks and pediatric care.',
-        id: 'photo-1631217868264-e5b90bb7e133',
-    },
-    {
-        name: 'Lab tests',
-        note: 'Book a blood test, get results online.',
-        id: 'photo-1579154204601-01588f351e67',
-    },
-    {
-        name: 'Counselling',
-        note: 'Private sessions with licensed therapists.',
-        id: 'photo-1544027993-37dbfe43562a',
-    },
-    {
-        name: 'Child health',
-        note: 'Growth checks and pediatric care.',
-        id: 'photo-1631217868264-e5b90bb7e133',
-    },
-    {
-        name: 'Lab tests',
-        note: 'Book a blood test, get results online.',
-        id: 'photo-1579154204601-01588f351e67',
-    },
-    {
-        name: 'Counselling',
-        note: 'Private sessions with licensed therapists.',
-        id: 'photo-1544027993-37dbfe43562a',
-    },
-];
-const tabs = [
-    'All',
-    'Family medicine',
-    'Pediatrics',
-    'Dental',
-    'Mental health',
-];
-const doctors = [
-    {
-        name: 'Dr. Aisha Rahman',
-        spec: 'Family medicine',
-        clinic: 'Harbour Family Clinic',
-        next: 'Today, 4:30 pm',
-        rating: '4.9',
-        id: 'photo-1559839734-2b71ea197ec2',
-    },
-    {
-        name: 'Dr. Daniel Tan',
-        spec: 'Pediatrics',
-        clinic: 'Little Steps Pediatrics',
-        next: 'Tomorrow, 9:00 am',
-        rating: '4.8',
-        id: 'photo-1622253692010-333f2da6031d',
-    },
-    {
-        name: 'Dr. Priya Nair',
-        spec: 'Dental',
-        clinic: 'Bright Smile Dental',
-        next: 'Today, 6:00 pm',
-        rating: '4.8',
-        id: 'photo-1594824476967-48c8b964273f',
-    },
-    {
-        name: 'Dr. Marcus Lee',
-        spec: 'Mental health',
-        clinic: 'Calm Ground Practice',
-        next: 'Thu, 11:15 am',
-        rating: '4.9',
-        id: 'photo-1537368910025-700350fe46c7',
-    },
-    {
-        name: 'Dr. Sofia Alvarez',
-        spec: 'Family medicine',
-        clinic: 'Park Street Medical',
-        next: 'Tomorrow, 2:00 pm',
-        rating: '4.7',
-        id: 'photo-1582750433449-648ed127bb54',
-    },
-    {
-        name: 'Dr. Wei Chen',
-        spec: 'Pediatrics',
-        clinic: 'Little Steps Pediatrics',
-        next: 'Fri, 10:30 am',
-        rating: '4.9',
-        id: 'photo-1612349317150-e413f6a5b16d',
-    },
-];
-const clinics = [
-    {
-        name: 'Harbour Family Clinic',
-        area: 'Central district',
-        tags: 'Family medicine, vaccinations',
-        rating: '4.9',
-        status: 'Open until 9 pm',
-        id: 'photo-1538108149393-fbbd81895907',
-    },
-    {
-        name: 'Little Steps Pediatrics',
-        area: 'Riverside',
-        tags: 'Pediatrics, child development',
-        rating: '4.8',
-        status: 'Open until 6 pm',
-        id: 'photo-1519494026892-80bbd2d6fd0d',
-    },
-    {
-        name: 'Bright Smile Dental',
-        area: 'North quarter',
-        tags: 'Dental, orthodontics',
-        rating: '4.8',
-        status: 'Open until 8 pm',
-        id: 'photo-1586773860418-d37222d8fce3',
-    },
-];
-const products = [
-    {
-        name: 'Digital thermometer',
-        cat: 'Home monitoring',
-        price: 14.9,
-        rating: '4.7',
-        id: 'photo-1584362917165-526a968579e8',
-    },
-    {
-        name: 'Upper-arm blood pressure monitor',
-        cat: 'Home monitoring',
-        price: 39,
-        rating: '4.8',
-        id: 'photo-1628771065518-0d82f1938462',
-    },
-    {
-        name: 'Fingertip pulse oximeter',
-        cat: 'Home monitoring',
-        price: 24.5,
-        rating: '4.6',
-        id: 'photo-1583324113626-70df0f4deaab',
-    },
-    {
-        name: 'Family first-aid kit',
-        cat: 'First aid',
-        price: 19.9,
-        rating: '4.9',
-        id: 'photo-1603398938378-e54eab446dde',
-    },
-];
-const steps = [
-    {
-        t: 'Search by need or area',
-        d: 'Filter by specialty and location. Every clinic listed has passed our licence check.',
-        Icon: SearchIcon,
-    },
-    {
-        t: 'Compare doctors',
-        d: 'Read profiles, patient ratings and next available times side by side.',
-        Icon: ListChecksIcon,
-    },
-    {
-        t: 'Book in a minute',
-        d: "Pick a slot and confirm. We'll remind you before your visit.",
-        Icon: CalendarCheckIcon,
-    },
-];
-const faqs = [
-    {
-        q: 'How do you verify clinics?',
-        a: "We check each clinic's operating licence and each doctor's registration before they're listed, and re-check them every year.",
-    },
-    {
-        q: 'Does it cost anything to book?',
-        a: 'Booking through Nuria is free. You pay the clinic directly for your consultation.',
-    },
-    {
-        q: 'Can I cancel or reschedule?',
-        a: 'Yes. Use the link in your confirmation message. Some clinics set their own cut-off times.',
-    },
-    {
-        q: 'How do product orders work?',
-        a: 'Add items to your cart and check out once. Delivery times and returns are shown before you pay.',
-    },
-];
-const links = [
-    ['Services', '#services'],
-    ['Doctors', '#doctors'],
-    ['Clinics', '#clinics'],
-    ['Products', '#products'],
-    ['FAQ', '#faq'],
-];
-
-const css = `
-.n-line{display:block;transform:translateY(108%);animation:n-rise 900ms cubic-bezier(.2,.8,.2,1) var(--d,0ms) forwards}
-.n-in{opacity:0;transform:translateY(12px);animation:n-in 700ms cubic-bezier(.2,.8,.2,1) var(--d,0ms) forwards}
-.n-glow{animation:n-glow 12s ease-in-out infinite}
-@keyframes n-rise{to{transform:none}}
-@keyframes n-in{to{opacity:1;transform:none}}
-@keyframes n-glow{0%,100%{opacity:.75;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.08)}}
-@media (prefers-reduced-motion:reduce){.n-line,.n-in,.n-glow{animation:none!important;opacity:1;transform:none}}
-`;
 const v = (o: Record<string, string | number>) => o as CSSProperties;
-const btnDark =
-    'group inline-flex items-center justify-center gap-2 rounded-full bg-[#0F1115] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#337983] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0F1115]';
 const wrap = 'mx-auto max-w-[1280px] px-4 sm:px-6';
+const INK = 'text-[#1F3A43]';
+
+/* Pill button with circular icon, like the reference */
+function Pill({
+    href,
+    icon,
+    children,
+    tone = 'dark',
+}: {
+    href: string;
+    icon: ReactNode;
+    children: ReactNode;
+    tone?: 'dark' | 'light' | 'teal';
+}) {
+    const tones = {
+        dark: 'bg-[#1F3A43] text-white hover:bg-[#337983]',
+        teal: 'bg-[#337983] text-white hover:bg-[#1F3A43]',
+        light: 'bg-white text-[#1F3A43] hover:bg-[#EAF3F5]',
+    };
+    const dot = tone === 'light' ? 'bg-[#EAF3F5]' : 'bg-white text-[#1F3A43]';
+    return (
+        <Link
+            href={href}
+            className={`inline-flex items-center gap-3 rounded-full py-1.5 pr-6 pl-1.5 text-sm font-medium shadow-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#337983] ${tones[tone]}`}
+        >
+            <span className={`grid size-9 place-items-center rounded-full ${dot}`}>
+                {icon}
+            </span>
+            {children}
+        </Link>
+    );
+}
 
 function Heading({
-    title,
+    tag,
+    lead,
+    accent,
     note,
     light,
+    center,
 }: {
-    title: string;
+    tag?: string;
+    lead: string;
+    accent?: string;
     note?: string;
     light?: boolean;
+    center?: boolean;
 }) {
     return (
-        <div className="max-w-2xl">
+        <div className={`max-w-2xl ${center ? 'mx-auto text-center' : ''}`}>
+            {tag && (
+                <p className={`text-sm ${light ? 'text-white/60' : 'text-[#64748B]'}`}>
+                    ({tag})
+                </p>
+            )}
             <h2
-                className={`text-3xl leading-[1.08] font-medium tracking-[-0.035em] text-balance sm:text-5xl ${light ? 'text-white' : 'text-[#0F1115]'}`}
+                className={`mt-3 text-3xl leading-[1.1] font-medium tracking-[-0.03em] text-balance sm:text-5xl ${light ? 'text-white' : INK}`}
             >
-                {title}
+                {accent && <span className="n-serif">{accent} </span>}
+                {lead}
             </h2>
             {note && (
-                <p
-                    className={`mt-4 text-base leading-relaxed sm:text-lg ${light ? 'text-white/65' : 'text-[#64748B]'}`}
-                >
+                <p className={`mt-4 text-base leading-relaxed sm:text-lg ${light ? 'text-white/65' : 'text-[#64748B]'}`}>
                     {note}
                 </p>
             )}
@@ -356,446 +129,451 @@ function Heading({
     );
 }
 
+const css = `
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500&display=swap');
+.n-serif{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-.02em}
+.n-in{opacity:0;transform:translateY(12px);animation:n-in 700ms cubic-bezier(.2,.8,.2,1) var(--d,0ms) forwards}
+.n-hero{background:linear-gradient(180deg,#fff 0%,#EAF3F5 55%,#CFE2E8 100%)}
+.n-card{background:linear-gradient(180deg,#fff 0%,#E6F0F3 100%)}
+.n-scroll{scrollbar-width:none}.n-scroll::-webkit-scrollbar{display:none}
+@keyframes n-in{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.n-in{animation:none!important;opacity:1;transform:none}}
+`;
+
+/* ---------- static content ---------- */
+const HERO_DOCTOR = 'photo-1559839734-2b71ea197ec2';
+const stats = [
+    { n: '5k+', l: 'Verified doctors' },
+    { n: '100%', l: 'Licence-checked clinics' },
+    { n: '12+', l: 'Specialties' },
+]; // TODO: replace with real counts from the controller if you want them live
+const steps = [
+    { t: 'Search by need or area', d: 'Filter by specialty and location. Every clinic has passed our licence check.', Icon: SearchIcon },
+    { t: 'Compare doctors', d: 'Read profiles, ratings and next available times side by side.', Icon: ListChecksIcon },
+    { t: 'Book in a minute', d: "Pick a slot and confirm. We'll remind you before your visit.", Icon: CalendarCheckIcon },
+];
+const faqs = [
+    { q: 'How do you verify clinics?', a: "We check each clinic's operating licence and each doctor's registration before they're listed, and re-check them every year." },
+    { q: 'Does it cost anything to book?', a: 'Booking through Nuria is free. You pay the clinic directly for your consultation.' },
+    { q: 'Can I cancel or reschedule?', a: 'Yes. Use the link in your confirmation message. Some clinics set their own cut-off times.' },
+    { q: 'How do medicine orders work?', a: 'Add items to your cart and check out once. Prescription-only medicines need an uploaded prescription. Delivery and returns are shown before you pay.' },
+];
+
+/* ---------- types (unchanged, from ClientClinicController@home) ---------- */
+type ClinicCard = { id: number; name: string; area: string; tags: string; rating: string | null; status: string | null; image: string | null };
+type DoctorCard = { id: number; name: string; spec: string; clinic: string; clinic_id: number | null; next: string; rating: string | null; image: string | null };
+type ServiceCard = { id: number; name: string; note: string; image: string | null; big: boolean };
+type ProductCard = { id: number; name: string; cat: string; price: number; rating: string | null; image: string | null };
+type HomeProps = {
+    clinics: ClinicCard[];
+    doctors: DoctorCard[];
+    services: ServiceCard[];
+    products: ProductCard[];
+    specialties: string[];
+};
+
+const doctorHref = (d: DoctorCard) =>
+    d.clinic_id ? `/clinics/${d.clinic_id}/doctors/${d.id}` : '/doctors';
+
 /* ============ PAGE ============ */
-export default function NuriaHome() {
+export default function NuriaHome({ clinics, doctors, services, products, specialties }: HomeProps) {
     const reduce = useReducedMotion();
-    const [menu, setMenu] = useState(false);
     const [tab, setTab] = useState('All');
     const [open, setOpen] = useState(0);
-    const [cart, setCart] = useState<string[]>([]);
-    const mid = (stack.length - 1) / 2;
+    const [cart, setCart] = useState<number[]>([]);
+    const rail = useRef<HTMLUListElement>(null);
+    const tabs = ['All', ...specialties];
     const shown = doctors.filter((d) => tab === 'All' || d.spec === tab);
-    const toggle = (n: string) =>
-        setCart((c) => (c.includes(n) ? c.filter((x) => x !== n) : [...c, n]));
+    const toggle = (id: number) =>
+        setCart((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]));
+    const scroll = (dir: number) =>
+        rail.current?.scrollBy({ left: dir * 320, behavior: reduce ? 'auto' : 'smooth' });
 
     return (
-        <main className="bg-white text-[#0F1115]">
+        <main className="bg-white text-[#1F3A43]">
             <style dangerouslySetInnerHTML={{ __html: css }} />
 
-            <section aria-labelledby="hero-title" className="relative pt-36">
-                <div className={`${wrap} relative text-center`}>
-                    <p className="n-in inline-flex items-center gap-2.5 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-[#3B3F4A] shadow-sm backdrop-blur">
-                        <span className="grid size-6 place-items-center rounded-full bg-[#337983]/10 text-[#337983]">
-                            <StethoscopeIcon className="size-3.5" />
-                        </span>
-                        Verified clinics, doctors and health products
-                    </p>
-                    <h1
-                        id="hero-title"
-                        className="mx-auto mt-8 max-w-4xl text-[2.6rem] leading-[1.04] font-medium tracking-[-0.045em] text-balance sm:text-6xl lg:text-[5.2rem]"
-                    >
-                        <span className="block overflow-hidden pb-[0.12em]">
-                            <span
-                                className="n-line"
-                                style={v({ '--d': '100ms' })}
-                            >
-                                Find trusted care
-                            </span>
-                        </span>
-                        <span className="block overflow-hidden pb-[0.12em]">
-                            <span
-                                className="n-line"
-                                style={v({ '--d': '220ms' })}
-                            >
-                                at every age and stage.
-                            </span>
-                        </span>
-                    </h1>
-                    <p
-                        className="n-in mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#64748B] sm:text-lg"
-                        style={v({ '--d': '450ms' })}
-                    >
-                        Discover verified clinics, meet qualified doctors, and
-                        book your appointment online, all in one place.
-                    </p>
+            {/* ===== HERO ===== */}
+            <section aria-labelledby="hero-title" className="n-hero relative overflow-hidden pt-32 lg:pt-36">
+                <div className={`${wrap} grid items-end gap-10 lg:grid-cols-[1.05fr_1fr]`}>
+                    <div className="pb-12 lg:pb-20">
+                        <h1
+                            id="hero-title"
+                            className="n-in text-[2.7rem] leading-[1.05] font-medium tracking-[-0.04em] text-balance sm:text-6xl lg:text-[4.4rem]"
+                        >
+                            Your health deserves the <span className="n-serif">right</span>{' '}
+                            <span className="n-serif">doctor</span>
+                        </h1>
+                        <p className="n-in mt-6 max-w-md text-base leading-relaxed text-[#1F3A43]/75 sm:text-lg" style={v({ '--d': '150ms' })}>
+                            Find verified clinics, book qualified doctors, and order medicines, all in one place.
+                        </p>
 
-                    {/* Search: the primary task */}
-                    <form
-                        action="/clinics"
-                        method="get"
-                        role="search"
-                        className="n-in mx-auto mt-8 flex max-w-xl items-center gap-2 rounded-full border border-slate-200 bg-white p-1.5 pl-5 shadow-[0_12px_30px_rgba(15,17,21,0.08)] focus-within:border-[#337983]"
-                        style={v({ '--d': '550ms' })}
-                    >
-                        <SearchIcon
-                            className="size-5 shrink-0 text-[#64748B]"
-                            aria-hidden
-                        />
-                        <label htmlFor="q" className="sr-only">
-                            Search doctors, clinics or services
-                        </label>
-                        <input
-                            id="q"
-                            name="q"
-                            placeholder="Search a doctor, clinic or service"
-                            className="min-w-0 flex-1 bg-transparent py-2.5 text-sm outline-none placeholder:text-[#94A3B8] sm:text-base"
-                        />
-                        <button type="submit" className={`${btnDark} shrink-0`}>
-                            Search
-                        </button>
-                    </form>
-                    <ul
-                        className="n-in mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-2"
-                        style={v({ '--d': '650ms' })}
-                    >
-                        {chips.map((c) => (
-                            <li key={c}>
-                                <Link
-                                    href={`/clinics?specialty=${encodeURIComponent(c)}`}
-                                    className="block rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-[#3B3F4A] transition hover:border-[#337983]/50 hover:text-[#337983]"
-                                >
-                                    {c}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+                        <form
+                            action="/doctors"
+                            method="get"
+                            role="search"
+                            className="n-in mt-8 flex max-w-lg items-center gap-2 rounded-full bg-white p-1.5 pl-5 shadow-[0_12px_30px_rgba(31,58,67,0.12)] focus-within:ring-2 focus-within:ring-[#337983]"
+                            style={v({ '--d': '250ms' })}
+                        >
+                            <SearchIcon className="size-5 shrink-0 text-[#64748B]" aria-hidden />
+                            <label htmlFor="q" className="sr-only">Search doctors, clinics or services</label>
+                            <input
+                                id="q"
+                                name="q"
+                                placeholder="Search a doctor, clinic or medicine"
+                                className="min-w-0 flex-1 bg-transparent py-2.5 text-sm outline-none placeholder:text-[#94A3B8] sm:text-base"
+                            />
+                            <button type="submit" className="shrink-0 rounded-full bg-[#1F3A43] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#337983]">
+                                Find a doctor
+                            </button>
+                        </form>
 
-                    <div className="mx-auto flex max-w-6xl justify-center px-2 pt-14 pb-6 sm:pt-16">
-                        {stack.map((c, i) => (
-                            <motion.div
-                                key={c.id}
-                                className={`relative mx-[-1.2rem] w-36 shrink-0 sm:mx-[-1.9rem] sm:w-48 lg:w-60 ${c.hide ? 'hidden sm:block' : ''}`}
-                                style={{ zIndex: c.z }}
-                                initial={
-                                    reduce
-                                        ? false
-                                        : {
-                                              opacity: 0,
-                                              y: 90,
-                                              x: (mid - i) * 100,
-                                              rotate: 0,
-                                              scale: 0.86,
-                                          }
-                                }
-                                animate={{
-                                    opacity: 1,
-                                    y: c.y,
-                                    x: 0,
-                                    rotate: c.rotate,
-                                    scale: 1,
-                                }}
-                                transition={{
-                                    type: 'spring',
-                                    stiffness: 80,
-                                    damping: 15,
-                                    delay: 0.75 + Math.abs(i - mid) * 0.12,
-                                }}
-                                whileHover={{
-                                    rotate: 0,
-                                    scale: 1.06,
-                                    y: -36,
-                                    zIndex: 30,
-                                    transition: {
-                                        type: 'spring',
-                                        stiffness: 200,
-                                    },
-                                }}
-                            >
-                                <Link
-                                    href={`/clinics?specialty=${encodeURIComponent(c.label)}`}
-                                    className="relative block aspect-[3/4] overflow-hidden rounded-3xl border border-white/70 bg-white shadow-[0_24px_60px_rgba(15,17,21,0.18)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#337983]"
-                                >
-                                    <Img
-                                        id={c.id}
-                                        alt={`${c.label}: a professional at work`}
-                                        className="object-top"
-                                        eager={i === 2}
-                                    />
-                                    <span className="absolute inset-x-3 bottom-3 rounded-2xl bg-white/90 px-3 py-2 text-left backdrop-blur">
-                                        <span className="block text-sm font-semibold">
-                                            {c.label}
-                                        </span>
-                                        <span className="block text-xs text-[#64748B]">
-                                            {c.sub}
-                                        </span>
+                        {specialties.length > 0 && (
+                            <ul className="n-in mt-5 flex max-w-lg flex-wrap gap-2" style={v({ '--d': '350ms' })}>
+                                {specialties.slice(0, 6).map((c) => (
+                                    <li key={c}>
+                                        <Link
+                                            href={`/doctors?specialty=${encodeURIComponent(c)}`}
+                                            className="block rounded-full bg-white/70 px-4 py-1.5 text-sm font-medium backdrop-blur transition hover:bg-white hover:text-[#337983]"
+                                        >
+                                            {c}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+
+                        <div className="n-in mt-10 grid max-w-lg grid-cols-[1fr_auto_1fr] gap-5" style={v({ '--d': '450ms' })}>
+                            <div>
+                                <h3 className="font-medium">Book online</h3>
+                                <p className="mt-1 text-sm text-[#1F3A43]/65">See real availability and confirm in a minute.</p>
+                            </div>
+                            <span className="w-px bg-[#1F3A43]/15" />
+                            <div>
+                                <h3 className="font-medium">Order medicines</h3>
+                                <p className="mt-1 text-sm text-[#1F3A43]/65">Upload a prescription and get delivery.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Doctor image with floating cards */}
+                    <div className="relative mx-auto h-[420px] w-full max-w-md sm:h-[520px] lg:h-[600px] lg:max-w-none">
+                        <motion.div
+                            className="absolute inset-x-6 bottom-0 top-4 overflow-hidden rounded-t-[10rem]"
+                            initial={reduce ? false : { opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ type: 'spring', stiffness: 70, damping: 16, delay: 0.2 }}
+                        >
+                            <Img id={HERO_DOCTOR} alt="A smiling doctor" className="object-top" eager />
+                        </motion.div>
+
+                        <motion.div
+                            className="absolute top-24 right-0 flex items-center gap-3 rounded-2xl bg-white/90 px-4 py-3 shadow-lg backdrop-blur"
+                            initial={reduce ? false : { opacity: 0, x: 30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.8, type: 'spring', stiffness: 80 }}
+                        >
+                            <span className="grid size-9 place-items-center rounded-full bg-[#337983]/10 text-[#337983]">
+                                <ShieldCheckIcon className="size-5" />
+                            </span>
+                            <p className="text-xs leading-snug">Every clinic and doctor<br />is licence-checked</p>
+                        </motion.div>
+
+                        <motion.div
+                            className="absolute bottom-40 left-0 max-w-[230px] rounded-2xl bg-white/90 p-4 shadow-lg backdrop-blur"
+                            initial={reduce ? false : { opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 1, type: 'spring', stiffness: 80 }}
+                        >
+                            <div className="flex -space-x-2">
+                                {doctors.slice(0, 3).map((d) => (
+                                    <span key={d.id} className="size-8 overflow-hidden rounded-full border-2 border-white bg-slate-200">
+                                        <Img id={d.image} alt="" />
                                     </span>
-                                </Link>
+                                ))}
+                                <span className="grid size-8 place-items-center rounded-full border-2 border-white bg-[#337983] text-[10px] font-semibold text-white">
+                                    {doctors.length > 3 ? `${doctors.length}+` : 'New'}
+                                </span>
+                            </div>
+                            <p className="mt-2 text-xs leading-snug text-[#1F3A43]/80">Doctors with open slots you can book today.</p>
+                        </motion.div>
+
+                        {shown[0] && (
+                            <motion.div
+                                className="absolute right-0 bottom-6 flex w-[250px] items-center gap-3 rounded-2xl bg-white/90 p-3 shadow-lg backdrop-blur"
+                                initial={reduce ? false : { opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 1.2, type: 'spring', stiffness: 80 }}
+                            >
+                                <span className="size-14 shrink-0 overflow-hidden rounded-xl bg-slate-200">
+                                    <Img id={shown[0].image} alt="" className="object-top" />
+                                </span>
+                                <div className="min-w-0">
+                                    <p className="truncate text-sm font-medium">{shown[0].name}</p>
+                                    <p className="truncate text-xs text-[#64748B]">{shown[0].spec}</p>
+                                    <p className="mt-1 text-xs font-medium text-emerald-700">Next: {shown[0].next}</p>
+                                </div>
                             </motion.div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </section>
 
-            {/* Services */}
-            <section
-                id="services"
-                className={`${wrap} scroll-mt-20 py-24 sm:py-32`}
-            >
-                <Heading
-                    title="Services for every need"
-                    note="Start with what you need help with. We'll show the clinics and doctors who provide it."
-                />
-                <div className="mt-12 grid auto-rows-[220px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {services.map((s) => (
-                        <Link
-                            key={s.name}
-                            href={`/clinics?service=${encodeURIComponent(s.name)}`}
-                            className={`group relative isolate overflow-hidden rounded-[1.75rem] bg-slate-200 ${s.big ? 'sm:col-span-2 lg:row-span-2' : ''}`}
-                        >
-                            <Img
-                                id={s.id}
-                                alt={`${s.name}: care in progress`}
-                                className="transition duration-700 group-hover:scale-105"
-                            />
-                            <span
-                                aria-hidden
-                                className="absolute inset-0 bg-gradient-to-t from-[#0F1115]/85 via-[#0F1115]/20 to-transparent"
-                            />
-                            <span className="absolute inset-x-0 bottom-0 p-6 text-white">
-                                <span className="flex items-center justify-between gap-3 text-xl font-medium tracking-tight">
-                                    {s.name}
-                                    <ArrowUpRightIcon className="size-5 shrink-0 opacity-70 transition duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
-                                </span>
-                                <span className="mt-1 block max-w-sm text-sm leading-relaxed text-white/75">
-                                    {s.note}
-                                </span>
-                            </span>
-                        </Link>
-                    ))}
+            {/* ===== ABOUT / TRUST ===== */}
+            <section className={`${wrap} py-20 sm:py-28`}>
+                <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+                    <div>
+                        <p className="text-sm text-[#64748B]">(About Nuria)</p>
+                        <p className="mt-4 text-2xl leading-snug font-medium tracking-tight text-balance sm:text-4xl">
+                            One marketplace for clinics, doctors and pharmacies. Every partner is checked, so you can book and buy with confidence.
+                        </p>
+                        <div className="mt-8 flex flex-wrap gap-3">
+                            <Pill href="/clinics" icon={<ArrowUpRightIcon className="size-4" />}>Browse clinics</Pill>
+                            <Pill href="/partner" tone="light" icon={<StoreIcon className="size-4" />}>Sell on Nuria</Pill>
+                        </div>
+                    </div>
+                    <div className="grid h-[420px] grid-cols-2 grid-rows-[1fr_1fr] gap-3 sm:h-[460px]">
+                        <div className="n-card rounded-3xl p-6">
+                            <p className="text-5xl font-medium tracking-tight sm:text-6xl">{stats[0].n}</p>
+                            <p className="mt-2 text-sm text-[#64748B]">{stats[0].l}</p>
+                        </div>
+                        <div className="row-span-1 overflow-hidden rounded-3xl bg-slate-200">
+                            <Img id="photo-1576091160399-112ba8d25d1d" alt="Doctor talking with a patient" />
+                        </div>
+                        <div className="flex flex-col justify-between rounded-3xl bg-[#1F3A43] p-6 text-white">
+                            <p className="text-5xl font-medium tracking-tight sm:text-6xl">{stats[1].n}</p>
+                            <p className="text-sm text-white/65">{stats[1].l}</p>
+                        </div>
+                        <div className="flex flex-col justify-between rounded-3xl bg-[#0F1115] p-6 text-white">
+                            <p className="text-5xl font-medium tracking-tight sm:text-6xl">{stats[2].n}</p>
+                            <p className="text-sm text-white/65">{stats[2].l}</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            {/* Doctors */}
-            <section
-                id="doctors"
-                className="scroll-mt-20 bg-[#F6F3F7] py-24 sm:py-32"
-            >
-                <div className={wrap}>
-                    <div className="flex flex-wrap items-end justify-between gap-6">
-                        <Heading
-                            title="Meet doctors you can book today"
-                            note="Qualified, registered and rated by real patients."
-                        />
-                        <div
-                            role="group"
-                            aria-label="Filter by specialty"
-                            className="flex flex-wrap gap-2"
-                        >
+            {/* ===== SERVICES ===== */}
+            {services.length > 0 && (
+                <section id="services" className="scroll-mt-20 bg-[#F7F9FA] py-20 sm:py-28">
+                    <div className={wrap}>
+                        <Heading center tag="Services" accent="Find your" lead="care, whatever the need" note="Pick a service and we'll show the clinics and doctors who provide it." />
+                        <div className="mt-12 grid auto-rows-[220px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                            {services.map((s) => (
+                                <Link
+                                    key={s.id}
+                                    href={`/doctors?service=${encodeURIComponent(s.name)}`}
+                                    className={`group relative isolate overflow-hidden rounded-[1.75rem] bg-slate-200 ${s.big ? 'sm:col-span-2 lg:row-span-2' : ''}`}
+                                >
+                                    <Img id={s.image} alt={`${s.name}: care in progress`} className="transition duration-700 group-hover:scale-105" />
+                                    <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#1F3A43]/85 via-[#1F3A43]/15 to-transparent" />
+                                    <span className="absolute top-4 right-4 grid size-9 place-items-center rounded-full bg-white text-[#1F3A43] transition group-hover:bg-[#337983] group-hover:text-white">
+                                        <ArrowUpRightIcon className="size-4" />
+                                    </span>
+                                    <span className="absolute inset-x-0 bottom-0 p-6 text-white">
+                                        <span className="block text-xl font-medium tracking-tight">{s.name}</span>
+                                        {s.note && <span className="mt-1 block max-w-sm text-sm leading-relaxed text-white/75">{s.note}</span>}
+                                    </span>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ===== DOCTORS (dark) ===== */}
+            {doctors.length > 0 && (
+                <section id="doctors" className="scroll-mt-20 bg-[#1F3A43] py-20 text-white sm:py-28">
+                    <div className={wrap}>
+                        <div className="flex flex-wrap items-end justify-between gap-6">
+                            <Heading light tag="Our doctors" accent="Meet" lead="doctors you can book today" note="Qualified, registered and rated by real patients." />
+                            <div className="flex gap-2">
+                                <button onClick={() => scroll(-1)} aria-label="Previous doctors" className="grid size-11 place-items-center rounded-full bg-white text-[#1F3A43] transition hover:bg-[#EAF3F5]">
+                                    <ArrowLeftIcon className="size-5" />
+                                </button>
+                                <button onClick={() => scroll(1)} aria-label="Next doctors" className="grid size-11 place-items-center rounded-full bg-[#337983] text-white transition hover:bg-[#3f8f9b]">
+                                    <ArrowRightIcon className="size-5" />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div role="group" aria-label="Filter by specialty" className="mt-8 flex flex-wrap gap-2">
                             {tabs.map((t) => (
                                 <button
                                     key={t}
                                     aria-pressed={tab === t}
                                     onClick={() => setTab(t)}
-                                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${tab === t ? 'border-[#0F1115] bg-[#0F1115] text-white' : 'border-slate-300 bg-white text-[#3B3F4A] hover:border-[#337983]'}`}
+                                    className={`rounded-full px-4 py-2 text-sm font-medium transition ${tab === t ? 'bg-white text-[#1F3A43]' : 'bg-white/10 text-white hover:bg-white/20'}`}
                                 >
                                     {t}
                                 </button>
                             ))}
                         </div>
-                    </div>
-                    <ul
-                        key={tab}
-                        className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-                    >
-                        {shown.map((d, i) => (
-                            <li
-                                key={d.name}
-                                className="n-in group"
-                                style={v({ '--d': `${i * 70}ms` })}
-                            >
-                                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-slate-200">
-                                    <Img
-                                        id={d.id}
-                                        alt={`Portrait of ${d.name}`}
-                                        className="object-top transition duration-700 group-hover:scale-105"
-                                    />
-                                    <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold backdrop-blur">
-                                        <StarIcon className="size-3 fill-amber-400 text-amber-400" />
-                                        {d.rating}
-                                    </span>
-                                </div>
-                                <div className="mt-4 flex items-start justify-between gap-4">
-                                    <div>
-                                        <h3 className="text-lg font-medium tracking-tight">
-                                            {d.name}
-                                        </h3>
-                                        <p className="text-sm text-[#64748B]">
-                                            {d.spec}, {d.clinic}
-                                        </p>
-                                        <p className="mt-2 flex items-center gap-2 text-sm font-medium text-emerald-700">
-                                            <span className="size-2 rounded-full bg-emerald-500" />
-                                            Next: {d.next}
-                                        </p>
-                                    </div>
-                                    <Link
-                                        href="/clinics"
-                                        className="shrink-0 rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium transition hover:border-[#337983] hover:bg-[#337983] hover:text-white"
-                                    >
-                                        Book
-                                    </Link>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </section>
 
-            {/* Clinics */}
-            <section
-                id="clinics"
-                className={`${wrap} scroll-mt-20 py-24 sm:py-32`}
-            >
-                <div className="flex flex-wrap items-end justify-between gap-6">
-                    <Heading title="Clinics patients rate highly" />
-                    <Link
-                        href="/clinics"
-                        className="inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:text-[#337983] hover:underline"
-                    >
-                        See all clinics <ArrowUpRightIcon className="size-4" />
-                    </Link>
-                </div>
-                <ul className="mt-10 grid gap-6 lg:grid-cols-3">
-                    {clinics.map((c) => (
-                        <li key={c.name}>
-                            <Link href="/clinics" className="group block">
-                                <div className="relative aspect-[16/11] overflow-hidden rounded-[1.75rem] bg-slate-200">
-                                    <Img
-                                        id={c.id}
-                                        alt={`Inside ${c.name}`}
-                                        className="transition duration-700 group-hover:scale-105"
-                                    />
-                                    <span className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-emerald-700 backdrop-blur">
-                                        <span className="size-2 rounded-full bg-emerald-500" />
-                                        {c.status}
-                                    </span>
-                                </div>
-                                <div className="mt-4 flex items-start justify-between gap-4">
-                                    <div>
-                                        <h3 className="text-xl font-medium tracking-tight">
-                                            {c.name}
-                                        </h3>
-                                        <p className="mt-1 flex items-center gap-1 text-sm text-[#64748B]">
-                                            <MapPinIcon className="size-3.5" />
-                                            {c.area}
-                                        </p>
-                                        <p className="mt-1 text-sm text-[#3B3F4A]">
-                                            {c.tags}
-                                        </p>
-                                    </div>
-                                    <span className="flex shrink-0 items-center gap-1 text-sm font-semibold">
-                                        <StarIcon className="size-4 fill-amber-400 text-amber-400" />
-                                        {c.rating}
-                                    </span>
-                                </div>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            {/* Medical products */}
-            <section
-                id="products"
-                className="scroll-mt-20 bg-[#F6F3F7] py-24 sm:py-32"
-            >
-                <div className={wrap}>
-                    <div className="flex flex-wrap items-end justify-between gap-6">
-                        <Heading
-                            title="Health products for home"
-                            note="Everyday monitoring and first-aid essentials, delivered to your door."
-                        />
-                        <Link
-                            href="/products"
-                            className="inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:text-[#337983] hover:underline"
-                        >
-                            Shop all products{' '}
-                            <ArrowUpRightIcon className="size-4" />
-                        </Link>
-                    </div>
-                    <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                        {products.map((p) => {
-                            const added = cart.includes(p.name);
-                            return (
-                                <li
-                                    key={p.name}
-                                    className="group flex flex-col rounded-[1.5rem] bg-white p-3"
-                                >
-                                    <div className="aspect-square overflow-hidden rounded-[1.1rem] bg-slate-100">
-                                        <Img
-                                            id={p.id}
-                                            alt={p.name}
-                                            className="transition duration-700 group-hover:scale-105"
-                                        />
-                                    </div>
-                                    <div className="flex flex-1 flex-col px-2 pt-4 pb-2">
-                                        <p className="text-xs text-[#64748B]">
-                                            {p.cat}
-                                        </p>
-                                        <h3 className="mt-1 text-base leading-snug font-medium tracking-tight">
-                                            {p.name}
-                                        </h3>
-                                        <p className="mt-1 flex items-center gap-1 text-sm text-[#64748B]">
-                                            <StarIcon className="size-3.5 fill-amber-400 text-amber-400" />
-                                            {p.rating}
-                                        </p>
-                                        <div className="mt-auto flex items-center justify-between pt-4">
-                                            <span className="text-lg font-semibold">
-                                                ${p.price.toFixed(2)}
-                                            </span>
-                                            <button
-                                                onClick={() => toggle(p.name)}
-                                                aria-pressed={added}
-                                                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition ${added ? 'bg-emerald-50 text-emerald-700' : 'bg-[#0F1115] text-white hover:bg-[#337983]'}`}
-                                            >
-                                                {added ? (
-                                                    <>
-                                                        <CheckIcon className="size-4" />
-                                                        Added
-                                                    </>
-                                                ) : (
-                                                    'Add to cart'
-                                                )}
-                                            </button>
+                        <ul key={tab} ref={rail} className="n-scroll -mx-4 mt-10 flex snap-x gap-5 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
+                            {shown.map((d, i) => (
+                                <li key={d.id} className="n-in group w-[270px] shrink-0 snap-start" style={v({ '--d': `${i * 60}ms` })}>
+                                    <div className="rounded-[1.75rem] bg-white p-3 text-[#1F3A43]">
+                                        <Link href={doctorHref(d)} className="relative block aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-slate-200">
+                                            <Img id={d.image} alt={`Portrait of ${d.name}`} className="object-top transition duration-700 group-hover:scale-105" />
+                                            {d.rating && (
+                                                <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold backdrop-blur">
+                                                    <StarIcon className="size-3 fill-amber-400 text-amber-400" />
+                                                    {d.rating}
+                                                </span>
+                                            )}
+                                        </Link>
+                                        <div className="px-2 pt-4 pb-1">
+                                            <h3 className="text-lg font-medium tracking-tight">{d.name}</h3>
+                                            <p className="text-sm text-[#64748B]">{d.spec}{d.clinic && `, ${d.clinic}`}</p>
+                                            <div className="mt-4 flex items-center justify-between gap-3">
+                                                <p className="flex items-center gap-2 text-xs font-medium text-emerald-700">
+                                                    <span className="size-2 rounded-full bg-emerald-500" />
+                                                    {d.next}
+                                                </p>
+                                                <Link href={doctorHref(d)} className="rounded-full bg-[#1F3A43] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#337983]">
+                                                    Book
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-            </section>
+                            ))}
+                        </ul>
+                        {shown.length === 0 && <p className="mt-10 text-white/65">No doctors listed for this specialty yet.</p>}
 
-            {/* How it works */}
-            <section
-                id="how"
-                className="bg-[#0F1115] py-24 text-white sm:py-32"
-            >
-                <div className={`${wrap} grid gap-14 lg:grid-cols-[1fr_1.2fr]`}>
-                    <Heading
-                        light
-                        title="Book care in three steps"
-                        note="No calls, no waiting on hold. You see real availability and confirm right away."
-                    />
-                    <ol className="relative space-y-10 before:absolute before:top-6 before:bottom-6 before:left-6 before:w-px before:bg-white/15">
-                        {steps.map(({ t, d, Icon }, i) => (
-                            <li key={t} className="relative flex gap-6">
-                                <span className="relative z-10 grid size-12 shrink-0 place-items-center rounded-full bg-[#337983]">
-                                    <Icon className="size-5" />
-                                </span>
-                                <div>
-                                    <p className="text-sm text-white/50">
-                                        Step {i + 1}
-                                    </p>
-                                    <h3 className="text-xl font-medium tracking-tight">
-                                        {t}
-                                    </h3>
-                                    <p className="mt-2 max-w-md text-white/65">
-                                        {d}
-                                    </p>
-                                </div>
+                        <div className="mt-10">
+                            <Pill href="/doctors" tone="teal" icon={<ArrowUpRightIcon className="size-4" />}>See all doctors</Pill>
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* ===== CLINICS ===== */}
+            {clinics.length > 0 && (
+                <section id="clinics" className={`${wrap} scroll-mt-20 py-20 sm:py-28`}>
+                    <div className="flex flex-wrap items-end justify-between gap-6">
+                        <Heading tag="Clinics" accent="Clinics" lead="patients rate highly" />
+                        <Pill href="/clinics" tone="light" icon={<ArrowUpRightIcon className="size-4" />}>See all clinics</Pill>
+                    </div>
+                    <ul className="mt-10 grid gap-6 lg:grid-cols-3">
+                        {clinics.map((c) => (
+                            <li key={c.id}>
+                                <Link href={`/doctors?clinic_id=${c.id}`} className="n-card group block rounded-[1.75rem] p-3">
+                                    <div className="relative aspect-[16/11] overflow-hidden rounded-[1.4rem] bg-slate-200">
+                                        <Img id={c.image} alt={`Inside ${c.name}`} className="transition duration-700 group-hover:scale-105" />
+                                        {c.status && (
+                                            <span className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-emerald-700 backdrop-blur">
+                                                <span className="size-2 rounded-full bg-emerald-500" />
+                                                {c.status}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="flex items-start justify-between gap-4 px-3 pt-4 pb-3">
+                                        <div>
+                                            <h3 className="text-xl font-medium tracking-tight">{c.name}</h3>
+                                            {c.area && (
+                                                <p className="mt-1 flex items-center gap-1 text-sm text-[#64748B]">
+                                                    <MapPinIcon className="size-3.5" />
+                                                    {c.area}
+                                                </p>
+                                            )}
+                                            {c.tags && (
+                                                <p className="mt-3 flex flex-wrap gap-1.5">
+                                                    {c.tags.split(',').map((t) => (
+                                                        <span key={t} className="rounded-full bg-white px-3 py-1 text-xs">{t.trim()}</span>
+                                                    ))}
+                                                </p>
+                                            )}
+                                        </div>
+                                        {c.rating && (
+                                            <span className="flex shrink-0 items-center gap-1 text-sm font-semibold">
+                                                <StarIcon className="size-4 fill-amber-400 text-amber-400" />
+                                                {c.rating}
+                                            </span>
+                                        )}
+                                    </div>
+                                </Link>
                             </li>
                         ))}
-                    </ol>
-                </div>
+                    </ul>
+                </section>
+            )}
+
+            {/* ===== MEDICINES & PRODUCTS ===== */}
+            {products.length > 0 && (
+                <section id="products" className="scroll-mt-20 bg-[#F7F9FA] py-20 sm:py-28">
+                    <div className={wrap}>
+                        <div className="flex flex-wrap items-end justify-between gap-6">
+                            <Heading tag="Pharmacy" accent="Medicines" lead="and health products for home" note="Everyday essentials from verified pharmacies, delivered to your door." />
+                            <div className="flex flex-wrap gap-3">
+                                <Pill href="/shop?rx=1" tone="light" icon={<FileTextIcon className="size-4" />}>Upload prescription</Pill>
+                                <Pill href="/shop" icon={<ArrowUpRightIcon className="size-4" />}>Shop all</Pill>
+                            </div>
+                        </div>
+                        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                            {products.map((p) => {
+                                const added = cart.includes(p.id);
+                                return (
+                                    <li key={p.id} className="group flex flex-col rounded-[1.5rem] bg-white p-3">
+                                        <div className="aspect-square overflow-hidden rounded-[1.1rem] bg-slate-100">
+                                            <Img id={p.image} alt={p.name} className="transition duration-700 group-hover:scale-105" />
+                                        </div>
+                                        <div className="flex flex-1 flex-col px-2 pt-4 pb-2">
+                                            {p.cat && <p className="text-xs text-[#64748B]">{p.cat}</p>}
+                                            <h3 className="mt-1 text-base leading-snug font-medium tracking-tight">{p.name}</h3>
+                                            {p.rating && (
+                                                <p className="mt-1 flex items-center gap-1 text-sm text-[#64748B]">
+                                                    <StarIcon className="size-3.5 fill-amber-400 text-amber-400" />
+                                                    {p.rating}
+                                                </p>
+                                            )}
+                                            <div className="mt-auto flex items-center justify-between gap-2 pt-4">
+                                                <span className="text-base font-semibold">{p.price.toFixed(2)} MMK</span>
+                                                <button
+                                                    onClick={() => toggle(p.id)}
+                                                    aria-pressed={added}
+                                                    className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition ${added ? 'bg-emerald-50 text-emerald-700' : 'bg-[#1F3A43] text-white hover:bg-[#337983]'}`}
+                                                >
+                                                    {added ? (<><CheckIcon className="size-4" />Added</>) : 'Add to cart'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                </section>
+            )}
+
+            {/* ===== HOW IT WORKS ===== */}
+            <section id="how" className={`${wrap} py-20 sm:py-28`}>
+                <Heading center tag="How it works" accent="Book care" lead="in three steps" note="No calls, no waiting on hold." />
+                <ol className="mt-12 grid gap-5 md:grid-cols-3">
+                    {steps.map(({ t, d, Icon }, i) => (
+                        <li key={t} className="n-card flex min-h-[260px] flex-col justify-between rounded-[1.75rem] p-7">
+                            <span className="grid size-12 place-items-center rounded-full bg-[#337983] text-white">
+                                <Icon className="size-5" />
+                            </span>
+                            <div>
+                                <p className="text-sm text-[#64748B]">Step {i + 1}</p>
+                                <h3 className="mt-1 text-xl font-medium tracking-tight">{t}</h3>
+                                <p className="mt-2 text-[#1F3A43]/70">{d}</p>
+                            </div>
+                        </li>
+                    ))}
+                </ol>
             </section>
 
-            {/* FAQ */}
-            <section
-                id="faq"
-                className={`${wrap} grid scroll-mt-20 gap-12 py-24 sm:py-32 lg:grid-cols-[1fr_1.4fr]`}
-            >
-                <Heading title="Questions, answered" />
-                <div className="divide-y divide-slate-200 border-y border-slate-200">
+            {/* ===== FAQ ===== */}
+            <section id="faq" className={`${wrap} grid scroll-mt-20 gap-12 pb-20 sm:pb-28 lg:grid-cols-[1fr_1.4fr]`}>
+                <div>
+                    <Heading tag="FAQ" accent="Good" lead="information, made simple" />
+                    <div className="mt-8 hidden aspect-[4/3] max-w-sm overflow-hidden rounded-[1.75rem] bg-slate-200 lg:block">
+                        <Img id="photo-1612349317150-e413f6a5b16d" alt="Friendly doctor" className="object-top" />
+                    </div>
+                </div>
+                <div className="divide-y divide-slate-200 border-y border-slate-200 self-start">
                     {faqs.map((f, i) => (
                         <div key={f.q}>
                             <h3>
@@ -805,14 +583,10 @@ export default function NuriaHome() {
                                     className="flex w-full items-center justify-between gap-6 py-6 text-left text-lg font-medium tracking-tight"
                                 >
                                     {f.q}
-                                    <PlusIcon
-                                        className={`size-5 shrink-0 text-[#337983] transition-transform duration-300 ${open === i ? 'rotate-45' : ''}`}
-                                    />
+                                    <PlusIcon className={`size-5 shrink-0 text-[#337983] transition-transform duration-300 ${open === i ? 'rotate-45' : ''}`} />
                                 </button>
                             </h3>
-                            <div
-                                className={`grid transition-[grid-template-rows] duration-300 ease-out ${open === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
-                            >
+                            <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
                                 <p className="overflow-hidden pr-10 text-[#64748B]">
                                     <span className="block pb-6">{f.a}</span>
                                 </p>
@@ -822,63 +596,25 @@ export default function NuriaHome() {
                 </div>
             </section>
 
-            {/* CTA */}
+            {/* ===== CTA (patients + vendors) ===== */}
             <section className="px-4 pb-24 sm:px-6">
-                <div className="relative mx-auto max-w-[1280px] overflow-hidden rounded-[2rem] bg-[#337983] px-6 py-16 text-center text-white sm:py-24">
-                    <div
-                        aria-hidden
-                        className="pointer-events-none absolute -top-32 left-1/2 h-72 w-[600px] -translate-x-1/2 rounded-full bg-white/15 blur-3xl"
-                    />
-                    <h2 className="relative mx-auto max-w-3xl text-3xl leading-[1.08] font-medium tracking-[-0.035em] text-balance sm:text-5xl">
-                        Your next appointment is a few taps away.
-                    </h2>
-                    <p className="relative mx-auto mt-4 max-w-xl text-white/80">
-                        Find a verified clinic near you and book online.
-                    </p>
-                    <Link
-                        href="/clinics"
-                        className="group relative mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-medium text-[#0F1115] transition hover:bg-[#0F1115] hover:text-white"
-                    >
-                        Find a clinic{' '}
-                        <ArrowUpRightIcon className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </Link>
+                <div className="mx-auto grid max-w-[1280px] gap-4 lg:grid-cols-2">
+                    <div className="rounded-[2rem] bg-[#337983] p-8 text-white sm:p-12">
+                        <h2 className="text-3xl leading-[1.1] font-medium tracking-[-0.03em] text-balance sm:text-4xl">
+                            Your next appointment is <span className="n-serif">a few taps</span> away.
+                        </h2>
+                        <p className="mt-4 max-w-md text-white/80">Find a verified clinic near you and book online.</p>
+                        <div className="mt-8"><Pill href="/clinics" tone="light" icon={<ArrowUpRightIcon className="size-4" />}>Find a clinic</Pill></div>
+                    </div>
+                    <div className="rounded-[2rem] bg-[#1F3A43] p-8 text-white sm:p-12">
+                        <h2 className="text-3xl leading-[1.1] font-medium tracking-[-0.03em] text-balance sm:text-4xl">
+                            Run a clinic or pharmacy? <span className="n-serif">Join Nuria.</span>
+                        </h2>
+                        <p className="mt-4 max-w-md text-white/70">List your doctors, manage bookings and sell products to patients in one dashboard.</p>
+                        <div className="mt-8"><Pill href="/partner" tone="teal" icon={<StoreIcon className="size-4" />}>Become a partner</Pill></div>
+                    </div>
                 </div>
             </section>
-
-            {/* Footer */}
-            <footer className="border-t border-slate-200">
-                <div
-                    className={`${wrap} flex flex-wrap items-center justify-between gap-6 py-10 text-sm text-[#64748B]`}
-                >
-                    <Link
-                        href="/"
-                        className="flex items-center gap-2 text-base font-semibold text-[#0F1115]"
-                    >
-                        <span className="grid size-7 place-items-center rounded-lg bg-[#337983] text-white">
-                            <HeartPulseIcon className="size-4" />
-                        </span>
-                        nuria
-                    </Link>
-                    <nav aria-label="Footer" className="flex flex-wrap gap-6">
-                        {links.map(([l, h]) => (
-                            <a
-                                key={h}
-                                href={h}
-                                className="hover:text-[#337983]"
-                            >
-                                {l}
-                            </a>
-                        ))}
-                        <Link href="/privacy" className="hover:text-[#337983]">
-                            Privacy
-                        </Link>
-                        <Link href="/terms" className="hover:text-[#337983]">
-                            Terms
-                        </Link>
-                    </nav>
-                    <p>© {new Date().getFullYear()} Nuria Health</p>
-                </div>
-            </footer>
         </main>
     );
 }

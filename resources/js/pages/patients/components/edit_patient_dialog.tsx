@@ -36,7 +36,6 @@ export default function EditPatientDialog({
     onOpenChange,
     patient,
 }: EditPatientDialogProps) {
-
     const {
         nrcStates = [],
         nrcTownships = [],
@@ -47,10 +46,12 @@ export default function EditPatientDialog({
         first_name: '',
         middle_name: '',
         last_name: '',
+        gender: '',
 
         birthdate: '',
 
         complete_address: '',
+        region: '',
         contact_number: '',
 
         nrc_state_id: '',
@@ -78,93 +79,70 @@ export default function EditPatientDialog({
          */
 
         form.setData({
-            first_name:
-                patient.first_name ?? '',
+            first_name: patient.first_name ?? '',
 
-            middle_name:
-                patient.middle_name ?? '',
+            middle_name: patient.middle_name ?? '',
 
-            last_name:
-                patient.last_name ?? '',
+            last_name: patient.last_name ?? '',
 
-            birthdate:
-                patient.birthdate
-                    ? patient.birthdate.substring(
-                          0,
-                          10
-                      )
-                    : '',
+            gender: patient.gender ?? '',
 
-            complete_address:
-                patient.complete_address ?? '',
+            birthdate: patient.birthdate
+                ? patient.birthdate.substring(0, 10)
+                : '',
 
-            contact_number:
-                patient.contact_number ?? '',
+            complete_address: patient.complete_address ?? '',
+
+            region: patient.region ?? '',
+
+            contact_number: patient.contact_number ?? '',
 
             nrc_state_id:
                 patient.nrc?.nrc_state_id != null
-                    ? String(
-                          patient.nrc.nrc_state_id
-                      )
+                    ? String(patient.nrc.nrc_state_id)
                     : '',
 
             nrc_township_id:
                 patient.nrc?.nrc_township_id != null
-                    ? String(
-                          patient.nrc
-                              .nrc_township_id
-                      )
+                    ? String(patient.nrc.nrc_township_id)
                     : '',
 
             nrc_type_id:
                 patient.nrc?.nrc_type_id != null
-                    ? String(
-                          patient.nrc.nrc_type_id
-                      )
+                    ? String(patient.nrc.nrc_type_id)
                     : '',
 
-            nrc_number:
-                patient.nrc_number ?? '',
+            nrc_number: patient.nrc_number ?? '',
 
-            user_name:
-                patient.user_name ?? '',
+            user_name: patient.user_name ?? '',
 
-            email:
-                patient.user?.email ?? '',
+            email: patient.user?.email ?? '',
 
             password: '',
 
-            status:
-                patient.status ?? 'active',
+            status: patient.status ?? 'active',
         });
     }, [patient]);
 
-    const handleSubmit = (
-        e: React.FormEvent
-    ) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!patient) {
             return;
         }
 
-        form.put(
-            `/patients/${patient.id}`,
-            {
-                preserveScroll: true,
+        form.put(`/patients/${patient.id}`, {
+            preserveScroll: true,
 
-                onSuccess: () => {
-                    form.reset();
+            onSuccess: () => {
+                form.reset();
 
-                    onOpenChange(false);
-                },
-            }
-        );
+                onOpenChange(false);
+            },
+        });
     };
 
-    const handleClose = (
-        value: boolean
-    ) => {
+    const handleClose = (value: boolean) => {
         if (!value) {
             form.clearErrors();
         }
@@ -173,21 +151,8 @@ export default function EditPatientDialog({
     };
 
     return (
-        <Drawer
-            open={open}
-            onOpenChange={handleClose}
-            direction="right"
-        >
-            <DrawerContent
-                className="
-                    h-full
-                    w-full
-                    border-neutral-800
-                    bg-neutral-900
-                    text-white
-                    sm:max-w-2xl
-                "
-            >
+        <Drawer open={open} onOpenChange={handleClose} direction="right">
+            <DrawerContent className="h-full w-full border-neutral-800 bg-neutral-900 text-white sm:max-w-2xl">
                 <DrawerHeader className="border-b border-neutral-800">
                     <DrawerTitle className="text-white">
                         Edit Patient
@@ -199,13 +164,9 @@ export default function EditPatientDialog({
                         form={form}
                         mode="edit"
                         onSubmit={handleSubmit}
-                        onCancel={() =>
-                            handleClose(false)
-                        }
+                        onCancel={() => handleClose(false)}
                         nrcStates={nrcStates}
-                        nrcTownships={
-                            nrcTownships
-                        }
+                        nrcTownships={nrcTownships}
                         nrcTypes={nrcTypes}
                     />
                 </div>

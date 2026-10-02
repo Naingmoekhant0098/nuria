@@ -7,7 +7,7 @@ use App\Models\Patient;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -46,7 +46,7 @@ class ClientAuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()
-            ->intended(route('client.reservations'))
+            ->route('client.profile')
             ->with('success', 'Login successful.');
     }
 
@@ -77,11 +77,27 @@ class ClientAuthController extends Controller
             ],
         ]);
 
+        $nameParts = preg_split('/\s+/', trim($data['name']), -1, PREG_SPLIT_NO_EMPTY);
+        $firstName = array_shift($nameParts) ?: 'Patient';
+        $lastName = count($nameParts) > 0 ? array_pop($nameParts) : $firstName;
+        $baseUserName = Str::before($data['email'], '@');
+        $userName = $baseUserName;
+        $suffix = 1;
+        while (Patient::query()->where('user_name', $userName)->exists()) {
+            $userName = $baseUserName.$suffix++;
+        }
+
         $patient = Patient::create([
-            'name' => $data['name'],
+            'id' => 'P'.str_pad((string) (Patient::count() + 1), 3, '0', STR_PAD_LEFT),
+            'first_name' => $firstName,
+            'middle_name' => count($nameParts) > 0 ? implode(' ', $nameParts) : null,
+            'last_name' => $lastName,
             'email' => $data['email'],
-            'phone' => $data['phone'] ?? null,
-            'password' => Hash::make($data['password']),
+            'contact_number' => $data['phone'] ?? '',
+            'complete_address' => '',
+            'user_name' => $userName,
+            'status' => 'active',
+            'password' => $data['password'],
         ]);
 
         Auth::guard('patient')->login($patient);
@@ -89,7 +105,7 @@ class ClientAuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()
-            ->route('client.reservations')
+            ->route('client.profile')
             ->with('success', 'Account created successfully.');
     }
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminPermissionController;
 use App\Http\Controllers\Admin\AdminRoleController;
+use App\Http\Controllers\Admin\AdminSpecializationController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ClinicSubscriptionController;
 use App\Http\Controllers\Admin\InventoryController;
@@ -105,6 +106,10 @@ Route::prefix('admin')
         Route::get('/permissions', [AdminPermissionController::class, 'index'])
             ->middleware('admin.permission:permissions.view')
             ->name('permissions.index');
+
+        Route::resource('specializations', AdminSpecializationController::class)
+            ->only(['index', 'store', 'update', 'destroy'])
+            ->middleware('admin.permission:specializations.manage');
 
         Route::get('/doctors', [InventoryController::class, 'doctorReport'])
             ->middleware('admin.permission:doctors.view')

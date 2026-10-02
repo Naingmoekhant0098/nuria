@@ -8,10 +8,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 
-import type {
-    Clinic,
-    ClinicFormData,
-} from './clinic_form';
+import type { Clinic, ClinicFormData } from './clinic_form';
 import ClinicForm from './clinic_form';
 
 interface EditClinicDialogProps {
@@ -29,6 +26,7 @@ export default function EditClinicDialog({
         clinic_name: '',
         clinic_permit: '',
         complete_address: '',
+        photo: null,
         latitude: '',
         longitude: '',
         open_time: '',
@@ -45,13 +43,12 @@ export default function EditClinicDialog({
             clinic_name: clinic.clinic_name ?? '',
             clinic_permit: clinic.clinic_permit ?? '',
             complete_address: clinic.complete_address ?? '',
+            photo: null,
             latitude: clinic.latitude?.toString() ?? '',
             longitude: clinic.longitude?.toString() ?? '',
 
             // Expected format: HH:mm:ss or HH:mm
-            open_time: clinic.open_time
-                ? clinic.open_time.substring(0, 5)
-                : '',
+            open_time: clinic.open_time ? clinic.open_time.substring(0, 5) : '',
 
             close_time: clinic.close_time
                 ? clinic.close_time.substring(0, 5)
@@ -68,7 +65,9 @@ export default function EditClinicDialog({
             return;
         }
 
-        form.put(`/admin/clinics/${clinic.id}`, {
+        form.transform((data) => ({ ...data, _method: 'put' }));
+        form.post(`/admin/clinics/${clinic.id}`, {
+            forceFormData: true,
             preserveScroll: true,
 
             onSuccess: () => {
@@ -87,15 +86,10 @@ export default function EditClinicDialog({
     };
 
     return (
-        <Dialog
-            open={open}
-            onOpenChange={handleClose}
-        >
+        <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent className="max-h-[90vh] overflow-y-auto border-neutral-800 bg-neutral-900 text-white sm:max-w-lg">
                 <DialogHeader>
-                    <DialogTitle>
-                        Edit Clinic
-                    </DialogTitle>
+                    <DialogTitle>Edit Clinic</DialogTitle>
                 </DialogHeader>
 
                 <ClinicForm
@@ -103,6 +97,7 @@ export default function EditClinicDialog({
                     mode="edit"
                     onSubmit={handleSubmit}
                     onCancel={() => handleClose(false)}
+                    currentPhotoUrl={clinic?.photo_url}
                 />
             </DialogContent>
         </Dialog>

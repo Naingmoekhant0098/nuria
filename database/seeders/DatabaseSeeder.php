@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,6 +14,72 @@ class DatabaseSeeder extends Seeder
         $now = now();
         $password = Hash::make('password123');
         $target = 120;
+        $clinicImages = [
+            'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1200&q=80',
+        ];
+        $doctorImages = [
+            'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80',
+        ];
+        $drugImages = [
+            'Paracetamol' => 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
+            'Amoxicillin' => 'https://images.unsplash.com/photo-1550572017-edd951aa8ca9?auto=format&fit=crop&w=800&q=80',
+            'Cetirizine' => 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=800&q=80',
+            'Ibuprofen' => 'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=800&q=80',
+            'Omeprazole' => 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=800&q=80',
+        ];
+        $productImages = [
+            'Gauze' => 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=800&q=80',
+            'Syringe' => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+            'Gloves' => 'https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=800&q=80',
+            'Bandage' => 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=800&q=80',
+            'Face Mask' => 'https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=800&q=80',
+        ];
+        $localImage = '/images/healthcare-demo.jpg';
+        $clinicImages = [$localImage, $localImage];
+        $doctorImages = [$localImage, $localImage, $localImage];
+        $drugImages = array_fill_keys(array_keys($drugImages), $localImage);
+        $productImages = array_fill_keys(array_keys($productImages), $localImage);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Real Yangon locations (township centres) used for clinic coordinates
+        |--------------------------------------------------------------------------
+        |
+        | [township name, latitude, longitude]
+        | Demo clinics cycle through these so every pin sits in a real
+        | Yangon neighbourhood instead of a random point.
+        |
+        */
+
+        $yangonLocations = [
+            ['Kamayut', 16.8235, 96.1325],
+            ['Hlaing', 16.8072, 96.1260],
+            ['Sanchaung', 16.8158, 96.1319],
+            ['Bahan', 16.8140, 96.1530],
+            ['Dagon', 16.7885, 96.1540],
+            ['Mayangone', 16.8600, 96.1340],
+            ['Insein', 16.8930, 96.1010],
+            ['Mingaladon', 16.9300, 96.1350],
+            ['Thingangyun', 16.8290, 96.1930],
+            ['South Okkalapa', 16.8410, 96.1800],
+            ['North Okkalapa', 16.8830, 96.1650],
+            ['Tamwe', 16.8120, 96.1730],
+            ['Yankin', 16.8400, 96.1620],
+            ['Kyauktada', 16.7770, 96.1600],
+            ['Pabedan', 16.7790, 96.1550],
+            ['Latha', 16.7780, 96.1530],
+            ['Lanmadaw', 16.7800, 96.1450],
+            ['Botahtaung', 16.7690, 96.1700],
+            ['Pazundaung', 16.7800, 96.1720],
+            ['Ahlone', 16.7780, 96.1290],
+            ['Kyimyindaing', 16.7840, 96.1300],
+            ['Mingalar Taung Nyunt', 16.7850, 96.1650],
+            ['Dawbon', 16.7700, 96.1900],
+            ['Hlaing Tharyar', 16.8700, 96.0700],
+        ];
 
         /*
         |--------------------------------------------------------------------------
@@ -173,6 +238,7 @@ class DatabaseSeeder extends Seeder
                     'last_name' => 'Htike',
                     'specialization_id' => $specId1,
                     'complete_address' => 'No. 45, Kamayut Township, Yangon',
+                    'photo_path' => $doctorImages[0],
                     'contact_number' => '09987654321',
                     'proof_of_identity' => 'MD-License-98765',
                     'user_name' => 'DOC-001',
@@ -189,6 +255,7 @@ class DatabaseSeeder extends Seeder
                     'last_name' => 'Aung',
                     'specialization_id' => $specId2,
                     'complete_address' => 'No. 12, Sanchaung Township, Yangon',
+                    'photo_path' => $doctorImages[1],
                     'contact_number' => '09421112233',
                     'proof_of_identity' => 'MD-License-12345',
                     'user_name' => 'DOC-002',
@@ -205,6 +272,10 @@ class DatabaseSeeder extends Seeder
         |--------------------------------------------------------------------------
         | 4. Original Clinics
         |--------------------------------------------------------------------------
+        |
+        | Clinic 1: Insein Road, Hlaing Township  -> 16.8318, 96.1266
+        | Clinic 2: Pyay Road, Mayangone Township -> 16.8460, 96.1340
+        |
         */
 
         $clinicId1 = DB::table('clinics')
@@ -216,8 +287,9 @@ class DatabaseSeeder extends Seeder
                 'clinic_name' => 'Apex Health Care Clinic',
                 'clinic_permit' => 'PERMIT-2026-001',
                 'complete_address' => 'Insein Road, Hlaing Township, Yangon',
-                'latitude' => 16.8409,
-                'longitude' => 96.1275,
+                'photo_path' => $clinicImages[0],
+                'latitude' => 16.8318,
+                'longitude' => 96.1266,
                 'user_name' => 'CLN-001',
                 'password' => $password,
                 'status' => 'Approved',
@@ -235,8 +307,9 @@ class DatabaseSeeder extends Seeder
                 'clinic_name' => 'Heart Care Speciality Clinic',
                 'clinic_permit' => 'PERMIT-2026-002',
                 'complete_address' => 'Pyay Road, Mayangone Township, Yangon',
-                'latitude' => 16.8500,
-                'longitude' => 96.1300,
+                'photo_path' => $clinicImages[1],
+                'latitude' => 16.8460,
+                'longitude' => 96.1340,
                 'user_name' => 'CLN-002',
                 'password' => $password,
                 'status' => 'Approved',
@@ -244,6 +317,24 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ]);
         }
+
+        /*
+         * Always refresh coordinates so re-running the seeder on an
+         * existing database replaces the old placeholder locations.
+         */
+        DB::table('clinics')->where('id', $clinicId1)->update([
+            'latitude' => 16.8318,
+            'longitude' => 96.1266,
+        ]);
+
+        DB::table('clinics')->where('id', $clinicId2)->update([
+            'latitude' => 16.8460,
+            'longitude' => 96.1340,
+        ]);
+
+        DB::table('clinics')->whereIn('id', [$clinicId1, $clinicId2])->where(function ($query): void {
+            $query->whereNull('photo_path')->orWhere('photo_path', 'like', 'https://images.unsplash.com/%');
+        })->update(['photo_path' => $localImage]);
 
         /*
         |--------------------------------------------------------------------------
@@ -667,6 +758,7 @@ class DatabaseSeeder extends Seeder
                     'drug_form_id' => $tabletFormId,
                     'manufacturer_id' => $manufacturerId,
                     'name' => $name,
+                    'image_path' => $drugImages[$name],
                     'strength' => $strength,
                     'is_active' => true,
                     'created_at' => $now,
@@ -675,6 +767,10 @@ class DatabaseSeeder extends Seeder
             }
 
             $drugIds[] = $drugId;
+
+            DB::table('drugs')->where('id', $drugId)->where(function ($query): void {
+                $query->whereNull('image_path')->orWhere('image_path', 'like', 'https://images.unsplash.com/%');
+            })->update(['image_path' => $drugImages[$name]]);
 
             /*
              * Drug units
@@ -787,11 +883,16 @@ class DatabaseSeeder extends Seeder
                     ->insertGetId([
                         'medical_product_category_id' => $supplyCategoryId,
                         'name' => $name,
+                        'image_path' => $productImages[$name],
                         'is_active' => true,
                         'created_at' => $now,
                         'updated_at' => $now,
                     ]);
             }
+
+            DB::table('medical_products')->where('id', $productId)->where(function ($query): void {
+                $query->whereNull('image_path')->orWhere('image_path', 'like', 'https://images.unsplash.com/%');
+            })->update(['image_path' => $productImages[$name]]);
 
             foreach ([$clinicId1, $clinicId2] as $clinicId) {
 
@@ -1171,6 +1272,8 @@ class DatabaseSeeder extends Seeder
                     $doctorNumber
                 ),
 
+                'photo_path' => $doctorImages[$doctorNumber % count($doctorImages)],
+
                 'email' => sprintf(
                     'demo.doctor.%03d@example.test',
                     $doctorNumber
@@ -1203,11 +1306,12 @@ class DatabaseSeeder extends Seeder
             $doctorNumber++;
         }
 
-        DB::table('doctors')->whereNull('photo_path')->get(['id'])->each(function (object $doctor): void {
-            $photoPath = sprintf('doctors/demo-portrait-%02d.jpg', (abs(crc32($doctor->id)) % 8) + 1);
-            if (Storage::disk('public')->exists($photoPath)) {
-                DB::table('doctors')->where('id', $doctor->id)->update(['photo_path' => $photoPath]);
-            }
+        DB::table('doctors')->where(function ($query): void {
+            $query->whereNull('photo_path')->orWhere('photo_path', 'like', 'https://images.unsplash.com/%');
+        })->get(['id'])->each(function (object $doctor) use ($doctorImages): void {
+            DB::table('doctors')->where('id', $doctor->id)->update([
+                'photo_path' => $doctorImages[abs(crc32($doctor->id)) % count($doctorImages)],
+            ]);
         });
 
         /*
@@ -1221,6 +1325,21 @@ class DatabaseSeeder extends Seeder
             $clinicNumber <= $target;
             $clinicNumber++
         ) {
+
+            /*
+             * Pick a real Yangon township for this clinic, and nudge the
+             * point by a tiny deterministic offset (about 100-200 m) so
+             * clinics in the same township don't sit exactly on top of
+             * each other on the map.
+             */
+            [$townshipName, $baseLat, $baseLng] = $yangonLocations[
+                ($clinicNumber - 1) % count($yangonLocations)
+            ];
+
+            $round = intdiv($clinicNumber - 1, count($yangonLocations));
+
+            $clinicLat = round($baseLat + (($round % 5) - 2) * 0.0007, 7);
+            $clinicLng = round($baseLng + ((intdiv($round, 5) % 5) - 2) * 0.0007, 7);
 
             /*
              * Find existing demo clinic first.
@@ -1264,17 +1383,15 @@ class DatabaseSeeder extends Seeder
                     ),
 
                     'complete_address' => sprintf(
-                        'Demo Clinic Road %d, Yangon',
-                        $clinicNumber
+                        'Demo Clinic Road %d, %s Township, Yangon',
+                        $clinicNumber,
+                        $townshipName
                     ),
 
-                    'latitude' => 16.80 + (
-                        random_int(1, 999) / 10000
-                    ),
+                    'photo_path' => $clinicImages[$clinicNumber % count($clinicImages)],
 
-                    'longitude' => 96.10 + (
-                        random_int(1, 999) / 10000
-                    ),
+                    'latitude' => $clinicLat,
+                    'longitude' => $clinicLng,
 
                     'status' => 'Approved',
 
@@ -1286,6 +1403,19 @@ class DatabaseSeeder extends Seeder
                     'updated_at' => $now,
                 ]);
             }
+
+            /*
+             * Always refresh coordinates so re-running the seeder on an
+             * existing database replaces old random locations.
+             */
+            DB::table('clinics')->where('id', $clinicId)->update([
+                'latitude' => $clinicLat,
+                'longitude' => $clinicLng,
+            ]);
+
+            DB::table('clinics')->where('id', $clinicId)->where(function ($query): void {
+                $query->whereNull('photo_path')->orWhere('photo_path', 'like', 'https://images.unsplash.com/%');
+            })->update(['photo_path' => $localImage]);
 
             /*
             |--------------------------------------------------------------------------

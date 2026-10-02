@@ -37,6 +37,8 @@ class UpdatePatientRequest extends FormRequest
                 'date',
             ],
 
+            'gender' => ['sometimes', 'nullable', 'string', 'in:Male,Female,Other'],
+
             'contact_number' => [
                 'sometimes',
                 'required',
@@ -49,6 +51,8 @@ class UpdatePatientRequest extends FormRequest
                 'required',
                 'string',
             ],
+
+            'region' => ['sometimes', 'nullable', 'string', 'max:100'],
 
             // NRC
             'nrc_state_id' => [

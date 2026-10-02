@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\MedicalProduct;
+ 
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -11,7 +12,7 @@ class ClientShopController extends Controller
 {
     public function index(): Response
     {
-        $products = Product::query()
+        $products = MedicalProduct::query()
             ->where('status', 'active')
             ->latest()
             ->paginate(12)
@@ -22,7 +23,7 @@ class ClientShopController extends Controller
         ]);
     }
 
-    public function show(Product $product): Response
+    public function show(MedicalProduct $product): Response
     {
         abort_unless(
             $product->status === 'active',

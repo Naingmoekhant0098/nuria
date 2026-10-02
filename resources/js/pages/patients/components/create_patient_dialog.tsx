@@ -2,7 +2,6 @@ import { useForm, usePage } from '@inertiajs/react';
 import { UserPlus } from 'lucide-react';
 import React, { useState } from 'react';
 
-
 import { Button } from '@/components/ui/button';
 import {
     Drawer,
@@ -41,10 +40,12 @@ export default function CreatePatientDrawer() {
         first_name: '',
         middle_name: '',
         last_name: '',
+        gender: '',
 
         birthdate: '',
 
         complete_address: '',
+        region: '',
         contact_number: '',
 
         nrc_state_id: '',
@@ -62,7 +63,7 @@ export default function CreatePatientDrawer() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        form.post('/patients', {
+        form.post('/clinic/patients', {
             preserveScroll: true,
 
             onSuccess: () => {
@@ -79,11 +80,7 @@ export default function CreatePatientDrawer() {
     };
 
     return (
-        <Drawer
-            open={open}
-            onOpenChange={setOpen}
-            direction="right"
-        >
+        <Drawer open={open} onOpenChange={setOpen} direction="right">
             <DrawerTrigger asChild>
                 <Button
                     type="button"
@@ -94,25 +91,8 @@ export default function CreatePatientDrawer() {
                 </Button>
             </DrawerTrigger>
 
-            <DrawerContent
-                className="
-                    fixed
-                    inset-y-0
-                    right-0
-                    left-auto
-                    mt-0
-                    h-full
-                    w-full
-                    rounded-none
-                    border-l
-                    border-neutral-800
-                    bg-neutral-900
-                    text-white
-                    sm:max-w-2xl
-                "
-            >
+            <DrawerContent className="fixed inset-y-0 right-0 left-auto mt-0 h-full w-full rounded-none border-l border-neutral-800 bg-neutral-900 text-white sm:max-w-2xl">
                 <div className="flex h-full flex-col">
-
                     <DrawerHeader className="border-b border-neutral-800 px-6 py-5">
                         <DrawerTitle className="text-lg font-semibold text-white">
                             Create New Patient
@@ -130,7 +110,6 @@ export default function CreatePatientDrawer() {
                             nrcTypes={nrcTypes}
                         />
                     </div>
-
                 </div>
             </DrawerContent>
         </Drawer>

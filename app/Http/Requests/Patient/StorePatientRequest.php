@@ -31,6 +31,8 @@ class StorePatientRequest extends FormRequest
                 'date',
             ],
 
+            'gender' => ['nullable', 'string', 'in:Male,Female,Other'],
+
             'contact_number' => [
                 'required',
                 'string',
@@ -41,6 +43,8 @@ class StorePatientRequest extends FormRequest
                 'required',
                 'string',
             ],
+
+            'region' => ['nullable', 'string', 'max:100'],
 
             'nrc_state_id' => [
                 'required',
@@ -81,6 +85,7 @@ class StorePatientRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
+                'unique:patients,email',
                 'max:255',
             ],
 

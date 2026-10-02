@@ -19,6 +19,7 @@ export interface Clinic {
     clinic_name: string;
     clinic_permit: string;
     complete_address: string;
+    photo_url?: string | null;
 
     latitude?: number | null;
     longitude?: number | null;
@@ -33,6 +34,7 @@ export interface ClinicFormData {
     clinic_name: string;
     clinic_permit: string;
     complete_address: string;
+    photo: File | null;
     latitude: string;
     longitude: string;
     open_time: string;
@@ -48,6 +50,8 @@ interface ClinicFormProps {
     onCancel: () => void;
 
     onSubmit: (e: React.FormEvent) => void;
+
+    currentPhotoUrl?: string | null;
 }
 
 export default function ClinicForm({
@@ -55,9 +59,31 @@ export default function ClinicForm({
     mode,
     onCancel,
     onSubmit,
+    currentPhotoUrl,
 }: ClinicFormProps) {
     return (
         <form onSubmit={onSubmit} className="space-y-5 pt-2">
+            <div className="space-y-2">
+                <Label htmlFor="clinic-photo">Clinic image</Label>
+                {currentPhotoUrl && !form.data.photo && (
+                    <img
+                        src={currentPhotoUrl}
+                        alt="Current clinic"
+                        className="h-32 w-full rounded-lg object-cover"
+                    />
+                )}
+                <Input
+                    id="clinic-photo"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={(event) =>
+                        form.setData('photo', event.target.files?.[0] ?? null)
+                    }
+                />
+                {form.errors.photo && (
+                    <p className="text-xs text-red-500">{form.errors.photo}</p>
+                )}
+            </div>
             {/* =========================
                 Clinic Name
             ========================== */}
@@ -67,10 +93,7 @@ export default function ClinicForm({
                 <Input
                     value={form.data.clinic_name}
                     onChange={(e) =>
-                        form.setData(
-                            'clinic_name',
-                            e.target.value,
-                        )
+                        form.setData('clinic_name', e.target.value)
                     }
                     placeholder="Enter clinic name"
                     className="mt-1! border-neutral-800 bg-neutral-950 text-white"
@@ -92,10 +115,7 @@ export default function ClinicForm({
                 <Input
                     value={form.data.clinic_permit}
                     onChange={(e) =>
-                        form.setData(
-                            'clinic_permit',
-                            e.target.value,
-                        )
+                        form.setData('clinic_permit', e.target.value)
                     }
                     placeholder="Enter clinic permit"
                     className="mt-1! border-neutral-800 bg-neutral-950 text-white"
@@ -117,10 +137,7 @@ export default function ClinicForm({
                 <textarea
                     value={form.data.complete_address}
                     onChange={(e) =>
-                        form.setData(
-                            'complete_address',
-                            e.target.value,
-                        )
+                        form.setData('complete_address', e.target.value)
                     }
                     placeholder="Enter complete address"
                     rows={3}
@@ -147,10 +164,7 @@ export default function ClinicForm({
                         step="any"
                         value={form.data.latitude}
                         onChange={(e) =>
-                            form.setData(
-                                'latitude',
-                                e.target.value,
-                            )
+                            form.setData('latitude', e.target.value)
                         }
                         placeholder="16.8409"
                         className="mt-1! border-neutral-800 bg-neutral-950 text-white"
@@ -172,10 +186,7 @@ export default function ClinicForm({
                         step="any"
                         value={form.data.longitude}
                         onChange={(e) =>
-                            form.setData(
-                                'longitude',
-                                e.target.value,
-                            )
+                            form.setData('longitude', e.target.value)
                         }
                         placeholder="96.1735"
                         className="mt-1! border-neutral-800 bg-neutral-950 text-white"
@@ -201,10 +212,7 @@ export default function ClinicForm({
                         type="time"
                         value={form.data.open_time}
                         onChange={(e) =>
-                            form.setData(
-                                'open_time',
-                                e.target.value,
-                            )
+                            form.setData('open_time', e.target.value)
                         }
                         className="mt-1! border-neutral-800 bg-neutral-950 text-white"
                     />
@@ -224,10 +232,7 @@ export default function ClinicForm({
                         type="time"
                         value={form.data.close_time}
                         onChange={(e) =>
-                            form.setData(
-                                'close_time',
-                                e.target.value,
-                            )
+                            form.setData('close_time', e.target.value)
                         }
                         className="mt-1! border-neutral-800 bg-neutral-950 text-white"
                     />
@@ -248,29 +253,21 @@ export default function ClinicForm({
 
                 <Select
                     value={form.data.status}
-                    onValueChange={(value) =>
-                        form.setData('status', value)
-                    }
+                    onValueChange={(value) => form.setData('status', value)}
                 >
                     <SelectTrigger className="mt-1! w-full border-neutral-800 bg-neutral-950 text-white">
                         <SelectValue placeholder="Select status" />
                     </SelectTrigger>
 
                     <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
-                        <SelectItem value="active">
-                            Active
-                        </SelectItem>
+                        <SelectItem value="active">Active</SelectItem>
 
-                        <SelectItem value="inactive">
-                            Inactive
-                        </SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
                     </SelectContent>
                 </Select>
 
                 {form.errors.status && (
-                    <p className="text-xs text-red-500">
-                        {form.errors.status}
-                    </p>
+                    <p className="text-xs text-red-500">{form.errors.status}</p>
                 )}
             </div>
 

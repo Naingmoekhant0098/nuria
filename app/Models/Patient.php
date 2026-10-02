@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class Patient extends Authenticatable
@@ -28,8 +30,10 @@ class Patient extends Authenticatable
         'last_name',
 
         'birthdate',
+        'gender',
 
         'complete_address',
+        'region',
         'contact_number',
 
         'user_name',
@@ -37,6 +41,7 @@ class Patient extends Authenticatable
 
         'nrc_id',
         'nrc_number',
+        'photo_path',
     ];
 
     protected $casts = [
@@ -47,6 +52,19 @@ class Patient extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    protected $appends = ['photo_url'];
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        if ($this->photo_path === null) {
+            return null;
+        }
+
+        return str_starts_with($this->photo_path, 'http') || str_starts_with($this->photo_path, '/')
+            ? $this->photo_path
+            : Storage::disk('public')->url($this->photo_path);
+    }
 
     /**
      * Patient's NRC
@@ -59,10 +77,19 @@ class Patient extends Authenticatable
         );
     }
 
-    public function reservations()
+    public function reservations(): HasMany
     {
         return $this->hasMany(
             Reservation::class,
+            'patient_id',
+            'id'
+        );
+    }
+
+    public function sales(): HasMany
+    {
+        return $this->hasMany(
+            Sale::class,
             'patient_id',
             'id'
         );
@@ -81,6 +108,11 @@ class Patient extends Authenticatable
             'patient_id',
             'id'
         );
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'patient_id', 'id');
     }
 
     /**

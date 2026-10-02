@@ -36,7 +36,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $user = $request->user('admin') ?? $request->user('clinic') ?? $request->user();
+        $patient = $request->user('patient');
+        $user = $request->user('admin') ?? $request->user('clinic') ?? $patient ?? $request->user();
 
         $userData = null;
         $clinic = $request->user('clinic');
@@ -44,12 +45,14 @@ class HandleInertiaRequests extends Middleware
 
         if ($user) {
             // Check if it's a Clinic model or a regular User model
-            $name = isset($user->clinic_name) ? $user->clinic_name : ($user->name ?? $user->user_name ?? 'User');
+            $name = isset($user->clinic_name)
+                ? $user->clinic_name
+                : ($user->name ?? trim(($user->first_name ?? '').' '.($user->last_name ?? '')) ?: ($user->user_name ?? 'User'));
 
             $userData = [
                 'id' => $user->id,
                 'name' => $name,
-                'email' => $user->user_name ?? $user->email ?? '',
+                'email' => $user->email ?? $user->user_name ?? '',
             ];
         }
 

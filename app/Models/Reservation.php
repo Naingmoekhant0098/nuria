@@ -87,6 +87,11 @@ class Reservation extends Model
         return $this->hasMany(Payment::class, 'reservation_id', 'id');
     }
 
+    public function review(): HasOne
+    {
+        return $this->hasOne(Review::class);
+    }
+
     public function consultation(): HasOne
     {
         return $this->hasOne(

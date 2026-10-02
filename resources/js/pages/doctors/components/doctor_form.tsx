@@ -78,11 +78,15 @@ export interface Doctor {
     first_name: string;
     middle_name?: string | null;
     last_name: string;
+    birthdate?: string | null;
+    gender?: string | null;
 
     specialization_id?: number | string | null;
     specialization?: Specialization | null;
 
     complete_address?: string | null;
+    about?: string | null;
+    region?: string | null;
     contact_number?: string | null;
 
     /* Doctor identity */
@@ -115,10 +119,14 @@ export interface DoctorFormData {
     first_name: string;
     middle_name: string;
     last_name: string;
+    birthdate: string;
+    gender: string;
 
     specialization_id: string;
 
     complete_address: string;
+    about: string;
+    region: string;
     contact_number: string;
 
     /* Proof of identity */
@@ -314,6 +322,56 @@ export default function DoctorForm({
                 </div>
             </div>
 
+            {/* Profile */}
+            <div className="grid gap-4 sm:grid-cols-3">
+                <div className="space-y-2">
+                    <Label>Birthdate</Label>
+                    <Input
+                        type="date"
+                        value={form.data.birthdate}
+                        onChange={(e) =>
+                            form.setData('birthdate', e.target.value)
+                        }
+                        className="border-neutral-800 bg-neutral-950 text-white"
+                    />
+                    {getError('birthdate') && (
+                        <p className="text-xs text-red-500">
+                            {getError('birthdate')}
+                        </p>
+                    )}
+                </div>
+                <div className="space-y-2">
+                    <Label>Gender</Label>
+                    <Select
+                        value={form.data.gender}
+                        onValueChange={(value) => form.setData('gender', value)}
+                    >
+                        <SelectTrigger className="border-neutral-800 bg-neutral-950 text-white">
+                            <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                        <SelectContent className="border-neutral-800 bg-neutral-900 text-white">
+                            <SelectItem value="Male">Male</SelectItem>
+                            <SelectItem value="Female">Female</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-2">
+                    <Label>Region</Label>
+                    <Input
+                        value={form.data.region}
+                        onChange={(e) => form.setData('region', e.target.value)}
+                        placeholder="Yangon Region"
+                        className="border-neutral-800 bg-neutral-950 text-white"
+                    />
+                    {getError('region') && (
+                        <p className="text-xs text-red-500">
+                            {getError('region')}
+                        </p>
+                    )}
+                </div>
+            </div>
+
             {/* =================================================
                 Professional Information
             ================================================== */}
@@ -424,6 +482,52 @@ export default function DoctorForm({
                     {getError('complete_address') && (
                         <p className="text-xs text-red-500">
                             {getError('complete_address')}
+                        </p>
+                    )}
+                </div>
+
+                <div className="space-y-2">
+                    <Label>About the doctor</Label>
+                    <div className="overflow-hidden rounded-md border border-neutral-800 bg-neutral-950">
+                        <div className="flex gap-1 border-b border-neutral-800 p-2">
+                            {[
+                                ['bold', 'Bold'],
+                                ['italic', 'Italic'],
+                                ['insertUnorderedList', 'Bullet list'],
+                            ].map(([command, label]) => (
+                                <button
+                                    key={command}
+                                    type="button"
+                                    onMouseDown={(event) => {
+                                        event.preventDefault();
+                                        document.execCommand(command, false);
+                                    }}
+                                    className="rounded px-2 py-1 text-xs text-gray-300 hover:bg-neutral-800"
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
+                        <div
+                            contentEditable
+                            role="textbox"
+                            aria-label="About the doctor"
+                            suppressContentEditableWarning
+                            onInput={(event) =>
+                                form.setData(
+                                    'about',
+                                    event.currentTarget.innerHTML,
+                                )
+                            }
+                            dangerouslySetInnerHTML={{
+                                __html: form.data.about,
+                            }}
+                            className="min-h-32 px-3 py-2 text-sm text-white outline-none empty:before:text-gray-500 empty:before:content-['Write_about_the_doctor...']"
+                        />
+                    </div>
+                    {getError('about') && (
+                        <p className="text-xs text-red-500">
+                            {getError('about')}
                         </p>
                     )}
                 </div>
