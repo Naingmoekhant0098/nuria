@@ -20,6 +20,7 @@ class Doctor extends JsonResource
             'middle_name' => $this->middle_name,
             'last_name' => $this->last_name,
             'specialization' => $this->specialization,
+            'experience_years' => $this->experience_years,
             'complete_address' => $this->complete_address,
             'contact_number' => $this->contact_number,
             'proof_of_identity' => $this->proof_of_identity,

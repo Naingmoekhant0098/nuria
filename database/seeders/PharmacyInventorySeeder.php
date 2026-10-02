@@ -38,20 +38,16 @@ class PharmacyInventorySeeder extends Seeder
             'Surgical Gloves' => 'https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=800&q=80',
             'Syringe' => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
         ];
-        $localImage = '/images/healthcare-demo.jpg';
-        $drugImages = array_fill_keys(array_keys($drugImages), $localImage);
-        $productImages = array_fill_keys(array_keys($productImages), $localImage);
-
         $drugs = collect([
             ['name' => 'Paracetamol', 'strength' => '500mg', 'sale_price' => 150, 'purchase_price' => 80],
             ['name' => 'Amoxicillin', 'strength' => '500mg', 'sale_price' => 350, 'purchase_price' => 220],
             ['name' => 'Cetirizine', 'strength' => '10mg', 'sale_price' => 200, 'purchase_price' => 120],
-        ])->map(function (array $item) use ($drugCategory, $tabletForm, $manufacturer): array {
+        ])->map(function (array $item) use ($drugCategory, $tabletForm, $manufacturer, $drugImages): array {
             $drug = Drug::firstOrCreate(
                 ['name' => $item['name'], 'strength' => $item['strength']],
                 ['drug_category_id' => $drugCategory->id, 'drug_form_id' => $tabletForm->id, 'manufacturer_id' => $manufacturer->id, 'image_path' => $drugImages[$item['name']], 'is_active' => true]
             );
-            if ($drug->image_path === null || str_starts_with($drug->image_path, 'https://images.unsplash.com/')) {
+            if ($drug->image_path !== $drugImages[$item['name']]) {
                 $drug->update(['image_path' => $drugImages[$item['name']]]);
             }
 
@@ -73,7 +69,7 @@ class PharmacyInventorySeeder extends Seeder
                 ['medical_product_category_id' => $productCategory->id, 'image_path' => $productImages[$item['name']], 'is_active' => true]
             );
 
-            if ($product->image_path === null || str_starts_with($product->image_path, 'https://images.unsplash.com/')) {
+            if ($product->image_path !== $productImages[$item['name']]) {
                 $product->update(['image_path' => $productImages[$item['name']]]);
             }
 

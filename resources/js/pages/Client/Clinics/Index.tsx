@@ -62,6 +62,7 @@ type Doctor = {
     clinicSlug: string;
     name: string;
     spec: string;
+    experience_years?: number | null;
     clinic: string;
     region: string;
     lat?: number | string | null;
@@ -79,6 +80,7 @@ type Doctor = {
     video: boolean;
     img: string;
     clinicImg?: string | null;
+    clinics: { id: number; name: string }[];
 };
 
 const PRICE_MIN = 30000,
@@ -410,10 +412,13 @@ function Pills<T extends string | number>({ value, onChange, items }: { value: T
 }
 
 function DoctorCard({ d }: { d: Doctor }) {
+    const doctorHref = routes.doctor(d.clinicSlug, d.id);
+    const availabilityHref = routes.doctorAvailability(d.clinicSlug, d.id);
+
     return (
         <div className="group h-full rounded-[1.75rem] bg-white p-3 shadow-[0_1px_2px_rgba(31,58,67,0.06)] transition hover:shadow-[0_16px_40px_rgba(31,58,67,0.12)]">
             <Link
-                href={routes.doctor(d.clinicSlug, d.id)}
+                href={doctorHref}
                 className="relative block aspect-[4/3] overflow-hidden rounded-[1.4rem] bg-slate-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
             >
                 <Img id={d.img} alt={`Portrait of ${d.name}`} className="object-top transition duration-700 group-hover:scale-105" />
@@ -431,13 +436,18 @@ function DoctorCard({ d }: { d: Doctor }) {
             </Link>
             <div className="px-2 pt-4 pb-1">
                 <h3 className="text-lg font-medium tracking-tight">
-                    <Link href={routes.doctor(d.clinicSlug, d.id)} className="transition hover:text-main">
+                    <Link href={doctorHref} className="transition hover:text-main">
                         {d.name}
                     </Link>
                 </h3>
                 <p className="text-sm text-[#64748B]">
-                    {d.spec}, {d.clinic}
+                    {d.spec}
                 </p>
+                {d.experience_years != null && (
+                    <p className="mt-1 text-xs text-[#64748B]">
+                        {d.experience_years} {d.experience_years === 1 ? 'year' : 'years'} experience
+                    </p>
+                )}
                 <p className="mt-1 flex items-center gap-1 text-sm text-main">
                     <MapPinIcon className="size-3.5" />
                   <span className=' text-xs!'>  {d.region}</span>
@@ -455,7 +465,7 @@ function DoctorCard({ d }: { d: Doctor }) {
                         </p>
                     </div>
                     <Link
-                        href={routes.doctorAvailability(d.clinicSlug, d.id)}
+                        href={availabilityHref}
                         className="shrink-0 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-main"
                     >
                         Book
@@ -473,6 +483,10 @@ type Props = {
 
 export default function DoctorsPage() {
     const { doctors, filters } = usePage<Props>().props;
+    const uniqueDoctors = useMemo(
+        () => Array.from(new Map(doctors.map((doctor) => [String(doctor.id), doctor])).values()),
+        [doctors],
+    );
     const reduce = useReducedMotion();
     const [f, setF] = useState<F>(() => ({
         ...initial,
@@ -540,7 +554,7 @@ export default function DoctorsPage() {
         };
     }, [drawer, mapOpen]);
 
-    const uniq = (get: (d: Doctor) => string[]) => [...new Set(doctors.flatMap(get))].filter(Boolean).sort();
+    const uniq = (get: (d: Doctor) => string[]) => [...new Set(uniqueDoctors.flatMap(get))].filter(Boolean).sort();
     const filterOptions = useMemo(
         () => ({
             specs: uniq((d) => [d.spec]),
@@ -550,11 +564,11 @@ export default function DoctorsPage() {
             products: uniq((d) => d.products),
             langs: uniq((d) => d.langs),
         }),
-        [doctors],
+        [uniqueDoctors],
     );
 
     const results = useMemo(() => {
-        const r = doctors.filter((d) => matches(d, f));
+        const r = uniqueDoctors.filter((d) => matches(d, f));
         const by: Record<string, (a: Doctor, b: Doctor) => number> = {
             rating: (a, b) => b.rating - a.rating || b.reviews - a.reviews,
             'price-asc': (a, b) => a.price - b.price,
@@ -562,8 +576,8 @@ export default function DoctorsPage() {
             soonest: (a, b) => a.days - b.days,
         };
         return by[sort] ? [...r].sort(by[sort]) : r;
-    }, [doctors, f, sort]);
-    const count = (k: ListKey, v: string) => doctors.filter((d) => matches(d, f, k) && pick[k](d).includes(v)).length;
+    }, [uniqueDoctors, f, sort]);
+    const count = (k: ListKey, v: string) => uniqueDoctors.filter((d) => matches(d, f, k) && pick[k](d).includes(v)).length;
 
     const mapClinics = useMemo<MapClinic[]>(() => {
         const m = new Map<string, MapClinic>();

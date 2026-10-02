@@ -161,7 +161,7 @@ const faqs = [
 
 /* ---------- types (unchanged, from ClientClinicController@home) ---------- */
 type ClinicCard = { id: number; name: string; area: string; tags: string; rating: string | null; status: string | null; image: string | null };
-type DoctorCard = { id: number; name: string; spec: string; clinic: string; clinic_id: number | null; next: string; rating: string | null; image: string | null };
+type DoctorCard = { id: number; name: string; spec: string; experience_years?: number | null; clinic: string; clinic_id: number | null; next: string; rating: string | null; image: string | null };
 type ServiceCard = { id: number; name: string; note: string; image: string | null; big: boolean };
 type ProductCard = { id: number; name: string; cat: string; price: number; rating: string | null; image: string | null };
 type HomeProps = {
@@ -425,6 +425,11 @@ export default function NuriaHome({ clinics, doctors, services, products, specia
                                         <div className="px-2 pt-4 pb-1">
                                             <h3 className="text-lg font-medium tracking-tight">{d.name}</h3>
                                             <p className="text-sm text-[#64748B]">{d.spec}{d.clinic && `, ${d.clinic}`}</p>
+                                            {d.experience_years != null && (
+                                                <p className="mt-1 text-xs text-[#64748B]">
+                                                    {d.experience_years} {d.experience_years === 1 ? 'year' : 'years'} experience
+                                                </p>
+                                            )}
                                             <div className="mt-4 flex items-center justify-between gap-3">
                                                 <p className="flex items-center gap-2 text-xs font-medium text-emerald-700">
                                                     <span className="size-2 rounded-full bg-emerald-500" />

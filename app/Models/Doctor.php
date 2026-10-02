@@ -28,6 +28,7 @@ class Doctor extends Model
         'birthdate',
         'gender',
         'specialization_id',
+        'experience_years',
         'complete_address',
         'about',
         'region',
@@ -53,6 +54,7 @@ class Doctor extends Model
     {
         return [
             'birthdate' => 'date',
+            'experience_years' => 'integer',
         ];
     }
 

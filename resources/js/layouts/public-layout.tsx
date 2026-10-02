@@ -9,7 +9,7 @@ type PublicLayoutProps = {
 };
 
 export default function PublicLayout({ children }: PublicLayoutProps) {
-    const { component } = usePage();
+    const { component, props } = usePage<{ cartCount?: number }>();
     const isPatientAuthPage = component.startsWith('Client/Auth/');
 
     return (
@@ -33,7 +33,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
             ========================================================= */}
 
             <main className="">
-                {!isPatientAuthPage && <Nav />}
+                {!isPatientAuthPage && <Nav cartCount={props.cartCount ?? 0} />}
                 {children}
                 {!isPatientAuthPage && <Footer />}
             </main>

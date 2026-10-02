@@ -30,12 +30,14 @@ type Service = {
     name: string;
     description?: string | null;
     amount: number;
+    image?: string | null;
 };
 
 type Doctor = {
     id: string;
     name: string;
     specialization: string;
+    experience_years?: number | null;
     photo?: string | null;
     price?: number;
     rating: number;
@@ -209,6 +211,13 @@ export default function ClinicDetail({
                                     href={`/clinics/${clinic.id}?service_id=${service.id}`}
                                     className={`w-[min(76vw,17rem)] shrink-0 snap-start rounded-2xl border bg-white p-4 transition hover:border-[#337983] ${selectedServiceId === service.id ? 'border-[#337983] ring-2 ring-[#337983]/20' : 'border-transparent'}`}
                                 >
+                                    <div className="mb-3 aspect-[16/8] overflow-hidden rounded-xl bg-[#E3EEF1]">
+                                        {service.image ? (
+                                            <img src={service.image} alt={service.name} className="size-full object-cover" />
+                                        ) : (
+                                            <div className="grid size-full place-items-center text-[#337983]/50"><ImageIcon className="size-6" /></div>
+                                        )}
+                                    </div>
                                     <div className="flex items-center justify-between">
                                         <StethoscopeIcon className="size-5 text-[#337983]" />
                                         {selectedServiceId === service.id && (
@@ -293,6 +302,12 @@ export default function ClinicDetail({
                                                 {doctor.specialization},{' '}
                                                 {clinic.name}
                                             </p>
+                                            {doctor.experience_years != null && (
+                                                <p className="mt-1 text-xs text-[#64748B]">
+                                                    {doctor.experience_years}{' '}
+                                                    {doctor.experience_years === 1 ? 'year' : 'years'} experience
+                                                </p>
+                                            )}
                                             <p className="mt-1 flex items-center gap-1 text-sm text-[#64748B]">
                                                 <MapPinIcon className="size-3.5" />
                                                 {clinic.address}

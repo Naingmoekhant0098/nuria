@@ -99,6 +99,18 @@ class Clinic extends Authenticatable
 
     public function hasPlanFeature(string $feature): bool
     {
+        if (! FeatureSetting::isSubscriptionEnabled('plans_subscription')) {
+            return true;
+        }
+
+        if ($feature === 'plans_subscription') {
+            return true;
+        }
+
+        if (! FeatureSetting::isSubscriptionEnabled($feature) || FeatureSetting::isGloballyEnabled($feature)) {
+            return true;
+        }
+
         return in_array(
             $feature,
             $this->currentSubscription()?->plan?->features ?? [],

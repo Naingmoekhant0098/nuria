@@ -22,7 +22,7 @@ import {
     UserIcon,
     XIcon,
 } from 'lucide-react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 
 /* ============ ROUTES (adjust to your web.php or use Ziggy route()) ============ */
 const routes = {
@@ -51,6 +51,7 @@ type Service = {
     id: number;
     name: string;
     price: number;
+    image?: string | null;
     duration_minutes?: number;
 };
 type Clinic = {
@@ -60,12 +61,14 @@ type Clinic = {
     region?: string;
     products?: string[];
 };
+type AvailableClinic = { id: number; name: string };
 type Doctor = {
     id: string;
     first_name: string;
     middle_name?: string | null;
     last_name: string;
     specialization: { name: string };
+    experience_years?: number | null;
     photo?: string;
     rating?: number;
     reviews?: number;
@@ -102,6 +105,7 @@ type Review = {
 type Props = {
     doctor: Doctor;
     clinic: Clinic;
+    availableClinics: AvailableClinic[];
     schedules: Schedule[];
     services: Service[];
     /** Booked token counts keyed by `${YYYY-MM-DD}|${schedule_id}` */
@@ -497,6 +501,7 @@ function ReservationModal({
 export default function DoctorDetailPage({
     doctor,
     clinic,
+    availableClinics,
     schedules,
     services,
     sessionCounts = NO_COUNTS,
@@ -699,6 +704,15 @@ export default function DoctorDetailPage({
                                         <CalendarIcon className="size-4 shrink-0 text-main" />
                                         <span className="font-medium">
                                             {doctor.age} years old
+                                        </span>
+                                    </li>
+                                )}
+                                {doctor.experience_years != null && (
+                                    <li className="flex items-center gap-1.5 rounded-full bg-white px-4 py-2 shadow-sm">
+                                        <StethoscopeIcon className="size-4 shrink-0 text-main" />
+                                        <span className="font-medium">
+                                            {doctor.experience_years}{' '}
+                                            {doctor.experience_years === 1 ? 'year' : 'years'} experience
                                         </span>
                                     </li>
                                 )}
@@ -1010,7 +1024,19 @@ export default function DoctorDetailPage({
                             </div>
 
                             <div className="p-4 sm:p-6">
-                                <Step n={1} title="Choose a service">
+                                <Step n={1} title="Choose a clinic">
+                                    <select
+                                        value={clinic.id}
+                                        onChange={(event) => router.get(`/clinics/${event.target.value}/doctors/${doctor.id}`, {}, { preserveScroll: true })}
+                                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-main"
+                                    >
+                                        {availableClinics.map((availableClinic) => (
+                                            <option key={availableClinic.id} value={availableClinic.id}>{availableClinic.name}</option>
+                                        ))}
+                                    </select>
+                                </Step>
+
+                                <Step n={2} title="Choose a service">
                                     <div className="space-y-2">
                                         {services.map((s) => (
                                             <label
@@ -1046,7 +1072,7 @@ export default function DoctorDetailPage({
                                     <FieldError message={errors.service_id} />
                                 </Step>
 
-                                <Step n={2} title="Pick a date">
+                                <Step n={3} title="Pick a date">
                                     {days.length === 0 ? (
                                         <p className="text-sm text-[#64748B]">
                                             No dates open in the next{' '}
@@ -1115,7 +1141,7 @@ export default function DoctorDetailPage({
                                     />
                                 </Step>
 
-                                <Step n={3} title="Choose a session">
+                                <Step n={4} title="Choose a session">
                                     {sessions.length === 0 ? (
                                         <p className="text-sm text-[#64748B]">
                                             Pick a date to see sessions.

@@ -83,6 +83,7 @@ export interface Doctor {
 
     specialization_id?: number | string | null;
     specialization?: Specialization | null;
+    experience_years?: number | null;
 
     complete_address?: string | null;
     about?: string | null;
@@ -123,6 +124,7 @@ export interface DoctorFormData {
     gender: string;
 
     specialization_id: string;
+    experience_years: string;
 
     complete_address: string;
     about: string;
@@ -423,8 +425,8 @@ export default function DoctorForm({
 
                 {/* Contact */}
 
-                <div className="space-y-2">
-                    <Label>Contact Number</Label>
+            <div className="space-y-2">
+                <Label>Contact Number</Label>
 
                     <Input
                         type="tel"
@@ -440,10 +442,33 @@ export default function DoctorForm({
                         <p className="text-xs text-red-500">
                             {getError('contact_number')}
                         </p>
-                    )}
-                </div>
+                )}
+            </div>
 
-                {/* Proof of Identity */}
+            <div className="space-y-2">
+                <Label>Experience (years)</Label>
+
+                <Input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={form.data.experience_years}
+                    onChange={(event) =>
+                        form.setData('experience_years', event.target.value)
+                    }
+                    placeholder="e.g. 7"
+                    className="border-neutral-800 bg-neutral-950 text-white"
+                />
+
+                {getError('experience_years') && (
+                    <p className="text-xs text-red-500">
+                        {getError('experience_years')}
+                    </p>
+                )}
+            </div>
+
+            {/* Proof of Identity */}
 
                 <div className="space-y-2">
                     <Label>Proof of Identity</Label>

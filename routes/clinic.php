@@ -7,6 +7,7 @@ use App\Http\Controllers\Clinic\DoctorScheduleController;
 use App\Http\Controllers\Clinic\OnlineOrderController;
 use App\Http\Controllers\Clinic\PatientController;
 use App\Http\Controllers\Clinic\PlanController;
+use App\Http\Controllers\Clinic\ServiceNameController;
 use App\Http\Controllers\Consultation\ConsultationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MedicalRecords\MedicalRecordController;
@@ -77,6 +78,21 @@ Route::prefix('clinic')
 
         Route::resource('services', ClinicServiceController::class)
             ->names('clinic.services')
+            ->middleware('clinic.feature:services');
+
+        Route::get('/service-images', [ClinicServiceController::class, 'images'])
+            ->name('clinic.service-images.index')
+            ->middleware('clinic.feature:services');
+        Route::post('/service-images', [ClinicServiceController::class, 'storeImage'])
+            ->name('clinic.service-images.store')
+            ->middleware('clinic.feature:services');
+        Route::delete('/service-images/{service}', [ClinicServiceController::class, 'destroyImage'])
+            ->name('clinic.service-images.destroy')
+            ->middleware('clinic.feature:services');
+
+        Route::resource('service-names', ServiceNameController::class)
+            ->only(['index', 'store', 'update', 'destroy'])
+            ->names('clinic.service-names')
             ->middleware('clinic.feature:services');
 
         /*

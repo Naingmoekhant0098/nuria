@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
             'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&q=80',
             'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80',
         ];
+        $serviceImages = [
+            'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1200&q=80',
+            'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=80',
+        ];
         $drugImages = [
             'Paracetamol' => 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
             'Amoxicillin' => 'https://images.unsplash.com/photo-1550572017-edd951aa8ca9?auto=format&fit=crop&w=800&q=80',
@@ -412,6 +417,7 @@ class DatabaseSeeder extends Seeder
                 'doctor_id' => 'D001',
                 'service_name' => 'General Medical Consultation',
                 'service_description' => 'Standard checkup, vital signs tracking, and diagnosis.',
+                'image_path' => $serviceImages[0],
                 'amount' => 15000.00,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -429,11 +435,19 @@ class DatabaseSeeder extends Seeder
                 'doctor_id' => 'D002',
                 'service_name' => 'Cardiology Checkup',
                 'service_description' => 'ECG and specialized heart health evaluation.',
+                'image_path' => $serviceImages[1],
                 'amount' => 35000.00,
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);
         }
+
+        DB::table('clinic_services')->where('id', $serviceId1)->whereNull('image_path')->update([
+            'image_path' => $serviceImages[0],
+        ]);
+        DB::table('clinic_services')->where('id', $serviceId2)->whereNull('image_path')->update([
+            'image_path' => $serviceImages[1],
+        ]);
 
         /*
         |--------------------------------------------------------------------------
@@ -1098,6 +1112,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PaymentMethodSeeder::class,
+            PharmacyInventorySeeder::class,
         ]);
 
         /*
@@ -1489,6 +1504,8 @@ class DatabaseSeeder extends Seeder
                             ),
 
                             'service_description' => 'Seeded demonstration clinic service.',
+
+                            'image_path' => $serviceImages[$serviceNumber % count($serviceImages)],
 
                             'amount' => random_int(
                                 10000,

@@ -53,6 +53,7 @@ export default function EditDoctorDialog({
         gender: '',
 
         specialization_id: '',
+        experience_years: '',
 
         complete_address: '',
         about: '',
@@ -94,11 +95,18 @@ export default function EditDoctorDialog({
                 ? String(doctor.specialization.id)
                 : '',
 
+            experience_years:
+                doctor.experience_years != null
+                    ? String(doctor.experience_years)
+                    : '',
+
             complete_address: doctor.complete_address ?? '',
             about: doctor.about ?? '',
             region: doctor.region ?? '',
 
             contact_number: doctor.contact_number ?? '',
+
+            proof_of_identity: doctor.proof_of_identity ?? '',
 
             photo: null,
 
@@ -133,7 +141,7 @@ export default function EditDoctorDialog({
 
             password: '',
 
-            status: doctor.status ?? 'active',
+            status: String(doctor.status ?? 'active').toLowerCase(),
 
             compensation_type:
                 doctor.clinics?.[0]?.pivot.compensation_type ??

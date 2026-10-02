@@ -168,6 +168,8 @@ class CreateDoctorAction
                  */
                 'specialization_id' => $data['specialization_id'],
 
+                'experience_years' => $data['experience_years'],
+
                 /*
                  * Contact
                  */

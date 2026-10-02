@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { destroy } from '@/routes/doctor-schedules';
 
 import CreateDoctorScheduleDialog from './components/create_doctor_schedule_dialog';
+import DoctorScheduleCalendar from './components/doctor_schedule_calendar';
 import type {
     Clinic,
     Doctor,
@@ -147,7 +148,8 @@ export default function Index() {
 
         return [doctor.first_name, doctor.middle_name, doctor.last_name]
             .filter(Boolean)
-            .join(' ');
+            .join(' ')
+            .replace(/^Dr\.\s*/i, '');
     };
 
     const formatTime = (time?: string | null): string => {
@@ -228,13 +230,6 @@ export default function Index() {
     | Statistics
     |--------------------------------------------------------------------------
     */
-
-    const totalSchedules =
-        schedules?.reduce(
-            (total, doctorGroup) =>
-                total + (doctorGroup.schedules?.length ?? 0),
-            0,
-        ) ?? 0;
 
     /*
     |--------------------------------------------------------------------------
@@ -344,6 +339,10 @@ export default function Index() {
                     </div>
                 )}
 
+                {filteredSchedules.length > 0 && (
+                    <DoctorScheduleCalendar schedules={filteredSchedules} />
+                )}
+
                 <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 xl:grid-cols-2">
                     {visibleSchedules.map((doctorGroup, doctorIndex) => {
                         const doctor = doctorGroup.doctor;
@@ -353,7 +352,7 @@ export default function Index() {
                         return (
                             <div
                                 key={doctor?.id ?? `doctor-${doctorIndex}`}
-                                className="self-start overflow-hidden border rounded-2xl  text-[12px]"
+                                className="self-start overflow-hidden rounded-2xl border text-[12px]"
                             >
                                 <div className="flex flex-col gap-4 border-b border-neutral-800 bg-neutral-950 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                                     <div className="flex items-center gap-4">
@@ -382,8 +381,6 @@ export default function Index() {
                                         {doctorSchedules.length} schedules
                                     </div>
                                 </div>
-
-                              
 
                                 <div className="px-0 py-2">
                                     <div className="overflow-x-auto">
@@ -444,7 +441,9 @@ export default function Index() {
                                                             </td>
 
                                                             <td className="px-4 py-4 text-gray-300">
-                                                                {schedule.max_patients_per_slot}
+                                                                {
+                                                                    schedule.max_patients_per_slot
+                                                                }
                                                             </td>
 
                                                             {/* Actions */}

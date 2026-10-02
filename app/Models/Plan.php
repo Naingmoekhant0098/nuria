@@ -21,6 +21,7 @@ class Plan extends Model
         'medical_records' => 'Medical records',
         'pharmacy' => 'Pharmacy and inventory',
         'online_orders' => 'Online orders',
+        'plans_subscription' => 'Plans & subscription',
         'reports' => 'Reports',
         'finance' => 'Payments and finance',
     ];

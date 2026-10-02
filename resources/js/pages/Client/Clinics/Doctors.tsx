@@ -4,6 +4,7 @@ type Doctor = {
     id: string;
     first_name: string;
     last_name: string;
+    experience_years?: number | null;
     photo_url?: string | null;
     specialization?: { name: string } | null;
 };
@@ -55,6 +56,12 @@ export default function Doctors({ clinic, doctors }: Props) {
                                 {doctor.specialization?.name ??
                                     'General practice'}
                             </p>
+                            {doctor.experience_years != null && (
+                                <p className="mt-1 text-sm text-slate-500">
+                                    {doctor.experience_years}{' '}
+                                    {doctor.experience_years === 1 ? 'year' : 'years'} experience
+                                </p>
+                            )}
                             <Link
                                 className="mt-5 inline-flex font-semibold text-teal-700 hover:underline"
                                 href={`/clinics/${clinic.id}/doctors/${doctor.id}`}

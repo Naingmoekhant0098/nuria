@@ -12,7 +12,7 @@ import {
     CreditCard, // Payments
     Bell, // Notifications
     Briefcase, // Services
-    Clock,
+    CalendarClock,
     ListFilter, // Schedules
 } from 'lucide-react';
 
@@ -54,11 +54,20 @@ const mainNavGroups: NavGroup[] = [
                 href: '/clinic/orders',
                 icon: ClipboardList,
             },
-            { title: 'Services', href: '/clinic/services', icon: Briefcase },
             {
-                title: 'Schedules',
+                title: 'Assign service',
+                href: '/clinic/services',
+                icon: Briefcase,
+            },
+            {
+                title: 'Service list',
+                href: '/clinic/service-names',
+                icon: Briefcase,
+            },
+            {
+                title: 'Schedule',
                 href: '/clinic/doctor-schedules',
-                icon: Clock,
+                icon: CalendarClock,
             },
         ],
     },
@@ -173,6 +182,11 @@ const adminNavGroups: NavGroup[] = [
         items: [
             { title: 'Clinics', href: '/admin/clinics', icon: Building2 },
             { title: 'Plans', href: '/admin/plans', icon: CreditCard },
+            {
+                title: 'Feature access',
+                href: '/admin/settings/features',
+                icon: Settings,
+            },
             {
                 title: 'Subscriptions',
                 href: '/admin/subscriptions',
@@ -298,6 +312,7 @@ const adminNavigationPermissions: Record<string, string> = {
     '/admin/dashboard': 'dashboard.view',
     '/admin/clinics': 'clinics.manage',
     '/admin/plans': 'clinics.manage',
+    '/admin/settings/features': 'clinics.manage',
     '/admin/subscriptions': 'clinics.manage',
     '/admin/users': 'admins.manage',
     '/admin/roles': 'roles.manage',
@@ -324,12 +339,19 @@ export function AppSidebar() {
         auth: {
             permissions?: string[];
             features?: string[];
+            globallyEnabledFeatures?: string[];
+            subscriptionDisabledFeatures?: string[];
             subscription?: { plan_name: string } | null;
         };
     }>();
     const isAdmin = url.startsWith('/admin');
     const permissions = props.auth?.permissions ?? [];
     const clinicFeatures = props.auth?.features ?? [];
+    const globallyEnabledFeatures = props.auth?.globallyEnabledFeatures ?? [];
+    const subscriptionDisabledFeatures =
+        props.auth?.subscriptionDisabledFeatures ?? [];
+    const subscriptionsDisabled =
+        subscriptionDisabledFeatures.includes('plans_subscription');
     const clinicNavigationPermissions: Record<string, string> = {
         '/clinic/doctors': 'doctors',
         '/clinic/doctor-schedules': 'schedules',
@@ -359,25 +381,30 @@ export function AppSidebar() {
                 const requiredFeature = clinicNavigationPermissions[href];
 
                 return (
-                    !requiredFeature || clinicFeatures.includes(requiredFeature)
+                    !requiredFeature ||
+                    subscriptionsDisabled ||
+                    clinicFeatures.includes(requiredFeature) ||
+                    globallyEnabledFeatures.includes(requiredFeature) ||
+                    subscriptionDisabledFeatures.includes(requiredFeature)
                 );
             }),
         }))
         .filter((group) => group.items.length > 0);
-    const clinicNavGroups = props.auth?.subscription
-        ? filteredClinicGroups
-        : [
-              {
-                  title: 'Account',
-                  items: [
-                      {
-                          title: 'Plans & Billing',
-                          href: '/clinic/plans',
-                          icon: CreditCard,
-                      },
-                  ],
-              },
-          ];
+    const clinicNavGroups =
+        props.auth?.subscription || subscriptionsDisabled
+            ? filteredClinicGroups
+            : [
+                  {
+                      title: 'Account',
+                      items: [
+                          {
+                              title: 'Plans & Billing',
+                              href: '/clinic/plans',
+                              icon: CreditCard,
+                          },
+                      ],
+                  },
+              ];
     const navGroups = isAdmin
         ? adminNavGroups
               .map((group) => ({
@@ -400,7 +427,7 @@ export function AppSidebar() {
         : clinicNavGroups;
     const dashboardUrl = isAdmin
         ? '/admin/dashboard'
-        : props.auth?.subscription
+        : props.auth?.subscription || subscriptionsDisabled
           ? '/clinic/dashboard'
           : '/clinic/plans';
 

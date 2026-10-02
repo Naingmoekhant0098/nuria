@@ -172,7 +172,7 @@ export default function Nav({ cartCount = 0, links = defaultLinks }: NavProps) {
 
                     <div className="flex items-center gap-2">
                         <Link
-                            href="/shop"
+                            href="/shop/cart"
                             aria-label={`Cart, ${cartCount} items`}
                             className="relative grid size-10 place-items-center rounded-full border border-slate-200 bg-white/80 backdrop-blur-lg transition hover:border-[#337983]"
                         >

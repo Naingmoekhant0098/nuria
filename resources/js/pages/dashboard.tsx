@@ -42,6 +42,7 @@ type OnlineOrder = {
     created_at: string;
     patient: { first_name: string; last_name: string } | null;
 };
+type FeatureAccess = Record<string, { label: string; free: boolean; included_in_plan: boolean }>;
 
 export default function Dashboard() {
     const {
@@ -54,6 +55,7 @@ export default function Dashboard() {
         lowStock,
         onlineOrderSummary,
         recentOnlineOrders,
+        featureAccess,
     } = usePage<{
         clinic: { name: string };
         filters: { period: string; start_date: string; end_date: string };
@@ -73,6 +75,7 @@ export default function Dashboard() {
             pending_payment_count: number;
         };
         recentOnlineOrders: OnlineOrder[];
+        featureAccess: FeatureAccess;
     }>().props;
     const [startDate, setStartDate] = useState(filters.start_date);
     const [endDate, setEndDate] = useState(filters.end_date);
@@ -195,6 +198,22 @@ export default function Dashboard() {
                             icon={<Activity className="size-4" />}
                             accent="text-amber-600"
                         />
+                    </section>
+
+                    <section className="rounded-2xl border bg-background p-5 shadow-sm">
+                        <div className="flex items-center justify-between gap-3">
+                            <div>
+                                <h2 className="text-lg font-semibold">Your feature access</h2>
+                                <p className="text-sm text-muted-foreground">Features marked free are opened globally by the administrator.</p>
+                            </div>
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            {Object.entries(featureAccess).map(([key, feature]) => (
+                                <span key={key} className={`rounded-full px-3 py-1.5 text-xs font-medium ${feature.free ? 'bg-emerald-100 text-emerald-700' : feature.included_in_plan ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                                    {feature.label}: {feature.free ? 'Free access' : feature.included_in_plan ? 'Included in plan' : 'Not included'}
+                                </span>
+                            ))}
+                        </div>
                     </section>
 
                     <section className="space-y-3">

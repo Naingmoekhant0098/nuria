@@ -30,13 +30,15 @@ class UpdateDoctorRequest extends FormRequest
                 'required',
                 'email',
                 'max:255',
-                'unique:doctors,email',
+                Rule::unique('doctors', 'email')->ignore($doctor->id, 'id'),
             ],
 
             'specialization_id' => [
                 'required',
                 'exists:specializations,id',
             ],
+
+            'experience_years' => ['required', 'integer', 'min:0', 'max:100'],
 
             'complete_address' => [
                 'required',

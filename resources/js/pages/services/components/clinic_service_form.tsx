@@ -25,21 +25,39 @@ export interface Doctor {
     last_name: string;
 }
 
+export interface ServiceName {
+    id: number;
+    name: string;
+}
+
 export interface ClinicService {
     id: number;
 
     doctor_id: string;
+    service_name_id?: number | null;
 
-    service_name: string;
+    service_name: string | ServiceName;
+    serviceName?: ServiceName | null;
     service_description?: string | null;
+    image_path?: string | null;
+    image_url?: string | null;
 
     amount: number | string;
 
     doctor?: Doctor | null;
 }
 
+export function getClinicServiceName(service: ClinicService): string {
+    if (typeof service.service_name === 'string') {
+        return service.service_name;
+    }
+
+    return service.service_name?.name ?? service.serviceName?.name ?? '-';
+}
+
 export interface ClinicServiceFormData {
     doctor_id: string;
+    service_name_id: string;
     service_name: string;
     service_description: string;
     amount: string;
@@ -47,8 +65,9 @@ export interface ClinicServiceFormData {
 
 interface ClinicServiceFormProps {
     form: ReturnType<typeof useForm<ClinicServiceFormData>>;
-    
+
     doctors: Doctor[];
+    serviceNames: ServiceName[];
     mode: 'create' | 'edit';
     onCancel: () => void;
     onSubmit: (e: React.FormEvent) => void;
@@ -58,6 +77,7 @@ export default function ClinicServiceForm({
     form,
 
     doctors,
+    serviceNames,
     mode,
     onCancel,
     onSubmit,
@@ -107,22 +127,33 @@ export default function ClinicServiceForm({
                 )}
             </div>
 
-            {/* Service Name */}
             <div className="space-y-2">
-                <Label>Service Name</Label>
-
-                <Input
-                    value={form.data.service_name}
-                    onChange={(e) =>
-                        form.setData('service_name', e.target.value)
-                    }
-                    placeholder="e.g. General Consultation"
-                    className="border-neutral-800 bg-neutral-950 text-white"
-                />
-
-                {form.errors.service_name && (
+                <Label>Service</Label>
+                <select
+                    value={form.data.service_name_id}
+                    onChange={(event) => {
+                        const serviceNameId = event.target.value;
+                        const selected = serviceNames.find(
+                            (item) => String(item.id) === serviceNameId,
+                        );
+                        form.setData({
+                            ...form.data,
+                            service_name_id: serviceNameId,
+                            service_name: selected?.name ?? '',
+                        });
+                    }}
+                    className="flex h-10 w-full rounded-md border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm text-white"
+                >
+                    <option value="">Select service</option>
+                    {serviceNames.map((serviceName) => (
+                        <option key={serviceName.id} value={serviceName.id}>
+                            {serviceName.name}
+                        </option>
+                    ))}
+                </select>
+                {form.errors.service_name_id && (
                     <p className="text-xs text-red-500">
-                        {form.errors.service_name}
+                        {form.errors.service_name_id}
                     </p>
                 )}
             </div>

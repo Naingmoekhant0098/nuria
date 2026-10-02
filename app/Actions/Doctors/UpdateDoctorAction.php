@@ -67,6 +67,8 @@ class UpdateDoctorAction
 
                 'specialization_id' => $data['specialization_id'] ?? null,
 
+                'experience_years' => $data['experience_years'],
+
                 'complete_address' => $data['complete_address'] ?? null,
 
                 'about' => $data['about'] ?? null,
@@ -74,6 +76,8 @@ class UpdateDoctorAction
                 'region' => $data['region'] ?? null,
 
                 'contact_number' => $data['contact_number'] ?? null,
+
+                'proof_of_identity' => $data['proof_of_identity'],
 
                 'photo_path' => $data['photo_path'] ?? $doctor->photo_path,
 

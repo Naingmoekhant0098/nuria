@@ -10,13 +10,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('client.')->group(function (): void {
 
-
     Route::get('/', [
         ClientClinicController::class,
         'home',
     ])->name('home');
-
-
 
     Route::middleware('guest:patient')->group(function (): void {
 
@@ -148,6 +145,11 @@ Route::name('client.')->group(function (): void {
             ClientShopController::class,
             'cart',
         ])->name('shop.cart');
+
+        Route::post('/shop/cart/items', [ClientShopController::class, 'addToCart'])->name('shop.cart.add');
+        Route::patch('/shop/cart/items/{cartItem}', [ClientShopController::class, 'updateCartItem'])->name('shop.cart.update');
+        Route::delete('/shop/cart/items/{cartItem}', [ClientShopController::class, 'removeCartItem'])->name('shop.cart.remove');
+        Route::post('/shop/checkout', [ClientShopController::class, 'checkout'])->name('shop.checkout');
 
         Route::get('/shop/orders', [
             ClientShopController::class,

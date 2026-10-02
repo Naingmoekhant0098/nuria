@@ -6,6 +6,8 @@ use App\Models\Clinic;
 use App\Models\ClinicMedicalProduct;
 use App\Models\Consultation;
 use App\Models\DrugBatch;
+use App\Models\FeatureSetting;
+use App\Models\Plan;
 use App\Models\Reservation;
 use App\Models\Sale;
 use Carbon\Carbon;
@@ -107,6 +109,11 @@ class DashboardController extends Controller
             'reservationStatuses' => Reservation::query()->where('clinic_id', $clinicId)->whereBetween('created_at', [$start, $end])->selectRaw('status, count(*) as total')->groupBy('status')->get(),
             'recentReservations' => Reservation::query()->with(['patient', 'doctor'])->where('clinic_id', $clinicId)->latest()->limit(6)->get(),
             'lowStock' => $stock,
+            'featureAccess' => collect(Plan::FEATURE_CATALOG)->mapWithKeys(fn (string $label, string $feature): array => [$feature => [
+                'label' => $label,
+                'free' => FeatureSetting::isGloballyEnabled($feature),
+                'included_in_plan' => $clinic->hasPlanFeature($feature),
+            ]]),
         ]);
     }
 }

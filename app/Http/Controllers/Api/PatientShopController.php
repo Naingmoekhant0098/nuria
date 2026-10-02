@@ -83,7 +83,14 @@ class PatientShopController extends Controller
     public function updateCartItem(Request $request, PatientCartItem $cartItem): JsonResponse
     {
         abort_unless($cartItem->patient_id === $this->patient($request)->id, 404);
-        $cartItem->update($request->validate(['quantity' => ['required', 'integer', 'min:1', 'max:1000']]));
+        $data = $request->validate(['quantity' => ['required', 'integer', 'min:1', 'max:1000']]);
+        $available = $cartItem->item_type === 'drug'
+            ? (int) (DrugBatch::query()->where('clinic_id', $cartItem->clinic_id)->where('drug_id', $cartItem->drug_id)->where('expiry_date', '>', today())->sum('quantity') / $cartItem->drugUnit->conversion_quantity)
+            : (int) ClinicMedicalProduct::query()->where('clinic_id', $cartItem->clinic_id)->where('medical_product_id', $cartItem->medical_product_id)->value('quantity');
+        if ($data['quantity'] > $available) {
+            throw ValidationException::withMessages(['quantity' => ['Requested quantity exceeds available stock.']]);
+        }
+        $cartItem->update($data);
 
         return response()->json(['item' => $this->cartData($cartItem->fresh()->load(['drug', 'drugUnit', 'medicalProduct']))]);
     }

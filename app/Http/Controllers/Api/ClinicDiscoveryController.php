@@ -19,11 +19,19 @@ class ClinicDiscoveryController extends Controller
     {
         $clinics = Clinic::query()
             ->select(['id', 'clinic_name', 'complete_address', 'latitude', 'longitude', 'status'])
-            ->whereHas('subscriptions', fn ($query) => $query
-                ->where('status', 'active')
-                ->where('starts_at', '<=', now())
-                ->where('ends_at', '>', now())
-                ->whereHas('plan', fn ($planQuery) => $planQuery->whereJsonContains('features', 'reservations')))
+            ->where(function ($query): void {
+                $query
+                    ->whereHas('subscriptions', fn ($subscriptionQuery) => $subscriptionQuery
+                        ->where('status', 'active')
+                        ->where('starts_at', '<=', now())
+                        ->where('ends_at', '>', now())
+                        ->whereHas('plan', fn ($planQuery) => $planQuery->whereJsonContains('features', 'reservations')))
+                    ->orWhereExists(fn ($featureQuery) => $featureQuery
+                        ->selectRaw('1')
+                        ->from('feature_settings')
+                        ->where('feature', 'reservations')
+                        ->where('globally_enabled', true));
+            })
             ->when($request->string('search')->trim()->value(), function ($query, string $search): void {
                 $query->where(function ($query) use ($search): void {
                     $query->where('clinic_name', 'like', "%{$search}%")
@@ -132,7 +140,7 @@ class ClinicDiscoveryController extends Controller
                 ->where('clinic_id', $clinic->id)
                 ->where('doctor_id', $doctor->id)
                 ->orderBy('service_name')
-                ->get(['id', 'service_name', 'service_description', 'amount'])
+                ->get(['id', 'service_name', 'service_description', 'image_path', 'amount'])
         );
     }
 }

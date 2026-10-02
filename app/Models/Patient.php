@@ -95,6 +95,11 @@ class Patient extends Authenticatable
         );
     }
 
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(PatientCartItem::class, 'patient_id', 'id');
+    }
+
     public function clinics(): BelongsToMany
     {
         return $this->belongsToMany(Clinic::class, 'patient_clinic', 'patient_id', 'clinic_id')

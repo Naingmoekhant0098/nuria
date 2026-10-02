@@ -361,6 +361,10 @@ export default function Index() {
                                 </TableHead>
 
                                 <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
+                                    Experience
+                                </TableHead>
+
+                                <TableHead className="text-xs font-semibold tracking-wider whitespace-nowrap text-gray-400 uppercase">
                                     NRC
                                 </TableHead>
 
@@ -450,6 +454,14 @@ export default function Index() {
                                             <span className="text-gray-300">
                                                 {doctor.specialization?.name ??
                                                     '-'}
+                                            </span>
+                                        </TableCell>
+
+                                        <TableCell>
+                                            <span className="whitespace-nowrap text-gray-400">
+                                                {doctor.experience_years != null
+                                                    ? `${doctor.experience_years} ${doctor.experience_years === 1 ? 'year' : 'years'}`
+                                                    : '-'}
                                             </span>
                                         </TableCell>
 

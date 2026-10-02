@@ -3,7 +3,10 @@
 namespace App\Http\Middleware;
 
 use App\Models\Clinic;
+use App\Models\FeatureSetting;
+use App\Models\Plan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -63,12 +66,23 @@ class HandleInertiaRequests extends Middleware
                 'user' => $userData,
                 'permissions' => $request->user('admin')?->adminPermissions() ?? [],
                 'features' => $clinicSubscription?->plan?->features ?? [],
+                'globallyEnabledFeatures' => Schema::hasTable('feature_settings')
+                    ? FeatureSetting::query()->where('globally_enabled', true)->pluck('feature')->values()
+                    : collect(),
+                'subscriptionDisabledFeatures' => Schema::hasTable('feature_settings')
+                    && Schema::hasColumn('feature_settings', 'subscription_enabled')
+                    ? FeatureSetting::query()->where('subscription_enabled', false)->pluck('feature')->values()
+                    : collect(),
                 'subscription' => $clinicSubscription === null ? null : [
                     'plan_name' => $clinicSubscription->plan->name,
                     'ends_at' => $clinicSubscription->ends_at?->toIso8601String(),
                     'limits' => $clinicSubscription->plan->limits ?? [],
                 ],
             ],
+            'featureCatalog' => Plan::FEATURE_CATALOG,
+            'cartCount' => Schema::hasTable('patient_cart_items') && $patient
+                ? $patient->cartItems()->sum('quantity')
+                : 0,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

@@ -51,6 +51,7 @@ export default function CreateDoctorDrawer({
         gender: '',
 
         specialization_id: '',
+        experience_years: '',
 
         complete_address: '',
         about: '',

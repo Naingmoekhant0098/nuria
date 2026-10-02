@@ -15,7 +15,7 @@ class UpdateServiceRequest extends FormRequest
     {
         return [
             'doctor_id' => 'sometimes|required|exists:doctors,id',
-            'service_name' => 'sometimes|required|string|max:255',
+            'service_name_id' => ['sometimes', 'required', 'integer', 'exists:service_names,id'],
             'service_description' => 'nullable|string',
             'amount' => 'sometimes|required|numeric|min:0',
         ];

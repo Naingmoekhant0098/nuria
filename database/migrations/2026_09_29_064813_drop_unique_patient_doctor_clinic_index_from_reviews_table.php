@@ -18,7 +18,9 @@ return new class extends Migration
 
         if ($hasIndex) {
             Schema::table('reviews', function (Blueprint $table) use ($index): void {
-                $table->dropForeign('reviews_clinic_id_foreign');
+                if (Schema::getConnection()->getDriverName() !== 'sqlite') {
+                    $table->dropForeign('reviews_clinic_id_foreign');
+                }
                 $table->dropUnique($index);
             });
         }

@@ -15,7 +15,7 @@ class StoreServiceRequest extends FormRequest
     {
         return [
             'doctor_id' => 'required|exists:doctors,id',
-            'service_name' => 'required|string|max:255',
+            'service_name_id' => ['required', 'integer', 'exists:service_names,id'],
             'service_description' => 'nullable|string',
             'amount' => 'required|numeric|min:0',
         ];

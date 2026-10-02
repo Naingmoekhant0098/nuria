@@ -42,9 +42,9 @@ class ClientClinicController extends Controller
             ->whereIn('clinic_id', $clinicModels->pluck('id'))
             ->get(['clinic_id', 'service_name'])
             ->groupBy('clinic_id')
-            ->map(fn(Collection $rows) => $rows->pluck('service_name')->unique()->take(3)->implode(', '));
+            ->map(fn (Collection $rows) => $rows->pluck('service_name')->unique()->take(3)->implode(', '));
 
-        $clinics = $clinicModels->map(fn(Clinic $c) => [
+        $clinics = $clinicModels->map(fn (Clinic $c) => [
             'id' => $c->id,
             'name' => $c->clinic_name,
             'area' => $c->city ?? $c->address ?? '',          // ASSUMPTION: city/address column
@@ -80,8 +80,9 @@ class ClientClinicController extends Controller
 
             return [
                 'id' => $d->id,
-                'name' => 'Dr. ' . trim($d->first_name . ' ' . $d->last_name),
+                'name' => 'Dr. '.trim($d->first_name.' '.$d->last_name),
                 'spec' => $d->specialization?->name ?? 'General',
+                'experience_years' => $d->experience_years,
                 'clinic' => $clinic?->clinic_name ?? '',
                 'clinic_id' => $clinic?->id,
                 'next' => $this->nextSlot($schedules[$d->id] ?? collect()),
@@ -93,23 +94,24 @@ class ClientClinicController extends Controller
 
         /* ---------- Services (unique by name, first is the big card) ---------- */
         $services = ClinicService::query()
-            ->whereHas('doctor', fn($q) => $q->whereRaw('LOWER(status) = ?', ['active']))
-            ->whereHas('clinic', fn($q) => $q->whereRaw('LOWER(status) IN (?, ?)', ['active', 'approved']))
+            ->whereHas('doctor', fn ($q) => $q->whereRaw('LOWER(status) = ?', ['active']))
+            ->whereHas('clinic', fn ($q) => $q->whereRaw('LOWER(status) IN (?, ?)', ['active', 'approved']))
+            ->with('serviceName:id,name,image_path')
             ->orderBy('service_name')
             ->get()
-            ->unique(fn(ClinicService $s) => mb_strtolower(trim($s->service_name)))
+            ->unique(fn (ClinicService $s) => mb_strtolower(trim($s->serviceName?->name ?? $s->service_name)))
             ->take(6)
             ->values()
-            ->map(fn(ClinicService $s, int $i) => [
+            ->map(fn (ClinicService $s, int $i) => [
                 'id' => $s->id,
-                'name' => $s->service_name,
+                'name' => $s->serviceName?->name ?? $s->service_name,
                 'note' => $s->service_description ?? '',
-                'image' => $this->imageUrl($s->image_path ?? null), // ASSUMPTION: image_path column
+                'image' => $s->serviceName?->image_url ?? $s->image_url,
                 'big' => $i === 0,
             ]);
 
         /* ---------- Products: cheapest in-stock clinic price ---------- */
-        $inStock = fn($q) => $q->where('is_active', true)->where('quantity', '>', 0);
+        $inStock = fn ($q) => $q->where('is_active', true)->where('quantity', '>', 0);
 
         $products = MedicalProduct::query()
             ->where('is_active', true)
@@ -119,7 +121,7 @@ class ClientClinicController extends Controller
             ->orderBy('name')
             ->take(4)
             ->get()
-            ->map(fn(MedicalProduct $p) => [
+            ->map(fn (MedicalProduct $p) => [
                 'id' => $p->id,
                 'name' => $p->name,
                 'cat' => $p->category?->name ?? '',
@@ -152,7 +154,7 @@ class ClientClinicController extends Controller
                 });
             })
             ->when($request->input('specialty'), function ($query, string $specialty): void {
-                $query->whereHas('doctors.specialization', fn($query) => $query->where('name', $specialty));
+                $query->whereHas('doctors.specialization', fn ($query) => $query->where('name', $specialty));
             })
             ->withCount('doctors')
             ->latest()
@@ -181,12 +183,12 @@ class ClientClinicController extends Controller
                     $query->where('first_name', 'like', "%{$search}%")
                         ->orWhere('middle_name', 'like', "%{$search}%")
                         ->orWhere('last_name', 'like', "%{$search}%")
-                        ->orWhereHas('specialization', fn($query) => $query->where('name', 'like', "%{$search}%"));
+                        ->orWhereHas('specialization', fn ($query) => $query->where('name', 'like', "%{$search}%"));
                 });
             })
-            ->when($request->input('specialty'), fn($query, string $specialty) => $query->whereHas('specialization', fn($query) => $query->where('name', $specialty)))
-            ->when($request->input('service'), fn($query, string $service) => $query->whereHas('services', fn($query) => $query->where('service_name', $service)))
-            ->when($request->integer('clinic_id'), fn($query, int $clinicId) => $query->whereHas('clinics', fn($query) => $query->whereKey($clinicId)))
+            ->when($request->input('specialty'), fn ($query, string $specialty) => $query->whereHas('specialization', fn ($query) => $query->where('name', $specialty)))
+            ->when($request->input('service'), fn ($query, string $service) => $query->whereHas('services', fn ($query) => $query->where('service_name', $service)))
+            ->when($request->integer('clinic_id'), fn ($query, int $clinicId) => $query->whereHas('clinics', fn ($query) => $query->whereKey($clinicId)))
             ->with(['specialization', 'clinics:id,clinic_name,complete_address,latitude,longitude,photo_path', 'nrc'])
             ->orderBy('first_name')
             ->orderBy('last_name')
@@ -209,17 +211,24 @@ class ClientClinicController extends Controller
             ->keyBy('doctor_id');
 
         return Inertia::render('Client/Clinics/Index', [
-            'doctors' => $doctors->map(function (Doctor $doctor) use ($servicesByDoctor, $schedules, $reviewStats): array {
-                $clinic = $doctor->clinics->first();
+            'doctors' => $doctors->map(function (Doctor $doctor) use ($selectedClinic, $servicesByDoctor, $schedules, $reviewStats): array {
+                $clinic = $selectedClinic && $doctor->clinics->contains('id', $selectedClinic->id)
+                    ? $selectedClinic
+                    : $doctor->clinics->first();
                 $services = $servicesByDoctor->get($doctor->id, collect());
-                \Log::info('Clinic: ' . $clinic);
+                \Log::info('Clinic: '.$clinic);
 
                 return [
                     'id' => $doctor->id,
                     'clinicSlug' => (string) ($clinic?->id ?? ''),
-                    'name' => 'Dr. ' . trim(implode(' ', array_filter([$doctor->first_name, $doctor->middle_name, $doctor->last_name]))),
+                    'name' => 'Dr. '.trim(implode(' ', array_filter([$doctor->first_name, $doctor->middle_name, $doctor->last_name]))),
                     'spec' => $doctor->specialization?->name ?? 'General practice',
+                    'experience_years' => $doctor->experience_years,
                     'clinic' => $clinic?->clinic_name ?? 'Independent practice',
+                    'clinics' => $doctor->clinics->map(fn (Clinic $doctorClinic): array => [
+                        'id' => $doctorClinic->id,
+                        'name' => $doctorClinic->clinic_name,
+                    ])->values(),
                     'lat' => $clinic?->latitude !== null ? (float) $clinic->latitude : null,
                     'lng' => $clinic?->longitude !== null ? (float) $clinic->longitude : null,
                     'region' => $doctor->region ?? $clinic?->complete_address ?? $doctor->complete_address,
@@ -238,7 +247,7 @@ class ClientClinicController extends Controller
                     'clinicImg' => $clinic?->photo_path
                         ? (str_starts_with($clinic->photo_path, 'http') || str_starts_with($clinic->photo_path, '/')
                             ? $clinic->photo_path
-                            : asset('storage/' . $clinic->photo_path))
+                            : asset('storage/'.$clinic->photo_path))
                         : null,
                 ];
             })->values(),
@@ -267,8 +276,8 @@ class ClientClinicController extends Controller
         $selectedServiceId = $request->integer('service_id') ?: null;
         $doctors = Doctor::query()
             ->whereRaw('LOWER(status) = ?', ['active'])
-            ->whereHas('clinics', fn($query) => $query->whereKey($clinic->id))
-            ->when($selectedServiceId, fn($query) => $query->whereHas('services', fn($query) => $query
+            ->whereHas('clinics', fn ($query) => $query->whereKey($clinic->id))
+            ->when($selectedServiceId, fn ($query) => $query->whereHas('services', fn ($query) => $query
                 ->whereKey($selectedServiceId)
                 ->where('clinic_id', $clinic->id)))
             ->with('specialization')
@@ -302,17 +311,19 @@ class ClientClinicController extends Controller
                 'rating' => round((float) ($reviewStats?->average_rating ?? 0), 1),
                 'reviews_count' => (int) ($reviewStats?->review_count ?? 0),
             ],
-            'services' => $services->map(fn(ClinicService $service): array => [
+            'services' => $services->map(fn (ClinicService $service): array => [
                 'id' => $service->id,
                 'name' => $service->service_name,
                 'description' => $service->service_description,
                 'amount' => (float) $service->amount,
+                'image' => $service->image_url,
                 'doctor_id' => $service->doctor_id,
             ])->values(),
-            'doctors' => $doctors->map(fn(Doctor $doctor): array => [
+            'doctors' => $doctors->map(fn (Doctor $doctor): array => [
                 'id' => $doctor->id,
-                'name' => 'Dr. ' . trim(implode(' ', array_filter([$doctor->first_name, $doctor->middle_name, $doctor->last_name]))),
+                'name' => 'Dr. '.trim(implode(' ', array_filter([$doctor->first_name, $doctor->middle_name, $doctor->last_name]))),
                 'specialization' => $doctor->specialization?->name ?? 'General practice',
+                'experience_years' => $doctor->experience_years,
                 'photo' => $doctor->photo_url,
                 'price' => (float) ($services->where('doctor_id', $doctor->id)->min('amount') ?? 0),
                 'rating' => round((float) ($doctorReviewStats->get($doctor->id)?->average_rating ?? 0), 1),
@@ -331,8 +342,8 @@ class ClientClinicController extends Controller
 
         $doctors = Doctor::query()
             ->whereRaw('LOWER(status) = ?', ['active'])
-            ->whereHas('clinics', fn($query) => $query->whereKey($clinic->id))
-            ->when($request->integer('service_id'), fn($query, int $serviceId) => $query->whereHas('services', fn($query) => $query
+            ->whereHas('clinics', fn ($query) => $query->whereKey($clinic->id))
+            ->when($request->integer('service_id'), fn ($query, int $serviceId) => $query->whereHas('services', fn ($query) => $query
                 ->whereKey($serviceId)
                 ->where('clinic_id', $clinic->id)))
             ->with('user')
@@ -359,6 +370,10 @@ class ClientClinicController extends Controller
         abort_unless(strtolower($doctor->status) === 'active', 404);
 
         $doctor->load(['user', 'specialization']);
+        $availableClinics = $doctor->clinics()
+            ->whereRaw('LOWER(status) IN (?, ?)', ['active', 'approved'])
+            ->orderBy('clinic_name')
+            ->get(['clinics.id', 'clinics.clinic_name']);
         $reviewStats = Review::query()
             ->where('doctor_id', $doctor->id)
             ->where('clinic_id', $clinic->id)
@@ -370,11 +385,11 @@ class ClientClinicController extends Controller
             ->with('patient:id,first_name,last_name')
             ->latest()
             ->get()
-            ->map(fn(Review $review): array => [
+            ->map(fn (Review $review): array => [
                 'id' => $review->id,
                 'rating' => $review->rating,
                 'comment' => $review->comment,
-                'patient_name' => trim($review->patient?->first_name . ' ' . $review->patient?->last_name) ?: 'Patient',
+                'patient_name' => trim($review->patient?->first_name.' '.$review->patient?->last_name) ?: 'Patient',
                 'created_at' => $review->created_at?->format('M j, Y'),
             ])->values();
         $services = ClinicService::query()
@@ -388,7 +403,7 @@ class ClientClinicController extends Controller
             ->orderBy('day_of_week')
             ->orderBy('start_time')
             ->get()
-            ->map(fn(DoctorClinicSchedule $schedule): array => [
+            ->map(fn (DoctorClinicSchedule $schedule): array => [
                 'id' => $schedule->id,
                 'day_of_week' => $schedule->day_of_week,
                 'start_time' => $schedule->start_time,
@@ -401,8 +416,8 @@ class ClientClinicController extends Controller
             ->whereBetween('appointment_at', [now()->startOfDay(), now()->addDays(20)->endOfDay()])
             ->whereIn('status', ['Pending', 'Reserved', 'Confirmed', 'Checked In'])
             ->get(['schedule_id', 'appointment_at'])
-            ->groupBy(fn(Reservation $reservation): string => $reservation->appointment_at->format('Y-m-d') . '|' . $reservation->schedule_id)
-            ->map(fn(Collection $reservations): int => $reservations->count())
+            ->groupBy(fn (Reservation $reservation): string => $reservation->appointment_at->format('Y-m-d').'|'.$reservation->schedule_id)
+            ->map(fn (Collection $reservations): int => $reservations->count())
             ->all();
 
         return Inertia::render('Client/Clinics/Show', [
@@ -415,12 +430,17 @@ class ClientClinicController extends Controller
                 'rating' => round((float) ($reviewStats?->average_rating ?? 0), 1),
                 'reviews_count' => (int) ($reviewStats?->review_count ?? 0),
             ],
+            'availableClinics' => $availableClinics->map(fn (Clinic $availableClinic): array => [
+                'id' => $availableClinic->id,
+                'name' => $availableClinic->clinic_name,
+            ])->values(),
             'doctor' => [
                 'id' => $doctor->id,
                 'first_name' => $doctor->first_name,
                 'middle_name' => $doctor->middle_name,
                 'last_name' => $doctor->last_name,
                 'specialization' => ['name' => $doctor->specialization?->name ?? 'General practice'],
+                'experience_years' => $doctor->experience_years,
                 'photo' => $doctor->photo_url,
                 'languages' => [],
                 'about' => $doctor->about ?? $doctor->complete_address,
@@ -431,10 +451,11 @@ class ClientClinicController extends Controller
                 'rating' => round((float) ($reviewStats?->average_rating ?? 0), 1),
                 'reviews' => (int) ($reviewStats?->review_count ?? 0),
             ],
-            'services' => $services->map(fn(ClinicService $service): array => [
+            'services' => $services->map(fn (ClinicService $service): array => [
                 'id' => $service->id,
                 'name' => $service->service_name,
                 'price' => (float) $service->amount,
+                'image' => $service->image_url,
             ])->values(),
             'schedules' => $schedules,
             'sessionCounts' => $sessionCounts,
@@ -504,7 +525,7 @@ class ClientClinicController extends Controller
 
     private function imageUrl(?string $path): ?string
     {
-        if (!$path) {
+        if (! $path) {
             return null;
         }
 
@@ -552,7 +573,7 @@ class ClientClinicController extends Controller
         foreach ($rows as $r) {
             $offset = $this->dayOffset($r->day_of_week);
 
-            if ($offset === null || !$r->start_time) {
+            if ($offset === null || ! $r->start_time) {
                 continue; // skip rows we can't interpret
             }
 
@@ -565,21 +586,21 @@ class ClientClinicController extends Controller
                 $slot->addWeek();
             }
 
-            if (!$best || $slot->lt($best)) {
+            if (! $best || $slot->lt($best)) {
                 $best = $slot;
             }
         }
 
-        if (!$best) {
+        if (! $best) {
             return 'No upcoming slots';
         }
 
         if ($best->isToday()) {
-            return 'Today, ' . $best->format('g:i a');
+            return 'Today, '.$best->format('g:i a');
         }
 
         if ($best->isTomorrow()) {
-            return 'Tomorrow, ' . $best->format('g:i a');
+            return 'Tomorrow, '.$best->format('g:i a');
         }
 
         return $best->format('D, g:i a');

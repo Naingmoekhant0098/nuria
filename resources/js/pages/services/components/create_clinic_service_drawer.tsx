@@ -2,7 +2,6 @@ import { useForm } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
-
 import { Button } from '@/components/ui/button';
 import {
     Drawer,
@@ -14,22 +13,25 @@ import {
 
 import type {
     Doctor,
-    ClinicServiceFormData} from './clinic_service_form';
-import ClinicServiceForm, {
-    Clinic
+    ServiceName,
+    ClinicServiceFormData,
 } from './clinic_service_form';
+import ClinicServiceForm, { Clinic } from './clinic_service_form';
 
 interface CreateClinicServiceDrawerProps {
     doctors: Doctor[];
+    serviceNames: ServiceName[];
 }
 
 export default function CreateClinicServiceDrawer({
     doctors,
+    serviceNames,
 }: CreateClinicServiceDrawerProps) {
     const [open, setOpen] = useState(false);
 
     const form = useForm<ClinicServiceFormData>({
         doctor_id: '',
+        service_name_id: '',
         service_name: '',
         service_description: '',
         amount: '',
@@ -40,6 +42,7 @@ export default function CreateClinicServiceDrawer({
 
         form.post('/clinic/services', {
             preserveScroll: true,
+            forceFormData: true,
 
             onSuccess: () => {
                 form.reset();
@@ -62,7 +65,7 @@ export default function CreateClinicServiceDrawer({
                     className="cursor-pointer bg-main text-white hover:bg-main/90"
                 >
                     <Plus className="h-4 w-4" />
-                    Create Service
+                    Assign Service
                 </Button>
             </DrawerTrigger>
 
@@ -70,7 +73,7 @@ export default function CreateClinicServiceDrawer({
                 <div className="flex h-full flex-col">
                     <DrawerHeader className="border-b border-neutral-800 px-6 py-5">
                         <DrawerTitle className="text-lg font-semibold text-white">
-                            Create Clinic Service
+                            Assign Service to Doctor
                         </DrawerTitle>
                     </DrawerHeader>
 
@@ -79,6 +82,7 @@ export default function CreateClinicServiceDrawer({
                             form={form}
 
                             doctors={doctors}
+                            serviceNames={serviceNames}
                             mode="create"
                             onSubmit={handleSubmit}
                             onCancel={handleCancel}

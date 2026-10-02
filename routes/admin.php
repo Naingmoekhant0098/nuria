@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminSpecializationController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ClinicSubscriptionController;
+use App\Http\Controllers\Admin\FeatureSettingController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PlanController;
@@ -76,6 +77,12 @@ Route::prefix('admin')
         Route::get('/plans', [PlanController::class, 'index'])
             ->middleware('admin.permission:clinics.manage')
             ->name('plans.index');
+        Route::get('/settings/features', [FeatureSettingController::class, 'index'])
+            ->middleware('admin.permission:clinics.manage')
+            ->name('settings.features');
+        Route::put('/settings/features', [FeatureSettingController::class, 'update'])
+            ->middleware('admin.permission:clinics.manage')
+            ->name('settings.features.update');
         Route::post('/plans', [PlanController::class, 'store'])
             ->middleware('admin.permission:clinics.manage')
             ->name('plans.store');

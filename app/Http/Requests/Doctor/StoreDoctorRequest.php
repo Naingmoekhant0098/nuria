@@ -34,6 +34,8 @@ class StoreDoctorRequest extends FormRequest
                 'exists:specializations,id',
             ],
 
+            'experience_years' => ['required', 'integer', 'min:0', 'max:100'],
+
             'complete_address' => 'required|string',
 
             'about' => ['nullable', 'string', 'max:10000'],
